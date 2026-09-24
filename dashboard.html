@@ -1,0 +1,3909 @@
+<!Doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>User Dashboard | Escrow Foundation</title>
+
+<link rel="stylesheet" href="alert-system.css">
+
+<style>
+  
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#222;
+}
+
+/* HEADER */
+.dash-header {
+    background: #003a66;
+    color: #fff;
+    padding: 20px 18px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.header-left {
+    
+    display: flex;
+    
+    align-items: center;
+    
+    gap: 14px;
+    
+    flex: 1;
+    
+}
+
+.header-avatar {
+    
+    position: relative;
+    
+    width: 82px;
+    
+    height: 82px;
+    
+    flex-shrink: 0;
+    
+    border-radius: 50%;
+    
+}
+
+#topAvatar img{
+
+    width:100%;
+
+    height:100%;
+
+    object-fit:cover;
+
+    border-radius:50%;
+
+    display:block;
+
+}
+
+.default-avatar {
+    
+    width: 72px;
+    
+    height: 72px;
+    
+    border-radius: 50%;
+    
+    display: flex;
+    
+    align-items: center;
+    
+    justify-content: center;
+    
+    background: #ffffff;
+    
+    border: 3px solid rgba(255, 255, 255, .25);
+    
+    box-shadow: 0 6px 18px rgba(0, 0, 0, .15);
+    
+    overflow: hidden;
+    
+}
+
+.default-avatar svg {
+    
+    width: 40px;
+    
+    height: 40px;
+    
+    color: #003a66;
+    
+}
+
+.header-avatar img {
+    
+    width: 72px;
+    
+    height: 72px;
+    
+    border-radius: 50%;
+    
+    object-fit: cover;
+    
+    border: 3px solid rgba(255, 255, 255, .25);
+    
+    background: #fff;
+    
+    padding: 3px;
+}
+
+.header-edit {
+    
+    position: absolute;
+    
+    bottom: -1px;
+    
+    right: -1px;
+    
+    width: 28px;
+    
+    height: 28px;
+    
+    border-radius: 50%;
+    
+    background: #3DBB57;
+    
+    border: 3px solid #003a66;
+    
+    display: flex;
+    
+    align-items: center;
+    
+    justify-content: center;
+    
+    cursor: pointer;
+    
+    box-shadow: 0 4px 10px rgba(0, 0, 0, .25);
+    
+    z-index: 10;
+    
+    transition: .2s ease;
+    
+}
+
+.header-edit:hover {
+    
+    transform: scale(1.08);
+    
+}
+
+.header-edit input {
+    
+    display: none;
+    
+}
+
+.header-edit svg {
+    
+    width: 13px;
+    
+    height: 13px;
+    
+    color: #fff;
+    
+}
+
+.notification {
+    position: relative;
+    
+    width: 42px;
+    
+    height: 42px;
+    
+    display: flex;
+    
+    align-items: center;
+    
+    justify-content: center;
+    
+    border-radius: 50%;
+    
+    background: rgba(255, 255, 255, .12);
+    
+    cursor: pointer;
+    
+    transition: .3s ease;
+    
+    flex-shrink: 0;
+    
+}
+
+.notification:hover {
+    
+    background: rgba(255, 255, 255, .22);
+    
+}
+
+.notification-icon {
+    
+    width: 22px;
+    
+    height: 22px;
+    
+    color: #fff;
+    
+}
+
+/* =========================
+   NOTIFICATION SLIDE PANEL
+========================= */
+
+.notification-overlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.45);
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.3s ease;
+
+z-index:999;
+
+}
+
+.notification-overlay.show{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+.notification-panel{
+
+position:fixed;
+
+top:0;
+
+right:-100%;
+
+width:90%;
+
+max-width:380px;
+
+height:100vh;
+
+background:#fff;
+
+box-shadow:-10px 0 30px rgba(0,0,0,.15);
+
+transition:.35s ease;
+
+display:flex;
+
+flex-direction:column;
+
+z-index:1000;
+
+}
+
+.notification-panel.show{
+
+right:0;
+
+}
+
+.notification-header{
+
+padding:18px;
+
+background:#003a66;
+
+color:#fff;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.notification-header h3{
+
+font-size:18px;
+
+}
+
+.close-notification{
+
+font-size:26px;
+
+cursor:pointer;
+
+}
+
+.notification-body{
+
+flex:1;
+
+padding:16px;
+
+overflow-y:auto;
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.notification-card{
+
+background:#fff;
+
+border:1px solid #e6e6e6;
+
+border-radius:14px;
+
+padding:14px;
+
+box-shadow:0 4px 12px rgba(0,0,0,.05);
+
+}
+
+.notification-card h4{
+
+font-size:14px;
+
+margin-bottom:6px;
+
+}
+
+.notification-card p{
+
+font-size:13px;
+
+color:#666;
+
+line-height:1.5;
+
+}
+
+.notification-time{
+
+font-size:11px;
+
+color:#999;
+
+margin-top:8px;
+
+}
+
+.dash-header h2 {
+    
+    font-size: 17px;
+    
+    font-weight: 700;
+    
+    margin-bottom: 3px;
+    
+    letter-spacing: .2px;
+    
+}
+
+
+.header-left>div:last-child {
+    
+    display: flex;
+    
+    flex-direction: column;
+    
+    justify-content: center;
+    
+    line-height: 1.2;
+    
+}
+
+.sub{
+    font-size:12px;
+    opacity:0.8;
+}
+
+.badge{
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+.badge.active{
+    background:#3DBB57;
+    color:#fff;
+}
+
+/* MAIN */
+.dash-container {
+    padding: 14px 16px 16px;
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+/* CARDS GRID (MOBILE FIRST) */
+.grid-2 {
+    
+    display: grid;
+    
+    grid-template-columns: repeat(3, 1fr);
+    
+    gap: 10px;
+    
+}
+
+.card{
+    background:#fff;
+    padding:18px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.card p{
+    font-size:12px;
+    color:#777;
+}
+
+.card h3{
+    margin-top:6px;
+}
+
+.card.primary{
+    background:#003a66;
+    color:#fff;
+}
+
+.card.danger{
+    border:1px solid #ffdddd;
+}
+
+.milestone-progress {
+    
+    background: #fff;
+    
+    padding: 20px;
+    
+    border-radius: 10px;
+    
+    box-shadow:
+    
+        0 10px 28px rgba(0, 0, 0, .08);
+    
+    border: 1px solid #e4e9ef;
+    
+    overflow-x: auto;
+    
+    margin-top: 10px;
+    
+}
+
+.milestone-progress::-webkit-scrollbar{
+
+height:5px;
+
+}
+
+.milestone-progress::-webkit-scrollbar-thumb{
+
+background:#3DBB57;
+
+border-radius:20px;
+
+}
+
+.milestone-track {
+    
+    position: relative;
+    
+    display: flex;
+    
+    justify-content: space-between;
+    
+    align-items: center;
+    
+    min-width: 900px;
+    
+    padding: 30px 28px;
+    
+    overflow: visible;
+    
+}
+
+.progress-line {
+    
+    position: absolute;
+    
+    top: 50%;
+    
+    left: 65px;
+    
+    right: 65px;
+    
+    transform: translateY(-50%);
+    
+    height: 10px;
+    
+    background: #d9dee4;
+    
+    border-radius: 999px;
+    
+    overflow: hidden;
+    
+    z-index: 1;
+    
+}
+
+.progress-fill{
+
+position:absolute;
+
+left:0;
+
+top:0;
+
+height:100%;
+
+width:0;
+
+border-radius:999px;
+
+background:linear-gradient(
+90deg,
+#003a66,
+#44d96d,
+#3DBB57
+);
+
+background-size:300% 100%;
+
+animation:gradientMove 4s linear infinite reverse;
+
+transition:width .8s ease;
+
+}
+
+.progress-glow{
+
+position:absolute;
+
+right:-14px;
+
+top:50%;
+
+transform:translateY(-50%);
+
+width:28px;
+
+height:28px;
+
+border-radius:50%;
+
+background:#fff;
+
+box-shadow:
+
+0 0 12px #3DBB57,
+
+0 0 28px rgba(61,187,87,.8),
+
+0 0 45px rgba(61,187,87,.4);
+
+}
+
+@keyframes gradientMove{
+
+0%{
+
+background-position:0%;
+
+}
+
+100%{
+
+background-position:300%;
+
+}
+
+}
+
+.milestone-node {
+    
+    position: relative;
+    
+    z-index: 3;
+    
+    display: flex;
+    
+    flex-direction: column;
+    
+    align-items: center;
+    
+    justify-content: center;
+    
+    flex-shrink: 0;
+    
+    cursor: pointer;
+    
+    transition: .25s ease;
+    
+}
+
+.milestone-node:hover {
+    
+    transform: translateY(-4px);
+    
+}
+
+.milestone-node:hover{
+
+transform:translateY(-3px);
+
+}
+
+.milestone-node:active{
+
+transform:translateY(0);
+
+}
+
+.hexagon{
+
+width:50px;
+
+height:48px;
+
+position:relative;
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+background:linear-gradient(
+145deg,
+#eef2f6,
+#d8dde5
+);
+
+clip-path:polygon(
+50% 0%,
+93% 25%,
+93% 75%,
+50% 100%,
+7% 75%,
+7% 25%
+);
+
+/* THIS CREATES THE BLACK OUTLINE */
+
+border:3px solid #000;
+
+box-shadow:
+
+0 10px 18px rgba(0,0,0,.12),
+
+inset 0 2px 3px rgba(255,255,255,.8),
+
+inset 0 -2px 5px rgba(0,0,0,.08);
+
+transition:.25s ease;
+
+}
+
+.milestone-text{
+
+position:absolute;
+
+top:50%;
+
+left:50%;
+
+transform:translate(-50%,-50%);
+
+font-size:8px;
+
+font-weight:700;
+
+color:#fff;
+
+text-align:center;
+
+line-height:1.2;
+
+width:80%;
+
+pointer-events:none;
+
+}
+
+.milestone-node:not(.completed):not(.current)
+.milestone-text{
+
+color:#44546a;
+
+}
+
+.milestone-node.completed
+.milestone-text{
+
+color:#fff;
+
+}
+
+.milestone-node.current
+.milestone-text{
+
+color:#fff;
+
+}
+
+.milestone-node:hover .hexagon {
+    
+    transform: translateY(-3px) scale(1.03);
+    
+}
+
+.milestone-node.completed .hexagon {
+    
+    background: linear-gradient(145deg, #25c26e, #1ea85d);
+    
+    box-shadow:
+        0 10px 18px rgba(37, 194, 110, .25),
+        inset 0 2px 3px rgba(255, 255, 255, .35);
+    
+}
+
+.milestone-node.current .hexagon {
+    
+    background: linear-gradient(145deg, #f0b429, #d49a12);
+    
+    box-shadow:
+        0 10px 22px rgba(212, 154, 18, .35),
+        0 0 0 4px rgba(212, 154, 18, .12);
+    
+}
+
+.message-popup {
+    
+    position: absolute;
+    
+    top: 10px;
+    
+    left: 60%;
+    
+    transform: translateX(-50%) scale(.92);
+    
+    width: 230px;
+    
+    padding: 16px;
+    
+    background: #fff;
+    
+    border-radius: 18px;
+    
+    box-shadow:
+    
+        0 18px 40px rgba(0, 0, 0, .16);
+    
+    border: 1px solid #edf1f5;
+    
+    font-size: 13px;
+    
+    font-weight: 600;
+    
+    line-height: 1.6;
+    
+    text-align: center;
+    
+    opacity: 0;
+    
+    pointer-events: none;
+    
+    transition: .3s ease;
+    
+    z-index: 100;
+    
+}
+
+.message-popup.show {
+    
+    opacity: 1;
+    
+    transform: translateX(-50%) scale(1);
+    
+}
+
+.message-popup::before {
+    
+    content: "";
+    
+    position: absolute;
+    
+    top: -8px;
+    
+    left: 50%;
+    
+    transform: translateX(-50%);
+    
+    border-left: 8px solid transparent;
+    
+    border-right: 8px solid transparent;
+    
+    border-bottom: 8px solid #fff;
+    
+}
+
+.message-popup::before {
+    
+    content: "";
+    
+    position: absolute;
+    
+    top: -10px;
+    
+    left: 50%;
+    
+    transform: translateX(-50%);
+    
+    border-left: 10px solid transparent;
+    
+    border-right: 10px solid transparent;
+    
+    border-bottom: 10px solid #fff;
+    
+}
+
+/* MILESTONES */
+.milestones h3{
+    margin-bottom:10px;
+}
+
+.milestone-card{
+    background:#fff;
+    padding:14px;
+    border-radius:12px;
+    margin-bottom:10px;
+    box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.milestone-card .top{
+    display:flex;
+    justify-content:space-between;
+    margin-bottom:6px;
+}
+
+.milestone-card p{
+    font-size:13px;
+    color:#666;
+}
+
+.milestone-card.pending{
+    border-left:4px solid #f0ad4e;
+}
+
+/* BUTTONS */
+.actions{
+    margin-top:10px;
+    display:flex;
+    gap:10px;
+}
+
+button{
+    flex:1;
+    padding:10px;
+    border:none;
+    border-radius:8px;
+    background:#3DBB57;
+    color:#fff;
+    font-weight:700;
+}
+
+button.outline{
+    background:#fff;
+    border:1px solid #ddd;
+    color:#333;
+}
+
+/* QUICK ACTIONS */
+.quick-actions{
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.quick-actions h3{
+    margin-bottom:12px;
+}
+
+.action-grid {
+    
+    display: flex;
+    
+    flex-direction: column;
+    
+    gap: 12px;
+    
+}
+
+.primary-action {
+    
+    width: 100%;
+    
+    background: #3DBB57;
+    
+    color: #fff;
+    
+    font-size: 16px;
+    
+    padding: 16px;
+    
+    border-radius: 12px;
+    
+    font-weight: 700;
+    
+}
+
+.secondary-actions {
+    
+    display: grid;
+    
+    grid-template-columns:
+    
+        repeat(3, 1fr);
+    
+    gap: 10px;
+    
+}
+
+.qa-btn {
+    
+    background: #00548C;
+    
+    color: #fff;
+    
+    border: none;
+    
+    padding: 14px 10px;
+    
+    border-radius: 10px;
+    
+    font-weight: 700;
+    
+    font-size: 13px;
+    
+    display: flex;
+    
+    justify-content: center;
+    
+    align-items: center;
+    
+    text-align: center;
+    
+    min-height: 40px;
+    
+}
+
+.logout-btn{
+    width:100%;
+    padding:18px;
+    background:#d9534f;
+    color:#fff;
+    border:none;
+    border-radius:12px;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+    box-shadow:0 6px 18px rgba(217,83,79,.25);
+    transition:.25s ease;
+}
+
+.logout-btn:hover{
+    transform:translateY(-2px);
+}
+
+.logout-btn:active{
+    transform:translateY(0);
+}
+
+/* REFUND */
+.refund-box{
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+}
+
+.refund-row{
+    display:flex;
+    justify-content:space-between;
+    margin-top:8px;
+}
+
+/* LOG */
+.log{
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+}
+
+.log-item{
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.log-item small{
+    color:#777;
+    font-size:12px;
+}
+
+/* RESPONSIVE */
+@media(min-width:768px){
+
+    .dash-container{
+        max-width:1000px;
+        margin:auto;
+    }
+
+    .grid-2{
+        grid-template-columns:repeat(4,1fr);
+    }
+}
+  
+  .quick-actions .grid{
+grid-template-columns:repeat(4,1fr);
+}
+  
+  /* =========================
+   SUPPORT PANEL
+========================= */
+
+.support-overlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.45);
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.3s ease;
+
+z-index:999;
+
+}
+
+.support-overlay.show{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+.support-panel{
+
+position:fixed;
+
+right:-100%;
+
+top:0;
+
+width:90%;
+
+max-width:420px;
+
+height:100vh;
+
+background:#fff;
+
+transition:.35s ease;
+
+box-shadow:-10px 0 30px rgba(0,0,0,.15);
+
+display:flex;
+
+flex-direction:column;
+
+z-index:1000;
+
+}
+
+.support-panel.show{
+
+right:0;
+
+}
+
+.support-header{
+
+background:#003a66;
+
+color:#fff;
+
+padding:18px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.support-body{
+
+padding:18px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.support-body input,
+
+.support-body textarea{
+
+width:100%;
+
+padding:12px;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+outline:none;
+
+font-size:14px;
+
+}
+
+.support-body textarea{
+
+height:140px;
+
+resize:none;
+
+}
+
+.support-send{
+
+background:#3DBB57;
+
+color:#fff;
+
+border:none;
+
+padding:14px;
+
+border-radius:10px;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+.support-close{
+
+font-size:28px;
+
+cursor:pointer;
+
+}
+
+.copy-toast{
+    position: fixed;
+    bottom: 30px;
+    left: 50%;
+    transform: translateX(-50%) translateY(20px);
+    background: #003a66;
+    color: #fff;
+    padding: 12px 18px;
+    border-radius: 10px;
+    font-size: 13px;
+    font-weight: 700;
+    opacity: 0;
+    pointer-events: none;
+    transition: .3s ease;
+    z-index: 99999;
+}
+
+.copy-toast.show{
+    opacity: 1;
+    transform: translateX(-50%) translateY(0);
+}
+
+.alert-overlay{
+    position:fixed;
+    top:0;
+    left:0;
+    width:100%;
+    height:100%;
+    background:rgba(0,0,0,.55);
+    display:none;
+    justify-content:center;
+    align-items:center;
+    z-index:999999;
+}
+
+.alert-box{
+    background:#fff;
+    width:90%;
+    max-width:380px;
+    padding:24px;
+    border-radius:16px;
+    text-align:center;
+    box-shadow:0 15px 40px rgba(0,0,0,.15);
+    animation:alertPop .25s ease;
+}
+
+.alert-box h3{
+    color:#003a66;
+    margin-bottom:12px;
+}
+
+.alert-box p{
+    color:#555;
+    line-height:1.6;
+    margin-bottom:18px;
+}
+
+.alert-box button{
+    background:#3DBB57;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    padding:12px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+@keyframes alertPop{
+    from{
+        opacity:0;
+        transform:scale(.85);
+    }
+    to{
+        opacity:1;
+        transform:scale(1);
+    }
+}
+  
+</style>
+</head>
+
+<body>
+
+<!-- TOP HEADER -->
+<header class="dash-header">
+
+<div class="header-left">
+
+<div class="header-avatar">
+
+<div id="topAvatar" class="default-avatar">
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linecap="round"
+stroke-linejoin="round">
+
+<circle cx="12" cy="8" r="4"></circle>
+
+<path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"></path>
+
+</svg>
+
+</div>
+
+<label class="header-edit">
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
+stroke-linejoin="round">
+
+<path d="M12 20h9"/>
+
+<path d="M16.5 3.5a2.1 2.1 0 0 1 3 3L7 19l-4 1 1-4 12.5-12.5z"/>
+
+</svg>️
+
+<input
+type="file"
+accept="image/*"
+onchange="loadImage(event)">
+
+</label>
+
+</div>
+
+<div>
+
+<h2 id="userName">Welcome, John 👋</h2>
+<p class="sub" id="userTier"></p>
+
+</div>
+
+</div>
+
+<div class="notification" onclick="openNotifications()">
+    
+    <span id="notifCount" style="
+position:absolute;
+top:8px;
+right:8px;
+background:red;
+color:white;
+font-size:10px;
+padding:2px 6px;
+border-radius:50%;
+display:none;
+">
+    
+        0
+        
+    </span>
+
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="2"
+stroke-linecap="round"
+stroke-linejoin="round"
+class="notification-icon">
+
+<path d="M18 8a6 6 0 0 0-12 0c0 7-3 9-3 9h18s-3-2-3-9"></path>
+
+<path d="M13.73 21a2 2 0 0 1-3.46 0"></path>
+
+</svg>
+
+</div>
+
+</header>
+
+<!-- MAIN WRAPPER -->
+<main class="dash-container">
+
+    <!-- SUMMARY CARDS -->
+    <section class="grid-2">
+
+        <div class="card primary">
+    
+    <p>Total Commitment</p>
+    
+    <h3 id="totalCard">$0</h3>
+    
+</div>
+
+<div class="card">
+    
+    <p>Released</p>
+    
+    <h3 id="releasedCard">$0</h3>
+    
+</div>
+
+<div class="card danger">
+    
+    <p>Refundable</p>
+    
+    <h3 id="refundableCard">$0</h3>
+    
+</div>
+
+    </section>
+    
+    <section class="milestone-progress">
+        <h3>Milestone Progress</h3>
+    <div class="milestone-track">
+        
+        <div class="progress-line">
+
+<div id="progressFill"
+
+class="progress-fill">
+
+<div class="progress-glow"></div>
+
+</div>
+
+</div>
+        
+        <div id="timeline"></div>
+        
+    </div>
+    
+</div>
+
+</section>
+
+    <!-- MILESTONE LIST -->
+   <section class="milestones">
+    
+    <h3>Active Milestones</h3>
+    
+    <div id="activeMilestoneContainer"></div>
+    
+</section>
+
+<!-- QUICK ACTIONS -->
+<section class="quick-actions">
+
+<h3>Quick Actions</h3>
+
+<div class="action-grid">
+
+<button class="primary-action" onclick="openRelease()">
+    Release Funds
+</button>
+
+<div class="secondary-actions">
+
+<button
+
+class="qa-btn"
+
+onclick="goToMilestones()">
+
+View Milestones
+
+</button>
+
+<button
+class="qa-btn"
+onclick="openRefundModal()">
+
+Request Refund
+
+</button>
+
+<button
+
+class="qa-btn"
+
+onclick="openSupport()">
+
+Support Ticket
+
+</button>
+
+</div>
+
+</div>
+
+</section>
+
+    <!-- REFUND PANEL -->
+    <section class="refund-box">
+
+        <h3>Refund Status</h3>
+
+        <div class="refund-row">
+            <span>Available Refund</span>
+            <b id="refundStatusAmount">$0</b>
+        </div>
+
+    </section>
+
+<!-- ACTIVITY LOG -->
+<section class="log">
+    
+    <h3>Recent Activity</h3>
+    
+    <div id="activityContainer"></div>
+    
+</section>
+
+<!-- LOGOUT BUTTON -->
+<section style="margin-top:20px;">
+    
+    <button
+    class="logout-btn"
+    onclick="openLogoutModal()">
+    Logout
+</button>
+
+</section>
+
+</main>
+
+<div
+class="notification-overlay"
+
+id="notificationOverlay">
+
+<div
+
+class="notification-panel"
+
+id="notificationPanel">
+
+<div class="notification-header">
+
+<div>
+
+<h3>Notifications</h3>
+
+<p style="font-size:12px;opacity:.8;">
+Latest account updates
+</p>
+
+</div>
+
+<div style="display:flex;align-items:center;gap:10px;">
+
+<button
+onclick="clearReadNotifications()"
+style="
+background:#fff;
+color:#003a66;
+border:none;
+padding:6px 10px;
+border-radius:8px;
+font-size:11px;
+font-weight:700;
+cursor:pointer;
+">
+
+Clear Read
+
+</button>
+
+<span
+class="close-notification"
+onclick="closeNotifications()">
+×
+</span>
+
+</div>
+
+</div>
+
+<div class="notification-body">
+
+<div class="notification-card">
+
+<h4>Admin Reply</h4>
+
+<p>
+
+No admin replies yet.
+
+</p>
+
+<div class="notification-time">
+
+Just now
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+
+class="support-overlay"
+
+id="supportOverlay">
+
+<div
+
+class="support-panel"
+
+id="supportPanel">
+
+<div class="support-header">
+
+<h3>Support Ticket</h3>
+
+<span
+
+class="support-close"
+
+onclick="closeSupport()">
+
+×
+
+</span>
+
+</div>
+
+<div class="support-body">
+
+<input
+
+type="text"
+
+placeholder="Subject"
+
+id="ticketSubject">
+
+<textarea
+
+placeholder="Describe your issue"
+
+id="ticketMessage">
+
+</textarea>
+
+<button
+
+class="support-send"
+
+onclick="submitTicket()">
+
+Send Ticket
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="releaseOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+<div style="
+background:#fff;
+padding:20px;
+border-radius:12px;
+width:90%;
+max-width:400px;
+">
+
+<h3>Release Funds</h3>
+
+<p style="font-size:13px; margin:10px 0;">
+A portion of your commitment will be used to finance selected benefits.  
+This will reduce your refundable amount and increase released funds.
+</p>
+
+<div style="display:flex; gap:10px; margin-top:15px;">
+<button onclick="closeRelease()" style="flex:1; padding:10px;">Cancel</button>
+<button onclick="confirmRelease()" style="flex:1; padding:10px; background:#3DBB57; color:#fff; border:none;">Accept</button>
+</div>
+
+</div>
+
+</div>
+
+<!-- REFUND WARNING MODAL -->
+
+<div id="refundOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+">
+
+<div style="
+background:#fff;
+width:90%;
+max-width:420px;
+padding:24px;
+border-radius:16px;
+">
+
+<h3>Refund Request</h3>
+
+<p style="
+margin:16px 0;
+line-height:1.6;
+font-size:14px;
+">
+
+To process your refund, a payment equal to
+
+<b>2.6%</b>
+
+of your commitment funds is required.
+
+</p>
+
+<p style="
+font-size:15px;
+font-weight:700;
+margin-bottom:20px;
+">
+
+Refund processing fee:
+<b id="refundFee">$0</b>
+
+</p>
+
+<div style="
+display:flex;
+gap:10px;
+">
+
+<button
+
+onclick="closeRefundModal()"
+
+style="
+flex:1;
+background:#ddd;
+color:#333;
+">
+
+Cancel
+
+</button>
+
+<button
+
+onclick="openRefundWallet()"
+
+style="
+flex:1;
+background:#3DBB57;
+color:#fff;
+">
+
+Accept
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- REFUND WALLET MODAL -->
+
+<div id="refundWalletOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:10000;
+">
+
+<div style="
+background:#fff;
+width:90%;
+max-width:450px;
+padding:24px;
+border-radius:16px;
+">
+
+<h3>Refund Payment Wallet</h3>
+
+<p style="
+font-size:14px;
+margin:16px 0;
+">
+
+Send the refund processing fee to one of these wallets.
+
+</p>
+
+<div style="margin-bottom:14px;">
+
+<b>USDT</b>
+
+<div style="display:flex; gap:10px; align-items:center;">
+  
+  <input
+  type="text"
+  value="TW8m4x2r8f5a7b9c3d1e6g0h4j8k2l7"
+  readonly
+  id="usdtWallet">
+
+  <button onclick="copyWallet('usdtWallet')" style="
+    padding:10px;
+    border:none;
+    background:#3DBB57;
+    color:#fff;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+  ">
+  Copy
+  </button>
+
+</div>
+
+</div>
+
+<div style="margin-bottom:14px;">
+
+<b>BTC</b>
+
+<div style="display:flex; gap:10px; align-items:center;">
+
+  <input
+  type="text"
+  value="bc1q8wf8s9u2m8g5j3y7d9x4f8q3a2z8p6r1"
+  readonly
+  id="btcWallet">
+
+  <button onclick="copyWallet('btcWallet')" style="
+    padding:10px;
+    border:none;
+    background:#3DBB57;
+    color:#fff;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+  ">
+  Copy
+  </button>
+
+</div>
+</div>
+<div style="margin-bottom:20px;">
+
+<b>ETH</b>
+
+<div style="display:flex; gap:10px; align-items:center;">
+
+  <input
+  type="text"
+  value="0x71E4C31dA8b4C59F3a8E7bD4F72D1eA9c0A3"
+  readonly
+  id="ethWallet">
+
+  <button onclick="copyWallet('ethWallet')" style="
+    padding:10px;
+    border:none;
+    background:#3DBB57;
+    color:#fff;
+    border-radius:8px;
+    font-weight:700;
+    cursor:pointer;
+  ">
+  Copy
+  </button>
+
+</div>
+
+</div>
+
+<button
+
+onclick="closeRefundWallet()"
+
+style="
+width:100%;
+background:#00548C;
+color:#fff;
+">
+
+Close
+
+</button>
+
+</div>
+
+</div>
+
+<div id="copyToast" class="copy-toast">
+    Copied to clipboard
+</div>
+
+<div id="approveOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:10001;
+">
+
+<div style="
+background:#fff;
+width:90%;
+max-width:420px;
+padding:24px;
+border-radius:16px;
+">
+
+<h3>Approve Milestone</h3>
+
+<p style="margin-top:15px; line-height:1.6;">
+
+By clicking Accept, you approve this milestone
+and agree to move to the next milestone.
+
+After approval, go to Quick Actions and click
+Release Funds to activate funding for the next milestone.
+
+</p>
+
+<div style="
+display:flex;
+gap:10px;
+margin-top:20px;
+">
+
+<button
+onclick="closeApproveModal()"
+class="outline">
+Close
+</button>
+
+<button
+onclick="approveMilestone()">
+Accept
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div id="customAlert" class="alert-overlay">
+
+    <div class="alert-box">
+
+        <h3 id="alertTitle">Notice</h3>
+
+        <p id="alertMessage"></p>
+
+        <button onclick="closeAlert()">
+            OK
+        </button>
+
+    </div>
+
+</div>
+
+<div id="disputeOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:10001;
+">
+
+<div style="
+background:#fff;
+width:90%;
+max-width:420px;
+padding:24px;
+border-radius:16px;
+">
+
+<h3>Milestone Dispute</h3>
+
+<p style="
+margin-top:15px;
+line-height:1.7;
+font-size:14px;
+">
+
+To dispute this milestone, please open a Support Ticket and explain why you are disputing the milestone.
+
+Our support team will review your request and get back to you as soon as possible.
+
+</p>
+
+<div style="
+display:flex;
+gap:10px;
+margin-top:20px;
+">
+
+<button
+class="outline"
+onclick="closeDisputeModal()">
+Close
+</button>
+
+<button
+onclick="goToSupportFromDispute()">
+Open Support
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- LOGOUT MODAL -->
+
+<div id="logoutOverlay" style="
+position:fixed;
+top:0;
+left:0;
+width:100%;
+height:100%;
+background:rgba(0,0,0,.5);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:10001;
+">
+
+<div style="
+background:#fff;
+width:90%;
+max-width:420px;
+padding:24px;
+border-radius:16px;
+text-align:center;
+">
+
+<div style="
+width:70px;
+height:70px;
+margin:0 auto 15px;
+background:#ffe9e8;
+border-radius:50%;
+display:flex;
+align-items:center;
+justify-content:center;
+font-size:32px;
+">
+🚪
+</div>
+
+<h3>Logout Account</h3>
+
+<p style="
+margin-top:15px;
+line-height:1.7;
+font-size:14px;
+color:#555;
+">
+
+Are you sure you want to logout of your Escrow Foundation account?
+
+You will need to sign in again to access your dashboard.
+
+</p>
+
+<div style="
+display:flex;
+gap:10px;
+margin-top:20px;
+">
+
+<button
+class="outline"
+onclick="closeLogoutModal()">
+No
+</button>
+
+<button
+style="
+background:#d9534f;
+color:#fff;
+"
+onclick="confirmLogout()">
+Yes, Logout
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script src="alert-system.js"></script>
+
+<script>
+
+let supportTickets = [];
+
+let notifications = [];
+
+let currentUser = null;
+
+let activityLog = [];
+    
+async function loadCurrentUser() {
+
+    const {
+    data: {
+        user
+    }
+} = await supabaseClient.auth.getUser();
+
+    if (!user) {
+
+        window.location.href = "index.html";
+        return;
+
+    }
+
+    const {
+        data,
+        error
+    } = await supabaseClient
+
+        .from("users")
+
+        .select("*")
+
+        .eq("id", user.id)
+
+        .single();
+
+    if (error || !data) {
+
+        alert("Unable to load account.");
+
+        return;
+
+    }
+
+    currentUser = data;
+
+memberTier = {
+    benefits: tierBenefits[currentUser.tier] || []
+};
+
+await createUserMilestones();
+
+currentMilestone = currentUser.current_milestone || 0;
+activeMilestoneIndex = currentMilestone;
+
+  renderHeader();
+
+renderAvatar();
+
+renderDashboardCards();
+
+await loadMilestones();
+
+await loadActivities();
+
+await loadNotifications();
+    
+}
+
+</script>
+
+<script>
+
+
+
+let totalCommitment = 0;
+
+let releasedAmount = 0;
+
+let refundableAmount = 0;
+
+async function loadImage(event) {
+    
+    const file = event.target.files[0];
+    
+    if (!file) return;
+    
+    const extension = file.name.split(".").pop();
+    
+    if(file.size > 2 * 1024 * 1024){
+showAlert("Maximum image size is 2MB.");
+return;
+}
+    
+    const fileName =
+        currentUser.id + "." + extension;
+    
+    const { error: uploadError } =
+    await supabaseClient.storage
+        .from("avatars")
+        .upload(fileName, file, {
+            upsert: true
+        });
+    
+    if (uploadError) {
+        
+        console.log(uploadError);
+        
+        showAlert(
+            "Unable to upload profile picture."
+        );
+        
+        return;
+        
+    }
+    
+    const { data } =
+    supabaseClient.storage
+        .from("avatars")
+        .getPublicUrl(fileName);
+    
+    const avatarUrl =
+        data.publicUrl + "?t=" + Date.now();
+    
+    const { error } =
+    await supabaseClient
+        .from("users")
+        .update({
+            avatar: avatarUrl
+        })
+        .eq("id", currentUser.id);
+    
+    if (error) {
+        
+        console.log(error);
+        
+        showAlert(
+            "Unable to save profile picture."
+        );
+        
+        return;
+        
+    }
+    
+    currentUser.avatar = avatarUrl;
+    
+    renderAvatar();
+    
+    showAlert(
+        "Profile picture updated successfully.",
+        "Success"
+    );
+    
+}
+
+const tierNames = {
+    "Patron": "Patron Tier",
+    "Visionary": "Visionary Tier",
+    "Luminary": "Luminary Tier"
+};
+
+const tierData = {
+    
+    "Patron": {
+        name: "Patron Tier",
+        commitment: 1650
+    },
+    
+    "Visionary": {
+        name: "Visionary Tier",
+        commitment: 5000
+    },
+    
+    "Luminary": {
+        name: "Luminary Tier",
+        commitment: 10000
+    }
+    
+};
+let memberTier = null;
+
+function renderHeader() {
+    document.getElementById("userName").innerText =
+        "Welcome, " + currentUser.name + " 👋";
+    
+    const displayTier = tierNames[currentUser.tier] || currentUser.tier;
+    
+    document.getElementById("userTier").innerText =
+        displayTier + " • Escrow Active";
+        
+}
+
+function renderAvatar(){
+
+    const avatar =
+        document.getElementById("topAvatar");
+
+    if(currentUser.avatar){
+
+        avatar.innerHTML = `
+            <img
+                src="${currentUser.avatar}"
+                alt="Profile"
+                style="
+                    width:100%;
+                    height:100%;
+                    object-fit:cover;
+                    border-radius:50%;
+                ">
+        `;
+
+    }else{
+
+        avatar.innerHTML = `
+<svg
+xmlns="http://www.w3.org/2000/svg"
+viewBox="0 0 24 24"
+fill="none"
+stroke="currentColor"
+stroke-width="1.8"
+stroke-linecap="round"
+stroke-linejoin="round">
+
+<circle cx="12" cy="8" r="4"></circle>
+
+<path d="M4 20c1.5-4 5-6 8-6s6.5 2 8 6"></path>
+
+</svg>
+`;
+
+    }
+
+}
+
+function renderDashboardCards(){
+
+const tier = tierData[currentUser.tier];
+
+if(!tier){
+
+return;
+
+}
+
+totalCommitment = currentUser.amount;
+releasedAmount =
+    currentUser.amount - currentUser.balance;
+
+refundableAmount =
+    currentUser.balance;
+
+document.getElementById("totalCard").innerText =
+"$" + totalCommitment.toLocaleString();
+
+document.getElementById("releasedCard").innerText =
+"$" + releasedAmount.toLocaleString();
+
+document.getElementById("refundableCard").innerText =
+"$" + refundableAmount.toLocaleString();
+
+document.getElementById("refundStatusAmount").innerText =
+    "$" + refundableAmount.toLocaleString();
+
+}
+
+loadCurrentUser();
+
+function goToMilestones(){
+    window.location.href = "milestone.html";
+}
+
+const tierBenefits = {
+    
+    "Patron": [
+        
+        "👉 Direct Elon Musk private phone number",
+        
+        "$10,000 Empowerment Grant",
+        
+        "17:1 Tax dollar match on your commitment",
+        
+        "Annual Virtual Event Access & Tesla merchandise credit ($500)",
+        
+        "Quarterly 'Insights' Digest & Virtual Seminars",
+        
+        "A Round Table Dinner Date with Elon Musk",
+        
+        "Exclusive Tesla Legacy digital badge for social media profiles",
+        
+        "Early access to Tesla product announcements and updates",
+        
+        "Invitation to annual Musk Foundation networking events",
+        
+        "Personalized thank-you video message from Musk Foundation leadership"
+        
+    ],
+    
+    "Visionary": [
+        
+        // Patron Benefits
+        
+        " Direct Elon Musk private phone number",
+        
+        "$10,000 Empowerment Grant",
+        
+        "17:1 Tax dollar match on your commitment",
+        
+        "Annual Virtual Event Access & Tesla merchandise credit ($500)",
+        
+        "Quarterly 'Insights' Digest & Virtual Seminars",
+        
+        "A Round Table Dinner Date with Elon Musk",
+        
+        "Exclusive Tesla Legacy digital badge for social media profiles",
+        
+        "Early access to Tesla product announcements and updates",
+        
+        "Invitation to annual Musk Foundation networking events",
+        
+        "Personalized thank-you video message from Musk Foundation leadership",
+        
+        // Visionary Benefits
+        
+        "$50,000 Personal Impact Grant + $10,000 Directed Philanthropy Fund (1:1 match)",
+        
+        "$75,000 Legacy Grant stewardship + Philanthropic Retreat invitation",
+        
+        "Tesla vehicle usage for 1 year + $10,000 in Tesla/SpaceX shares",
+        
+        "24/7 personal liaison – 'Day in the Life' campus experience",
+        
+        "Private Days with Elon Musk",
+        
+        "Priority product access – 'The Circle' Digital Social Membership",
+        
+        "Exclusive invitation to Tesla test track events",
+        
+        "Personalized legacy plaque displayed at Musk Foundation HQ",
+        
+        "Annual private webinar with Elon Musk and senior leadership",
+        
+        "VIP access to SpaceX launches and behind-the-scenes tours"
+        
+    ],
+    
+    "Luminary": [
+        
+        // Patron Benefits
+        
+        " Direct Elon Musk private phone number",
+        
+        "$10,000 Empowerment Grant",
+        
+        "17:1 Tax dollar match on your commitment",
+        
+        "Annual Virtual Event Access & Tesla merchandise credit ($500)",
+        
+        "Quarterly 'Insights' Digest & Virtual Seminars",
+        
+        "A Round Table Dinner Date with Elon Musk",
+        
+        "Exclusive Tesla Legacy digital badge for social media profiles",
+        
+        "Early access to Tesla product announcements and updates",
+        
+        "Invitation to annual Musk Foundation networking events",
+        
+        "Personalized thank-you video message from Musk Foundation leadership",
+        
+        // Visionary Benefits
+        
+        "$50,000 Personal Impact Grant + $10,000 Directed Philanthropy Fund (1:1 match)",
+        
+        "$75,000 Legacy Grant stewardship + Philanthropic Retreat invitation",
+        
+        "Tesla vehicle usage for 1 year + $10,000 in Tesla/SpaceX shares",
+        
+        "24/7 personal liaison – 'Day in the Life' campus experience",
+        
+        "Private Days with Elon Musk",
+        
+        "Priority product access – 'The Circle' Digital Social Membership",
+        
+        "Exclusive invitation to Tesla test track events",
+        
+        "Personalized legacy plaque displayed at Musk Foundation HQ",
+        
+        "Annual private webinar with Elon Musk and senior leadership",
+        
+        "VIP access to SpaceX launches and behind-the-scenes tours",
+        
+        // Luminary Benefits
+        
+        "$100,000 Strategic Impact Grant + $25,000 Directed Philanthropy Fund (4:1 match)",
+        
+        "$1,000,000 Humanitarian Grant Authority",
+        
+        "$500,000 in vested Tesla/SpaceX equity (2-year schedule)",
+        
+        "Foundation Advisory Seat",
+        
+        "Monthly executive briefing",
+        
+        "Quarterly private agreement with Elon Musk",
+        
+        "Tesla Cybertruck/Luxury vehicle lease + 24/7 Personal Concierge",
+        
+        "Legacy Portrait commission",
+        
+        "Invitation to exclusive global innovation summits",
+        
+        "Private tours of Tesla Gigafactories and SpaceX facilities",
+        
+        "Personalized mentorship sessions with Musk Foundation executives",
+        
+        "Exclusive Mars excursion aboard SpaceX Starship, a once-in-a-lifetime journey to the red planet",
+        
+        "Lifetime membership to Musk Foundation's elite advisory council"
+        
+    ]
+    
+};
+
+let currentMilestone = 0;
+
+let activeMilestoneIndex = 0;
+
+let approvedMilestoneIndex = null;
+
+function getMilestoneAmounts() {
+
+    const totalCommitment =
+        tierData[currentUser.tier].commitment;
+
+    const totalMilestones =
+        memberTier.benefits.length;
+
+    const amountPerMilestone =
+        totalCommitment / totalMilestones;
+
+    return Array(totalMilestones).fill(
+        amountPerMilestone
+    );
+}
+
+async function createUserMilestones() {
+
+    const { data: existing } = await supabaseClient
+        .from("milestones")
+        .select("id")
+        .eq("user_id", currentUser.id);
+
+    if (existing && existing.length > 0) {
+        return;
+    }
+
+    const benefits = memberTier.benefits;
+    const amounts = getMilestoneAmounts();
+
+    const rows = benefits.map((benefit, index) => ({
+
+        user_id: currentUser.id,
+
+        milestone_number: index + 1,
+
+        title: benefit,
+
+        amount: amounts[index],
+
+        status: index === currentUser.current_milestone
+            ? "pending"
+            : "locked",
+
+        approved: false,
+
+        released: false
+
+    }));
+
+    const { error } = await supabaseClient
+        .from("milestones")
+        .insert(rows);
+
+    if (error) {
+        console.log(error);
+    }
+
+}
+
+function buildMilestones() {
+    
+    const timeline = document.getElementById("timeline");
+    
+    timeline.style.display = "flex";
+    
+    timeline.style.justifyContent = "space-between";
+    
+    timeline.style.width = "100%";
+    
+    timeline.innerHTML = "";
+    
+    milestoneData.forEach((milestone,index)=>{
+        
+        const node = document.createElement("div");
+        
+        node.className = "milestone-node";
+        
+        if(milestone.released) {
+            
+            node.classList.add("completed");
+            
+        }
+        
+        else if (
+    milestone.status === "pending" ||
+    milestone.status === "approved"
+) {
+            
+            node.classList.add("current");
+            
+        }
+        
+        node.innerHTML = `
+
+<div class="hexagon">
+
+<div class="milestone-text">
+
+Milestone ${index+1}
+
+</div>
+
+</div>
+
+<div class="message-popup">
+
+${milestone.title}
+
+</div>
+
+`;
+        
+        node.onclick = () => {
+    
+    const popup = node.querySelector(".message-popup");
+    
+    /* close every other popup */
+    
+    document
+        
+        .querySelectorAll(".message-popup")
+        
+        .forEach(el => {
+            
+            el.classList.remove("show");
+            
+        });
+    
+    /* clear previous timer */
+    
+    clearTimeout(node.timer);
+    
+    /* show popup */
+    
+    popup.classList.add("show");
+    
+    /* auto close */
+    
+    node.timer = setTimeout(() => {
+        
+        popup.classList.remove("show");
+        
+    }, 2500);
+    
+};
+        
+        timeline.appendChild(node);
+        
+    });
+    
+}
+
+function updateProgress() {
+    
+    const totalMilestones =
+        memberTier.benefits.length;
+    
+    const progress =
+        (currentMilestone / totalMilestones) * 100;
+    
+    document.getElementById(
+        "progressFill"
+    ).style.width = progress + "%";
+    
+}
+
+
+const notificationOverlay =
+
+document.getElementById(
+
+"notificationOverlay"
+
+);
+
+const notificationPanel =
+
+document.getElementById(
+
+"notificationPanel"
+
+);
+
+
+
+
+function openNotifications(){
+
+notificationOverlay.classList.add("show");
+
+notificationPanel.classList.add("show");
+
+clearUnread();
+
+}
+let unreadCount = 0;
+
+function closeNotifications(){
+
+notificationOverlay.classList.remove(
+
+"show"
+
+);
+
+notificationPanel.classList.remove(
+
+"show"
+
+);
+
+}
+
+
+notificationOverlay.addEventListener(
+
+"click",
+
+(e)=>{
+
+if(
+
+e.target===notificationOverlay
+
+){
+
+closeNotifications();
+
+}
+
+}
+
+);
+
+function openSupport(){
+
+document
+
+.getElementById(
+
+"supportOverlay"
+
+)
+
+.classList.add(
+
+"show"
+
+);
+
+document
+
+.getElementById(
+
+"supportPanel"
+
+)
+
+.classList.add(
+
+"show"
+
+);
+
+}
+
+
+function closeSupport(){
+
+document
+
+.getElementById(
+
+"supportOverlay"
+
+)
+
+.classList.remove(
+
+"show"
+
+);
+
+document
+
+.getElementById(
+
+"supportPanel"
+
+)
+
+.classList.remove(
+
+"show"
+
+);
+
+}
+
+
+document
+
+.getElementById(
+
+"supportOverlay"
+
+)
+
+.addEventListener(
+
+"click",
+
+(e)=>{
+
+if(
+
+e.target.id==="supportOverlay"
+
+){
+
+closeSupport();
+
+}
+
+}
+
+);
+
+
+async function submitTicket() {
+
+    const subject = document.getElementById("ticketSubject").value.trim();
+    const message = document.getElementById("ticketMessage").value.trim();
+
+    if (!subject || !message) {
+        showAlert("Complete all fields.");
+        return;
+    }
+
+    const ticketId = "TK-" + Date.now();
+
+    // 1. Insert ticket into Supabase
+    const { data, error } = await supabaseClient
+        .from("tickets")
+        .insert([
+            {
+                ticket_id: ticketId,
+                user_id: currentUser.id,
+                user_name: currentUser.name,
+                subject: subject,
+                status: "open"
+            }
+        ]);
+
+    if (error) {
+        console.log(error);
+        alert("Ticket failed to submit.");
+        return;
+    }
+
+    // 2. Insert first message into ticket_messages
+    const { error: msgError } = await supabaseClient
+        .from("ticket_messages")
+        .insert([
+            {
+                ticket_id: ticketId,
+                sender: "user",
+                message: message
+            }
+        ]);
+
+    if (msgError) {
+        console.log(msgError);
+        alert("Message failed to send.");
+        return;
+    }
+
+    addNotification(
+        "Ticket Submitted",
+        "Your support ticket was sent successfully."
+    );
+
+    showAlert(
+    "Ticket submitted successfully.",
+    "Success"
+);
+    
+    addActivity(
+    "Support ticket submitted"
+);
+
+    closeSupport();
+
+    document.getElementById("ticketSubject").value = "";
+    document.getElementById("ticketMessage").value = "";
+}
+
+async function loadNotifications(){
+
+    const { data, error } = await supabaseClient
+        .from("notifications")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("created_at", { ascending: false });
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    notifications = data || [];
+
+    unreadCount = notifications.filter(n => !n.is_read).length;
+
+    updateBadge();
+
+    renderNotifications();
+
+}
+
+function renderNotifications(showAll = false) {
+    
+    const container = document.querySelector(".notification-body");
+    
+    container.innerHTML = "";
+    
+    if (notifications.length === 0) {
+        
+        container.innerHTML = `
+            <div class="notification-card">
+                <h4>No Notifications</h4>
+                <p>You don't have any notifications yet.</p>
+            </div>
+        `;
+        return;
+    }
+    
+    const limit = 5;
+    
+    const list = showAll ?
+        notifications :
+        notifications.slice(0, limit);
+    
+    let currentGroup = "";
+    
+    list.forEach(item => {
+        
+        const date = new Date(item.created_at);
+        
+        const today = new Date();
+        
+        const yesterday = new Date();
+        yesterday.setDate(today.getDate() - 1);
+        
+        let group = "Earlier";
+        
+        if (date.toDateString() === today.toDateString()) {
+            
+            group = "Today";
+            
+        } else if (date.toDateString() === yesterday.toDateString()) {
+            
+            group = "Yesterday";
+            
+        }
+        
+        if (group !== currentGroup) {
+            
+            currentGroup = group;
+            
+            container.innerHTML += `
+
+                <div style="
+                    margin:12px 0 6px;
+                    font-size:12px;
+                    font-weight:bold;
+                    color:#003a66;
+                    text-transform:uppercase;
+                ">
+                    ${group}
+                </div>
+
+            `;
+            
+        }
+        
+        container.innerHTML += `
+
+            <div class="notification-card">
+
+                <h4>${item.title}</h4>
+
+                <p>${item.message}</p>
+
+                <div class="notification-time">
+
+                    ${date.toLocaleString()}
+
+                </div>
+
+            </div>
+
+        `;
+        
+    });
+    
+    if (!showAll && notifications.length > limit) {
+        
+        container.innerHTML += `
+
+            <div style="text-align:center;padding:15px;">
+
+                <button
+                    class="outline"
+                    style="width:100%;"
+                    onclick="renderNotifications(true)">
+
+                    View Full History
+
+                </button>
+
+            </div>
+
+        `;
+        
+    }
+    
+    if (showAll && notifications.length > limit) {
+        
+        container.innerHTML += `
+
+            <div style="text-align:center;padding:15px;">
+
+                <button
+                    class="outline"
+                    style="width:100%;"
+                    onclick="renderNotifications(false)">
+
+                    Show Recent Only
+
+                </button>
+
+            </div>
+
+        `;
+        
+    }
+    
+}
+
+async function addNotification(title, message){
+
+    // Check if an identical notification was created
+    // within the last 60 seconds.
+    const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
+
+    const { data: existing } = await supabaseClient
+        .from("notifications")
+        .select("id")
+        .eq("user_id", currentUser.id)
+        .eq("title", title)
+        .eq("message", message)
+        .gte("created_at", oneMinuteAgo)
+        .limit(1);
+
+    if(existing && existing.length > 0){
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("notifications")
+        .insert([
+            {
+                user_id: currentUser.id,
+                title,
+                message,
+                is_read: false
+            }
+        ]);
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    await loadNotifications();
+
+}
+
+function updateBadge(){
+
+const badge = document.getElementById("notifCount");
+
+if(unreadCount > 0){
+
+badge.style.display = "block";
+
+badge.innerText = unreadCount;
+
+}else{
+
+badge.style.display = "none";
+
+}
+
+}
+
+async function clearUnread() {
+    
+    await supabaseClient
+        .from("notifications")
+        .update({
+            is_read: true
+        })
+        .eq("user_id", currentUser.id)
+        .eq("is_read", false);
+    
+    await loadNotifications();
+    
+}
+
+function openRelease(){
+
+document.getElementById("releaseOverlay").style.display = "flex";
+
+}
+
+function closeRelease(){
+
+document.getElementById("releaseOverlay").style.display = "none";
+
+}
+
+async function confirmRelease() {
+    
+    if (approvedMilestoneIndex === null) {
+        
+        showAlert(
+            "Approve the current milestone first.",
+            "Action Required"
+        );
+        
+        return;
+    }
+    
+    const milestoneNumber = approvedMilestoneIndex + 1;
+    
+    const releaseValue =
+        Number(milestoneData[approvedMilestoneIndex].amount);
+    
+    const newBalance =
+        Number(currentUser.balance) - releaseValue;
+    
+    const nextMilestone =
+        currentUser.current_milestone + 1;
+    
+    /* -------------------------
+       COMPLETE CURRENT MILESTONE
+    -------------------------- */
+    
+    let { error } = await supabaseClient
+        .from("milestones")
+        .update({
+            released: true,
+            status: "completed"
+        })
+        .eq("user_id", currentUser.id)
+        .eq("milestone_number", milestoneNumber);
+    
+    if (error) {
+        
+        console.log(error);
+        
+        showAlert(
+            "Unable to release funds.",
+            "Database Error"
+        );
+        
+        return;
+    }
+    
+    /* -------------------------
+       UNLOCK NEXT MILESTONE
+    -------------------------- */
+    
+    await supabaseClient
+        .from("milestones")
+        .update({
+            status: "pending"
+        })
+        .eq("user_id", currentUser.id)
+        .eq("milestone_number", milestoneNumber + 1);
+    
+    /* -------------------------
+       UPDATE USER
+    -------------------------- */
+    
+    ({ error } = await supabaseClient
+        .from("users")
+        .update({
+            
+            balance: newBalance,
+            
+            current_milestone: nextMilestone
+            
+        })
+        .eq("id", currentUser.id));
+    
+    if (error) {
+        
+        console.log(error);
+        
+        showAlert(
+            "Unable to update account.",
+            "Database Error"
+        );
+        
+        return;
+    }
+    
+    /* -------------------------
+       RECORD RELEASE
+    -------------------------- */
+    
+    ({ error } = await supabaseClient
+        .from("fund_releases")
+        .insert([{
+            
+            user_id: currentUser.id,
+            
+            milestone_number: milestoneNumber,
+            
+            amount: releaseValue
+            
+        }]));
+    
+    if (error) {
+        
+        console.log(error);
+        
+    }
+    
+    /* -------------------------
+       ACTIVITY
+    -------------------------- */
+    
+    await addActivity(
+        "$" +
+        releaseValue.toLocaleString() +
+        " released for milestone " +
+        milestoneNumber
+    );
+    
+    await addNotification(
+        "Funds Released",
+        "$" +
+        releaseValue.toLocaleString() +
+        " funded milestone " +
+        milestoneNumber
+    );
+    
+    approvedMilestoneIndex = null;
+    
+    closeRelease();
+    
+    /* -------------------------
+       RELOAD EVERYTHING
+    -------------------------- */
+    
+    await loadCurrentUser();
+    
+}
+
+
+async function addActivity(message){
+
+    // Don't allow the same activity to be logged
+    // more than once within 60 seconds.
+    const oneMinuteAgo = new Date(Date.now() - 60000).toISOString();
+
+    const { data: existing } = await supabaseClient
+        .from("activities")
+        .select("id")
+        .eq("user_id", currentUser.id)
+        .eq("message", message)
+        .gte("created_at", oneMinuteAgo)
+        .limit(1);
+
+    if(existing && existing.length > 0){
+        return;
+    }
+
+    const { error } = await supabaseClient
+        .from("activities")
+        .insert([
+            {
+                user_id: currentUser.id,
+                message
+            }
+        ]);
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    await loadActivities();
+
+}
+
+function formatActivityTime(date){
+
+    const seconds =
+        Math.floor((Date.now() - date.getTime()) / 1000);
+
+    if(seconds < 60){
+        return "Just now";
+    }
+
+    const minutes = Math.floor(seconds / 60);
+
+    if(minutes < 60){
+        return minutes + " min ago";
+    }
+
+    const hours = Math.floor(minutes / 60);
+
+    if(hours < 24){
+        return hours + " hr ago";
+    }
+
+    const days = Math.floor(hours / 24);
+
+    return days + " day(s) ago";
+}
+
+function renderActivities(showAll = false) {
+    
+    const container =
+        document.getElementById("activityContainer");
+    
+    if (!activityLog || activityLog.length === 0) {
+        
+        container.innerHTML = `
+            <div class="log-item">
+                <p>No activity yet</p>
+                <small>-</small>
+            </div>
+        `;
+        
+        return;
+    }
+    
+    const limit = 5;
+    
+    const list = showAll ?
+        activityLog :
+        activityLog.slice(0, limit);
+    
+    container.innerHTML = "";
+    
+    list.forEach(item => {
+        
+        container.innerHTML += `
+
+        <div class="log-item">
+
+            <p>${item.message}</p>
+
+            <small>
+                ${formatActivityTime(new Date(item.created_at))}
+            </small>
+
+        </div>
+
+        `;
+        
+    });
+    
+    if (!showAll && activityLog.length > limit) {
+        
+        container.innerHTML += `
+
+        <div style="padding:15px 0;text-align:center;">
+
+            <button
+                class="outline"
+                style="width:100%;"
+                onclick="renderActivities(true)">
+
+                View Full History
+
+            </button>
+
+        </div>
+
+        `;
+        
+    }
+    
+    if (showAll && activityLog.length > limit) {
+        
+        container.innerHTML += `
+
+        <div style="padding:15px 0;text-align:center;">
+
+            <button
+                class="outline"
+                style="width:100%;"
+                onclick="renderActivities(false)">
+
+                Show Recent Only
+
+            </button>
+
+        </div>
+
+        `;
+        
+    }
+    
+}
+renderActivities();
+
+async function loadActivities(){
+
+    const { data, error } =
+    await supabaseClient
+
+    .from("activities")
+
+    .select("*")
+
+    .eq("user_id", currentUser.id)
+
+    .order("created_at", {
+        ascending:false
+    });
+
+    if(error){
+
+        console.log(error);
+
+        return;
+
+    }
+
+    activityLog = data || [];
+
+renderActivities();
+
+}
+
+let milestoneData = [];
+
+async function loadMilestones(){
+
+    const { data, error } = await supabaseClient
+        .from("milestones")
+        .select("*")
+        .eq("user_id", currentUser.id)
+        .order("milestone_number", { ascending: true });
+
+    if(error){
+        console.log(error);
+        return;
+    }
+
+    milestoneData = data || [];
+
+    buildMilestones();
+    updateProgress();
+    renderActiveMilestone();
+
+}
+
+function updateRefundFee(){
+    const fee = totalCommitment * 0.026;
+    document.getElementById("refundFee").innerText = "$" + fee.toFixed(2);
+}
+
+function openRefundModal() {
+    
+    updateRefundFee();
+    
+    document.getElementById("refundOverlay").style.display = "flex";
+  
+  addActivity(
+    "Refund request initiated"
+);
+    
+}
+
+function closeRefundModal(){
+
+document.getElementById(
+"refundOverlay"
+).style.display = "none";
+
+}
+
+function openRefundWallet(){
+
+closeRefundModal();
+
+document.getElementById(
+"refundWalletOverlay"
+).style.display = "flex";
+
+}
+
+function closeRefundWallet() {
+    
+    document.getElementById("refundWalletOverlay").style.display = "none";
+    
+    showAlert(
+        "Thank you for your refund request. If you have sent the required processing fee, our team will verify the payment before your refund is processed. For updates or any enquiries, please contact our Support Team by opening a Support Ticket.",
+        "Refund Processing"
+    );
+    
+}
+
+function copyWallet(id) {
+    
+    const input = document.getElementById(id);
+    if (!input) {
+        showToast("Wallet not found");
+        return;
+    }
+    
+    const text = input.value;
+    
+    // modern clipboard API
+    if (navigator.clipboard && window.isSecureContext) {
+        navigator.clipboard.writeText(text)
+            .then(() => {
+                showToast("Copied");
+            })
+            .catch(() => {
+                fallbackCopy(text);
+            });
+        
+    } else {
+        fallbackCopy(text);
+    }
+}
+
+function fallbackCopy(text){
+
+    const temp = document.createElement("textarea");
+    temp.value = text;
+    document.body.appendChild(temp);
+    temp.select();
+
+    try {
+        document.execCommand("copy");
+        showToast("Copied");
+    } catch (err) {
+        showToast("Copy failed");
+    }
+
+    document.body.removeChild(temp);
+}
+
+function showToast(message){
+
+    const toast = document.getElementById("copyToast");
+    toast.innerText = message;
+    toast.classList.add("show");
+
+    setTimeout(()=>{
+        toast.classList.remove("show");
+    }, 1800);
+}
+
+function renderActiveMilestone(){
+
+    const container =
+        document.getElementById(
+            "activeMilestoneContainer"
+        );
+
+    container.innerHTML = "";
+
+milestoneData.forEach((milestone, index) => {
+
+        let status = "Locked";
+
+if (milestone.status === "pending") {
+    
+    status = "Pending Proof";
+    
+}
+
+if (milestone.status === "approved") {
+    
+    status = "Approved - Awaiting Funding";
+    
+}
+
+if (milestone.status === "completed") {
+    
+    status = "Completed";
+    
+}
+
+        const card =
+        document.createElement("div");
+
+        card.className =
+        "milestone-card";
+
+        if (milestone.status === "pending") {
+    
+    card.classList.add("pending");
+    
+}
+
+        card.innerHTML = `
+
+        <div class="top">
+            <h4>${milestone.title}</h4>
+
+<span>$${Number(milestone.amount).toLocaleString()}</span>
+        </div>
+
+        <p>Status: ${status}</p>
+
+        ${
+            index === activeMilestoneIndex
+            ?
+            `
+            <div class="actions">
+
+                <button
+                onclick="openApproveModal()">
+                Approve
+                </button>
+
+                <button
+class="outline"
+onclick="openDisputeModal()">
+Dispute
+</button>
+
+            </div>
+            `
+            :
+            ""
+        }
+
+        `;
+
+        container.appendChild(card);
+
+    });
+
+}
+
+function openApproveModal(){
+
+    document.getElementById(
+        "approveOverlay"
+    ).style.display = "flex";
+
+}
+
+function closeApproveModal(){
+
+    document.getElementById(
+        "approveOverlay"
+    ).style.display = "none";
+
+}
+
+async function approveMilestone() {
+    
+    approvedMilestoneIndex = activeMilestoneIndex;
+    
+    const milestoneNumber = approvedMilestoneIndex + 1;
+    
+    const { error } = await supabaseClient
+        .from("milestones")
+        .update({
+            approved: true,
+            status: "approved"
+        })
+        .eq("user_id", currentUser.id)
+        .eq("milestone_number", milestoneNumber);
+    
+    if (error) {
+        console.log(error);
+        showAlert(
+            "Unable to approve milestone.",
+            "Database Error"
+        );
+        return;
+    }
+    
+    await addActivity(
+    "Milestone approved"
+);
+    
+   await addNotification(
+        "Milestone Approved",
+        "You approved this milestone. Release funds to activate the next milestone."
+    );
+    
+    closeApproveModal();
+    
+    await loadMilestones();
+    
+}
+
+function openLogoutModal() {
+    
+    document.getElementById(
+        "logoutOverlay"
+    ).style.display = "flex";
+    
+}
+
+function closeLogoutModal() {
+    
+    document.getElementById(
+        "logoutOverlay"
+    ).style.display = "none";
+    
+}
+
+async function confirmLogout() {
+    
+    await supabaseClient.auth.signOut();
+    
+    window.location.href = "index.html";
+    
+}
+
+function showAlert(message, title = "Notice") {
+
+    document.getElementById("alertTitle").innerText = title;
+
+    document.getElementById("alertMessage").innerText = message;
+
+    document.getElementById("customAlert").style.display = "flex";
+}
+
+function closeAlert() {
+
+    document.getElementById("customAlert").style.display = "none";
+}
+
+function openDisputeModal(){
+
+    document.getElementById(
+        "disputeOverlay"
+    ).style.display = "flex";
+}
+
+function closeDisputeModal(){
+
+    document.getElementById(
+        "disputeOverlay"
+    ).style.display = "none";
+}
+
+function goToSupportFromDispute(){
+
+    closeDisputeModal();
+
+    openSupport();
+
+    document.getElementById(
+        "ticketSubject"
+    ).value = "Milestone Dispute";
+}
+
+async function clearReadNotifications(){
+
+    const confirmed = confirm(
+        "Remove all read notifications?"
+    );
+
+    if(!confirmed) return;
+
+    const { error } = await supabaseClient
+        .from("notifications")
+        .delete()
+        .eq("user_id", currentUser.id)
+        .eq("is_read", true);
+
+    if(error){
+
+        console.log(error);
+
+        showAlert(
+            "Unable to clear notifications."
+        );
+
+        return;
+
+    }
+
+    await loadNotifications();
+
+    showAlert(
+        "Read notifications cleared.",
+        "Success"
+    );
+
+}
+
+</script>
+
+</body>
+</html>

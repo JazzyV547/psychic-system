@@ -1,0 +1,2687 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Escrow Foundation</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<link rel="stylesheet" href="main.css">
+
+<link rel="stylesheet" href="alert-system.css">
+
+<style>
+    
+  /* =========================
+   HERO (CONNECTED BACKGROUND)
+========================= */
+
+.hero{
+    position:relative;
+    background:linear-gradient(180deg, #004f86 0%, #003a66 100%);
+    color:#fff;
+
+    padding:100px 16px 50px 16px;
+    
+}
+
+/* IMPORTANT: keeps navbar + hero visually merged */
+.hero-content{
+    max-width:320px;
+    margin:auto;
+}
+
+/* HEADLINE LIKE ESCROW */
+.hero h1{
+    font-size:42px;
+    font-weight:800;
+    line-height:1.15;
+    margin-top:50px;
+    margin-bottom:26px;
+}
+
+.top-bar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    
+    height: 64px;
+    
+    display: flex;
+    align-items: center;
+    
+    padding: 0 16px;
+    
+    background: linear-gradient(
+    180deg,
+    #01466F 0%,
+    #01426A 100%
+);
+
+
+    z-index: 1000;
+}
+
+.chevron-btn {
+    background: none;
+    border: none;
+    color: #fff;
+    cursor: pointer;
+    
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    padding: 0;
+}
+
+.chevron {
+    width: 18px;
+    height: 18px;
+    transition: .25s ease;
+}
+
+.chevron-btn.active .chevron {
+    transform: rotate(180deg);
+}
+
+.logo-wrap{
+    display:flex;
+    align-items:center;
+
+    height:64px;
+
+    margin-left:1px; /* controls closeness to chevron */
+}
+
+.logo-img {
+    width: 200px;
+    height: auto;
+    filter: brightness(0) invert(1);
+}
+
+nav.nav-menu{
+    position:fixed;
+    top:64px; /* match header height */
+    left:16px;
+
+    width:240px;
+
+    background:#fff;
+    border-radius:12px;
+
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+
+    display:none;
+    flex-direction:column;
+
+    overflow:hidden;
+    z-index:2000;
+}
+
+.menu-btn{
+    width:42px;
+    height:42px;
+    border:none;
+    background:rgba(255,255,255,0.15);
+    color:#fff;
+    font-size:22px;
+    border-radius:10px;
+    cursor:pointer;
+}
+
+.nav-menu a{
+    padding:14px 16px;
+    text-decoration:none;
+    color:#222;
+    font-weight:600;
+    border-bottom:1px solid #eee;
+}
+
+.nav-menu a:last-child{
+    border-bottom:none;
+}
+
+.nav-menu.active{
+    display:flex;
+}
+/* SUBTEXT */
+.hero p{
+    font-size:15px;
+    line-height:1.5;
+    opacity:0.9;
+    margin-bottom:18px;
+}
+
+
+/* =========================
+   JOIN CARD (ESCROW FORM)
+========================= */
+
+.join-card{
+    background:#fff;
+    padding:22px;
+    border-radius:16px;
+    box-shadow:0 10px 25px rgba(0,0,0,.15);
+    margin-top:20px;
+}
+
+.join-card h2{
+    margin-bottom:18px;
+    color:#222;
+}
+
+.join-card select{
+    width:100%;
+    height:52px;
+    margin-bottom:14px;
+    border:1px solid #e5e5e5;
+    border-radius:10px;
+    padding:0 14px;
+    font-size:15px;
+}
+
+.join-card button{
+    width:100%;
+    height:52px;
+    border:none;
+    border-radius:10px;
+    background:#3DBB57;
+    color:#fff;
+    font-size:16px;
+    font-weight:700;
+    cursor:pointer;
+}
+
+/* =========================
+   TRUST STATS
+========================= */
+
+.analytics-section {
+    background: #fff;
+    border-radius: 16px;
+    padding: 10px;
+    box-shadow: 0 8px 20px rgba(0, 0, 0, .05);
+    max-width: 680px;
+    margin: auto;
+}
+
+/* =========================
+   HEADER
+========================= */
+
+.section-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 12px;
+}
+
+.section-header h2 {
+    font-size: 18px;
+    font-weight: 700;
+}
+
+/* =========================
+   GRID
+========================= */
+
+.dashboard-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+/* =========================
+   CARD
+========================= */
+
+.card {
+    background: #fff;
+    border: 1px solid #eef0f5;
+    border-radius: 14px;
+    padding: 7px;
+}
+
+.card:hover {
+    transform: translateY(-2px);
+}
+
+.card h4 {
+    color: #7b8190;
+    font-size: 12px;
+    margin-bottom: 6px;
+}
+
+.card h2 {
+    font-size: 16px;
+    margin-bottom: 5px;
+}
+
+.card h3 {
+    font-size: 13px;
+}
+
+.green {
+    color: #16a34a;
+    font-size: 12px;
+    font-weight: 600;
+}
+
+/* =========================
+   KPI CARDS
+========================= */
+
+.kpi-card {
+    min-height: 100px;
+}
+
+/* =========================
+   DONUT
+========================= */
+
+.production-card,
+.growth-card {
+    min-height: 100px;
+}
+
+.production-card canvas {
+    max-height: 65px;
+}
+
+/* =========================
+   GROWTH
+========================= */
+
+.badge {
+    display: inline-block;
+    background: #dcfce7;
+    color: #16a34a;
+    padding: 5px 10px;
+    border-radius: 20px;
+    font-size: 12px;
+    font-weight: 600;
+    margin-top: 5px;
+}
+
+/* =========================
+   EMPLOYEE CHART
+========================= */
+
+.employee-card {
+    grid-column: span 2;
+    padding: 10px;
+}
+
+.employee-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.year-tag {
+    font-size: 11px;
+    font-weight: 600;
+    padding: 4px 8px;
+    background: #f4f6fb;
+    border-radius: 8px;
+}
+
+.employee-card canvas {
+    height: 85px !important;
+}
+
+/* =========================
+   QUICK STATS
+========================= */
+
+.quick-stats {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 8px;
+}
+
+.stat-box {
+    background: #f8f9fc;
+    border-radius: 10px;
+    padding: 8px 4px;
+    text-align: center;
+    overflow: hidden;
+}
+
+.stat-box h5 {
+    color: #777;
+    font-size: 10px;
+    margin-bottom: 4px;
+    line-height: 1.2;
+}
+
+.stat-box p {
+    font-size: 10px;
+    font-weight: 700;
+}
+
+/* =========================
+   CHART HEIGHTS
+========================= */
+
+#perfChart,
+#effChart {
+    max-height: 45px;
+}
+
+#growthChart {
+    max-height: 50px;
+}
+
+/* =========================
+   MOBILE
+========================= */
+
+@media(max-width:600px) {
+    
+    .analytics-section {
+        padding: 10px;
+    }
+    
+    .dashboard-grid {
+        grid-template-columns: 1fr 1fr;
+        gap: 8px;
+    }
+    
+    .quick-stats {
+        grid-template-columns: repeat(3, 1fr);
+    }
+    
+    .employee-card {
+        grid-column: span 2;
+    }
+    
+    .card {
+        padding: 8px;
+    }
+    
+    .card h2 {
+        font-size: 14px;
+    }
+    
+    .stat-box p {
+        font-size: 12px;
+    }
+    
+    .employee-card canvas {
+        height: 100px !important;
+    }
+    
+}
+
+.bottom-grid {
+    grid-column: span 2;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.activity-box,
+.summary-box {
+    background: #f8f9fc;
+    border-radius: 12px;
+    padding: 10px;
+}
+
+.activity-box h3,
+.summary-box h3 {
+    font-size: 13px;
+    margin-bottom: 10px;
+}
+
+.activity-item {
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    padding: 8px 0;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.activity-item:last-child {
+    border: none;
+}
+
+.activity-item span {
+    font-size: 12px;
+    font-weight: 600;
+}
+
+.activity-item small {
+    font-size: 11px;
+    color: #777;
+}
+
+.summary-item {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    font-size: 12px;
+}
+
+.summary-item:last-child {
+    margin-bottom: 0;
+}
+
+/* =========================
+   SECTIONS
+========================= */
+
+.section{
+    padding:50px 20px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.section h2{
+    margin-bottom:20px;
+}
+
+/* =========================
+   STEP CARDS
+========================= */
+
+.step-card{
+    background:#fff;
+    padding:18px;
+    border-radius:10px;
+    margin-bottom:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+    font-weight:600;
+}
+
+/* =========================
+   TIER CARDS
+========================= */
+
+.tier-card{
+    background:#fff;
+    border-radius:10px;
+    padding:20px;
+    margin-bottom:16px;
+    box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+
+.tier-card h3{
+    margin-bottom:10px;
+}
+
+.tier-card span{
+    color:var(--primary-blue);
+    font-weight:700;
+    font-size:22px;
+}
+
+/* =========================
+PROOF SECTION
+========================= */
+
+.proof-section{
+    padding:60px 16px;
+    max-width:1200px;
+    margin:auto;
+}
+
+.proof-header{
+    text-align:center;
+    margin-bottom:24px;
+}
+
+.proof-header h2{
+    font-size:26px;
+    margin-bottom:6px;
+}
+
+.proof-header p{
+    font-size:14px;
+    color:#666;
+}
+
+/* =========================
+CAROUSEL
+========================= */
+
+.proof-carousel{
+    overflow:hidden;
+}
+
+.proof-track{
+    display:flex;
+    gap:16px;
+    width:max-content;
+    animation:scroll 90s linear infinite;
+}
+
+.proof-img{
+    width:80px;
+    height:80px;
+    border-radius:50%;
+    object-fit:cover;
+    display:block;
+    margin:0 auto 12px auto;
+    border:3px solid #eef2f7;
+    box-shadow:0 4px 12px rgba(0,0,0,.08);
+}
+
+
+/* auto scroll */
+@keyframes scroll{
+    from{
+        transform:translateX(0);
+    }
+    to{
+        transform:translateX(-50%);
+    }
+}
+
+/* =========================
+CARD (WHITE MODERN STYLE)
+========================= */
+
+.proof-card{
+    width:260px;
+    background:#fff;
+    border-radius:16px;
+    padding:20px;
+    box-shadow:0 10px 30px rgba(0,0,0,.08);
+    flex-shrink:0;
+    text-align:center;
+    border:1px solid #eee;
+}
+
+/* =========================
+AVATAR (Facebook-style)
+========================= */
+
+.avatar{
+    width:64px;
+    height:64px;
+    border-radius:50%;
+    background:#e5e5e5;
+    margin:0 auto 10px auto;
+    position:relative;
+}
+
+/* simple user icon */
+.avatar::before{
+    content:"";
+    width:22px;
+    height:22px;
+    border-radius:50%;
+    background:#bdbdbd;
+    position:absolute;
+    top:14px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+.avatar::after{
+    content:"";
+    width:36px;
+    height:18px;
+    border-radius:18px 18px 0 0;
+    background:#bdbdbd;
+    position:absolute;
+    bottom:10px;
+    left:50%;
+    transform:translateX(-50%);
+}
+
+/* =========================
+BADGE
+========================= */
+
+.badge{
+    display:inline-block;
+    background:#e8f7ec;
+    color:#1f7a34;
+    padding:5px 10px;
+    border-radius:999px;
+    font-size:12px;
+    font-weight:700;
+    margin-bottom:10px;
+}
+
+/* =========================
+TEXT STYLES
+========================= */
+
+.proof-card h3{
+    font-size:16px;
+    margin-bottom:6px;
+}
+
+.status{
+    font-size:13px;
+    color:#444;
+    margin-bottom:10px;
+}
+
+.amount{
+    font-size:18px;
+    font-weight:800;
+    color:#00548C;
+    margin-bottom:10px;
+}
+
+.meta{
+    display:flex;
+    justify-content:space-between;
+    font-size:12px;
+    color:#777;
+    border-top:1px solid #eee;
+    padding-top:10px;
+}
+
+/* =========================
+   FOOTER
+========================= */
+
+footer{
+    background:#001f36;
+    color:#fff;
+    text-align:center;
+    padding:40px 20px;
+}
+
+footer h3{
+    margin-bottom:10px;
+}
+
+footer p{
+    margin-bottom:8px;
+}
+
+/* =========================
+   RESPONSIVE
+========================= */
+
+@media (max-width:768px){
+    .hero p{font-size:20px;}
+}
+
+@media (max-width:480px){
+    .navbar{padding:14px 16px;}
+    .hero{padding:45px 16px;}
+    .section{padding:40px 16px;}
+    .hero h1{font-size:30px;}
+}  
+  
+.help-section {
+    padding: 50px 20px;
+    max-width: 900px;
+    margin: auto;
+}
+
+.help-header {
+    text-align: center;
+    margin-bottom: 25px;
+}
+
+.help-header h2 {
+    margin-bottom: 10px;
+}
+
+.help-header p {
+    color: #666;
+    margin-bottom: 20px;
+}
+
+.help-header input {
+    width: 100%;
+    max-width: 500px;
+    height: 50px;
+    padding: 0 15px;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+}
+
+.faq-categories {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 10px;
+    margin-bottom: 20px;
+}
+
+.faq-filter {
+    border: none;
+    background: #f4f4f4;
+    padding: 10px 15px;
+    border-radius: 8px;
+    cursor: pointer;
+}
+
+.faq-filter.active {
+    background: #00548C;
+    color: #fff;
+}
+
+.faq-item {
+    background: #fff;
+    border-radius: 12px;
+    margin-bottom: 12px;
+    overflow: hidden;
+    border: 1px solid #eee;
+}
+
+.faq-question {
+    padding: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.faq-answer {
+    display: none;
+    padding: 0 16px 16px;
+    color: #555;
+    line-height: 1.6;
+}
+
+.faq-item.active .faq-answer {
+    display: block;
+}
+
+.help-actions {
+    display: flex;
+    gap: 10px;
+    margin-top: 25px;
+}
+
+.help-actions button {
+    flex: 1;
+    height: 50px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    font-weight: 600;
+}
+
+#contactSupport {
+    background: #00548C;
+    color: #fff;
+}
+
+#createTicket {
+    background: #3DBB57;
+    color: #fff;
+}
+
+#noResults {
+    text-align: center;
+    color: #888;
+    margin-top: 20px;
+}
+
+.help-footer{
+    margin-top:30px;
+    text-align:center;
+    background:#f8f9fc;
+    padding:25px;
+    border-radius:14px;
+}
+
+.help-footer h3{
+    margin-bottom:10px;
+}
+
+.help-footer p{
+    color:#666;
+    line-height:1.7;
+    margin-bottom:18px;
+}
+
+.help-footer button{
+    background:#00548C;
+    color:#fff;
+    border:none;
+    height:50px;
+    padding:0 30px;
+    border-radius:10px;
+    font-weight:600;
+    cursor:pointer;
+}
+
+/* =========================
+   SUPPORT PANEL
+========================= */
+
+.support-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, .5);
+    opacity: 0;
+    visibility: hidden;
+    transition: .3s;
+    z-index: 3000;
+}
+
+.support-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.support-panel {
+    position: fixed;
+    top: 0;
+    right: -100%;
+    width: 100%;
+    max-width: 420px;
+    height: 100vh;
+    
+    background: #fff;
+    
+    transition: .35s ease;
+    
+    z-index: 3001;
+    
+    overflow-y: auto;
+}
+
+.support-panel.active {
+    right: 0;
+}
+
+.support-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    
+    padding: 20px;
+    
+    border-bottom: 1px solid #eee;
+}
+
+.support-header h2 {
+    font-size: 20px;
+}
+
+.support-header button {
+    border: none;
+    background: none;
+    font-size: 28px;
+    cursor: pointer;
+}
+
+.support-content {
+    padding: 20px;
+}
+
+.support-content p {
+    margin-bottom: 16px;
+    line-height: 1.7;
+    color: #555;
+}
+
+.contact-box {
+    background: #f8f9fc;
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 20px;
+}
+
+.contact-title {
+    font-weight: 700;
+    margin-bottom: 6px;
+}
+
+.contact-text {
+    color: #666;
+    margin-bottom: 12px;
+}
+
+.contact-btn {
+    display: inline-block;
+    background: #004f86;
+    color: #fff;
+    text-decoration: none;
+    padding: 10px 16px;
+    border-radius: 10px;
+}
+
+.ticket-card {
+    background: #f8f9fc;
+    padding: 16px;
+    border-radius: 12px;
+}
+
+.ticket-card h3 {
+    margin-bottom: 15px;
+}
+
+.ticket-card label {
+    display: block;
+    margin-bottom: 6px;
+    margin-top: 12px;
+    font-weight: 600;
+}
+
+.ticket-card input,
+.ticket-card textarea {
+    width: 100%;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
+}
+
+.ticket-btn {
+    width: 100%;
+    margin-top: 15px;
+    height: 48px;
+    border: none;
+    border-radius: 10px;
+    background: #3DBB57;
+    color: #fff;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.ticket-note {
+    margin-top: 12px;
+    font-size: 13px;
+    color: #777;
+}
+
+/* =========================
+ESCROW FLOW SECTION
+========================= */
+
+.escrow-flow-section{
+    padding:60px 16px;
+}
+
+.flow-card{
+
+    background:linear-gradient(
+        135deg,
+        #00548C 0%,
+        #00416D 100%
+    );
+
+    color:white;
+
+    border-radius:24px;
+
+    padding:30px 24px;
+
+    max-width:900px;
+
+    margin:auto;
+
+    position:relative;
+
+    overflow:hidden;
+}
+
+/* Background circles */
+
+.flow-card::before{
+    content:"";
+
+    position:absolute;
+
+    width:260px;
+    height:260px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.06);
+
+    top:-80px;
+    right:-80px;
+}
+
+.flow-card::after{
+    content:"";
+
+    position:absolute;
+
+    width:180px;
+    height:180px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.04);
+
+    top:-40px;
+    right:-20px;
+}
+
+.flow-icon{
+
+    width:120px;
+    height:120px;
+
+    border-radius:50%;
+
+    background:rgba(255,255,255,.15);
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    font-size:55px;
+
+    margin-bottom:30px;
+}
+
+.flow-card h2{
+
+    font-size:34px;
+
+    line-height:1.25;
+
+    margin-bottom:30px;
+
+    max-width:500px;
+}
+
+.flow-steps{
+    display:flex;
+    flex-direction:column;
+    gap:18px;
+}
+
+.flow-step{
+
+    font-size:18px;
+
+    display:flex;
+    align-items:center;
+
+    gap:12px;
+
+    opacity:.85;
+}
+
+.flow-step.completed{
+    color:#9ee6b2;
+}
+
+.flow-step.active{
+
+    color:white;
+
+    font-weight:700;
+
+    font-size:20px;
+}
+
+@media(max-width:768px){
+
+    .flow-card{
+        padding:25px 20px;
+    }
+
+    .flow-card h2{
+        font-size:28px;
+    }
+
+    .flow-step{
+        font-size:15px;
+    }
+
+    .flow-icon{
+        width:100px;
+        height:100px;
+        font-size:45px;
+    }
+}
+
+/* =========================
+TRUST & RECOGNITION
+========================= */
+
+.trust-section{
+
+    background:#081018;
+
+    color:white;
+
+    padding:70px 20px;
+}
+
+.trust-container{
+
+    max-width:1000px;
+
+    margin:auto;
+}
+
+.trust-stats{
+
+    display:flex;
+
+    flex-direction:column;
+
+    gap:25px;
+
+    margin-bottom:35px;
+}
+
+.trust-stat h2{
+
+    font-size:42px;
+
+    font-weight:800;
+
+    margin-bottom:6px;
+}
+
+.trust-stat p{
+
+    color:#cfd6de;
+
+    font-size:16px;
+}
+
+.trust-award{
+
+    margin-bottom:40px;
+}
+
+.trust-award h3{
+
+    font-size:28px;
+
+    margin-bottom:12px;
+}
+
+.trust-award p{
+
+    color:#cfd6de;
+
+    line-height:1.7;
+}
+
+.trust-logos{
+
+    display:grid;
+
+    grid-template-columns:repeat(4,1fr);
+
+    gap:15px;
+
+    margin-bottom:50px;
+}
+
+.trust-logos {
+    
+    display: grid;
+    
+    grid-template-columns: repeat(2, 1fr);
+    
+    gap: 15px;
+    
+    margin-bottom: 50px;
+}
+
+.trust-logo {
+    
+    background: #fff;
+    
+    border-radius: 14px;
+    
+    padding: 15px;
+    
+    height: 100px;
+    
+    display: flex;
+    
+    align-items: center;
+    
+    justify-content: center;
+}
+
+.trust-logo img {
+    
+    max-width: 100%;
+    
+    max-height: 60px;
+    
+    object-fit: contain;
+}
+
+.trust-headline{
+
+    text-align:center;
+
+    font-size:44px;
+
+    font-weight:800;
+
+    line-height:1.2;
+
+    max-width:800px;
+
+    margin:auto;
+}
+
+@media(max-width:768px){
+
+    .trust-headline{
+
+        font-size:32px;
+    }
+
+    .trust-stat h2{
+
+        font-size:34px;
+    }
+}
+  
+</style>
+
+</head>
+<body>
+
+<!-- =========================
+HERO
+========================= -->
+
+<section class="hero">
+<!-- LOGO + NAV BUTTON -->
+<header class="top-bar">
+
+    <button class="chevron-btn" id="menuToggle">
+        <svg class="chevron" viewBox="0 0 24 24">
+            <path d="M6 9l6 6 6-6"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2.5"
+                  stroke-linecap="round"
+                  stroke-linejoin="round"/>
+        </svg>
+    </button>
+
+<div class="logo-wrap">
+    <img
+        src="https://upload.wikimedia.org/wikipedia/commons/8/84/Escrow_com_logo.png"
+        class="logo-img"
+        alt="Escrow Logo">
+</div>
+
+</header>
+     
+<!-- NAV MENU -->
+<nav class="nav-menu" id="navMenu">
+    
+    <a href="index.html">Home</a>
+    
+    <a href="signup.html">Sign Up</a>
+    
+    <a href="login.html">Login</a>
+    
+    <a href="dashboard.html">Dashboard</a>
+    
+    <a href="#" id="supportBtn">Support</a>
+    
+</nav>
+
+    <div class="hero-content">
+
+        <h1>
+            Your Commitment Is Fully Protected
+        </h1>
+
+        <p>
+            Deposit your membership commitment into secure escrow.
+            Funds remain locked until benefits are delivered
+            and approved by you.
+        </p>
+
+       <div class="join-card">
+    
+    <h2>
+        Join Foundation
+    </h2>
+    
+    <select id="tier">
+    
+        <option value="">
+            Select Membership Tier
+        </option>
+        
+        <option value="Patron">
+            Patron - $1,650
+        </option>
+        
+        <option value="Visionary">
+            Visionary - $5,000
+        </option>
+        
+        <option value="Luminary">
+            Luminary - $10,000
+        </option>
+        
+    </select>
+    
+    <select id="stablecoin">
+    
+        <option value="">
+            Select Stablecoin
+        </option>
+        
+        <option value="BTC">
+    ₿ Bitcoin (BTC)
+</option>
+
+<option value="ETH">
+    ◆ Ethereum (ETH)
+</option>
+
+<option value="USDT">
+    ₮ TON (USDT)
+</option>
+
+<option value="SOL">
+    ◎ Solana (SOL)
+</option>
+        
+    </select>
+    
+    <button id="joinBtn" class="btn btn-primary">
+        Get Started Now
+    </button>
+    
+</div>
+    </div>
+
+</section>
+
+<section class="proof-section">
+    
+    <div class="proof-header">
+        <h2>Live Proof Beneficiary Dashboard</h2>
+        <p>Real-time verified milestone completions across the platform.</p>
+    </div>
+    
+    <div class="proof-carousel">
+        <div class="proof-track" id="proofTrack"></div>
+    </div>
+    
+</div>
+
+</section>
+
+<!-- =========================
+TRUST STATS
+========================= -->
+
+<div class="section-header">
+    <h2>Analytics Overview</h2>
+</div>
+
+<div class="dashboard-grid">
+    
+    <!-- QUICK STATS -->
+    <div class="quick-stats">
+        
+        <div class="stat-box">
+            <h5>Escrow Holdings</h5>
+            <p>$11.2M</p>
+        </div>
+        
+        <div class="stat-box">
+            <h5>Active Members</h5>
+            <p>2,841</p>
+        </div>
+        
+        <div class="stat-box">
+            <h5>Released Funds</h5>
+            <p>$4.3M</p>
+        </div>
+        
+    </div>
+    
+    <!-- PERFORMANCE -->
+    <div class="card kpi-card">
+        <h4>Performance</h4>
+        <h2>82%</h2>
+        <span class="green">+12.5%</span>
+        <canvas id="perfChart"></canvas>
+    </div>
+    
+    <!-- EFFICIENCY -->
+    <div class="card kpi-card">
+        <h4>Efficiency</h4>
+        <h2>93%</h2>
+        <span class="green">+18.3%</span>
+        <canvas id="effChart"></canvas>
+    </div>
+    
+    <!-- PRODUCTION -->
+    <div class="card production-card">
+        <h4>Escrow Allocation</h4>
+        <canvas id="donutChart"></canvas>
+    </div>
+    
+    <!-- GROWTH -->
+    <div class="card growth-card">
+        <h4>Refundable Balance</h4>
+        <span class="badge">$6.3M</span>
+        <canvas id="growthChart"></canvas>
+    </div>
+    
+    <!-- EMPLOYEE PERFORMANCE -->
+    <div class="card employee-card">
+        
+        <div class="employee-header">
+            <h3>Escrow Flow Activity</h3>
+            <span class="year-tag">2026</span>
+        </div>
+        
+        <canvas id="employeeChart"></canvas>
+        
+    </div>
+    
+</div>
+
+<div class="bottom-grid">
+    
+    <div class="activity-box">
+        
+        <h3>Recent Milestones</h3>
+        
+        <div class="activity-item">
+            <span>✓ Grant Released</span>
+            <small>$2,500 • 2 mins ago</small>
+        </div>
+        
+        <div class="activity-item">
+            <span>✓ Vehicle Program</span>
+            <small>VIN Verified • 12 mins ago</small>
+        </div>
+        
+        <div class="activity-item">
+            <span>✓ Retreat Access</span>
+            <small>Issued • 25 mins ago</small>
+        </div>
+        
+    </div>
+    
+    <div class="summary-box">
+        
+        <h3>Escrow Summary</h3>
+        
+        <div class="summary-item">
+            <span>Released</span>
+            <b>$4.3M</b>
+        </div>
+        
+        <div class="summary-item">
+            <span>Pending</span>
+            <b>$6.9M</b>
+        </div>
+        
+        <div class="summary-item">
+            <span>Control Rate</span>
+            <b>100%</b>
+        </div>
+        
+    </div>
+    
+</div>
+
+</section>
+
+<!-- =========================
+PROTECTION
+========================= -->
+
+<section class="section">
+
+    <h2>
+        Why Members Trust Us
+    </h2>
+
+    <div class="card">
+
+        <h3>
+            Protected Escrow
+        </h3>
+
+        <p>
+            Funds stay secured until milestones are completed.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>
+            Member Controlled
+        </h3>
+
+        <p>
+            Every release requires your approval.
+        </p>
+
+    </div>
+
+    <div class="card">
+
+        <h3>
+            Refund Protection
+        </h3>
+
+        <p>
+            Undelivered milestones remain refundable.
+        </p>
+
+    </div>
+
+</section>
+
+<!-- =========================
+HOW IT WORKS
+========================= -->
+
+<section class="section">
+
+    <h2>
+        How It Works
+    </h2>
+
+    <div class="step-card">1. Deposit Commitment</div>
+
+    <div class="step-card">2. Funds Locked In Escrow</div>
+
+    <div class="step-card">3. Benefits Delivered</div>
+
+    <div class="step-card">4. Member Approval</div>
+
+    <div class="step-card">5. Funds Released</div>
+
+</section>
+
+<!-- =========================
+ESCROW PROTECTION FLOW
+========================= -->
+
+<section class="escrow-flow-section">
+
+    <div class="flow-card">
+
+        <div class="flow-icon">
+            🛡️
+        </div>
+
+        <h2>
+            Membership Commitments Protected Every Step
+        </h2>
+
+        <div class="flow-steps">
+
+            <div class="flow-step completed">
+                ✓ Member selects membership tier
+            </div>
+
+            <div class="flow-step completed">
+                ✓ Commitment deposited into escrow
+            </div>
+
+            <div class="flow-step">
+                ✓ Benefits and milestones delivered
+            </div>
+
+            <div class="flow-step">
+                ✓ Member reviews and approves
+            </div>
+
+            <div class="flow-step active">
+                ✓ Escrow releases approved funds
+            </div>
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+TRUST & RECOGNITION
+========================= -->
+
+<section class="trust-section">
+
+    <div class="trust-container">
+
+        <div class="trust-stats">
+
+            <div class="trust-stat">
+                <h2>$7,500,000,000+</h2>
+                <p>Protected Escrow Holdings</p>
+            </div>
+
+            <div class="trust-stat">
+                <h2>2,841,000+</h2>
+                <p>Active Members</p>
+            </div>
+
+        </div>
+
+        <div class="trust-award">
+
+            <h3>Trusted Escrow Protection</h3>
+
+            <p>
+                Built around transparency,
+                milestone verification,
+                refund protection and
+                member-controlled releases.
+            </p>
+
+        </div>
+
+        <div class="trust-logos">
+
+    <div class="trust-logo">
+        <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRrbEbSCKVpcJqb9yCZk28wzTwQMsh6Jdp0Ig&s"
+        alt="Accredited Business">
+    </div>
+
+    <div class="trust-logo">
+        <img
+        src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Better_Business_Bureau.svg"
+        alt="BBB">
+    </div>
+
+    <div class="trust-logo">
+        <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTmavq3T2ECyk_tTbb80JEri3_GUBnOVsg1G4UQcS1vQy6mbvp4zqgeE7QW&s=10"
+        alt="Award">
+    </div>
+
+    <div class="trust-logo">
+        <img
+        src="https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSK39fwjdeYgmiyQeQB3U4FDesfyofP31ezkA&s"
+        alt="US Department">
+    </div>
+
+    <div class="trust-logo">
+        <img
+        src="https://upload.wikimedia.org/wikipedia/commons/thumb/0/0f/Seal_of_California.svg/500px-Seal_of_California.svg.png?_=20190518172403"
+        alt="California Seal">
+    </div>
+
+</div>
+
+        <div class="trust-headline">
+
+            Over $11.2 million protected through
+            member-controlled escrow commitments
+
+        </div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+MEMBERSHIP TIERS
+========================= -->
+
+<section class="section">
+
+    <h2>
+        Membership Tiers
+    </h2>
+
+    <div class="tier-card">
+
+        <h3>Patron</h3>
+
+        <span>$1,650</span>
+
+    </div>
+
+    <div class="tier-card">
+
+        <h3>Visionary</h3>
+
+        <span>$5,000</span>
+
+    </div>
+
+    <div class="tier-card">
+
+        <h3>Luminary</h3>
+
+        <span>$10,000</span>
+
+    </div>
+
+</section>
+
+<section class="help-section">
+
+    <div class="help-header">
+
+        <h2>Help Center</h2>
+
+        <p>
+            Find answers to common questions about escrow protection,
+            membership commitments, refunds and account security.
+        </p>
+
+        <input
+            type="text"
+            id="faqSearch"
+            placeholder="Search help articles..."
+        >
+
+    </div>
+
+    <div class="faq-categories">
+
+        <button class="faq-filter active" data-category="all">
+            All
+        </button>
+
+        <button class="faq-filter" data-category="escrow">
+            Escrow
+        </button>
+
+        <button class="faq-filter" data-category="refunds">
+            Refunds
+        </button>
+
+        <button class="faq-filter" data-category="membership">
+            Membership
+        </button>
+
+        <button class="faq-filter" data-category="security">
+            Security
+        </button>
+
+    </div>
+
+    <div id="faqContainer">
+
+        <div class="faq-item" data-category="escrow">
+
+            <div class="faq-question">
+                How does escrow protection work?
+                <span>+</span>
+            </div>
+
+            <div class="faq-answer">
+                Your commitment remains locked until approved milestones
+                are completed and confirmed.
+            </div>
+
+        </div>
+
+        <div class="faq-item" data-category="refunds">
+
+            <div class="faq-question">
+                Can I receive a refund?
+                <span>+</span>
+            </div>
+
+            <div class="faq-answer">
+                Yes. Undelivered milestones remain refundable according
+                to platform rules.
+            </div>
+
+        </div>
+
+        <div class="faq-item" data-category="membership">
+
+            <div class="faq-question">
+                How do membership tiers work?
+                <span>+</span>
+            </div>
+
+            <div class="faq-answer">
+                Membership tiers determine commitment levels and
+                available benefits.
+            </div>
+
+        </div>
+
+        <div class="faq-item" data-category="security">
+
+            <div class="faq-question">
+                Are stablecoin deposits secure?
+                <span>+</span>
+            </div>
+
+            <div class="faq-answer">
+                Deposits are secured through escrow controls and verified
+                release procedures.
+            </div>
+
+        </div>
+
+        <div class="faq-item" data-category="escrow">
+
+            <div class="faq-question">
+                Who approves fund releases?
+                <span>+</span>
+            </div>
+
+            <div class="faq-answer">
+                Members maintain approval rights before funds are released.
+            </div>
+
+        </div>
+
+    </div>
+
+    <div id="noResults" style="display:none;">
+        No matching help articles found.
+    </div>
+
+    <div class="help-actions">
+
+        <div class="help-footer">
+
+    <h3>Still Need Assistance?</h3>
+
+    <p>
+        If you couldn't find the answer you're looking for, our support
+        team is available to help with membership questions, escrow
+        protection inquiries, refund requests, account issues, and
+        general platform assistance. We aim to respond as quickly as
+        possible during active support hours.
+    </p>
+
+    <button id="contactSupport">
+        Contact Support
+    </button>
+
+</div>
+
+    </div>
+
+</section>
+
+<!-- =========================
+FOOTER
+========================= -->
+
+<footer>
+
+    <h3>
+        Escrow Foundation
+    </h3>
+
+    <p>
+        Transparent membership commitments protected through escrow.
+    </p>
+
+    <p>
+        © 2026 Escrow Foundation
+    </p>
+
+</footer>
+
+<!-- SUPPORT OVERLAY -->
+<div class="support-overlay" id="supportOverlay"></div>
+
+<!-- SUPPORT PANEL -->
+<div class="support-panel" id="supportPanel">
+    <div class="support-header">
+        <h2>Support Center</h2>
+        <button id="closeSupport">&times;</button>
+    </div>
+
+    <div class="support-content">
+        <p>
+            Welcome to Escrow Foundation Support.
+            Our mission is to provide transparent,
+            secure, and reliable assistance for every
+            member using our escrow protection system.
+        </p>
+
+        <p>
+            Whether you need help understanding a
+            membership tier, tracking escrow funds,
+            reviewing milestone approvals, resolving
+            disputes, or verifying transactions,
+            our support team is available to assist.
+        </p>
+
+        <p>
+            We recommend submitting a support request
+            whenever possible so that your request
+            can be tracked and resolved efficiently.
+            Most requests receive an initial response
+            during active support hours.
+        </p>
+
+        <div class="contact-box">
+            <div class="contact-title">
+                Contact Support
+            </div>
+
+            <div class="contact-text">
+                Need help with your account or escrow funding?
+            </div>
+
+            <a href="https://contact-support-fqv0.onrender.com"
+               class="contact-btn"
+               target="_blank"
+               rel="noopener noreferrer">
+                Contact Us
+            </a>
+        </div>
+    </div>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+<script src="alert-system.js"></script>
+<script> 
+const menuToggle = document.getElementById("menuToggle");
+const navMenu = document.getElementById("navMenu");
+
+menuToggle.addEventListener("click", () => {
+    
+    menuToggle.classList.toggle("active");
+    
+    navMenu.classList.toggle("active");
+    
+});
+
+
+    /* PERFORMANCE */
+
+new Chart(document.getElementById("perfChart"), {
+    type: "bar",
+    data: {
+        labels: ["1", "2", "3", "4", "5"],
+        datasets: [{
+            data: [20, 40, 30, 60, 80],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { display: false },
+            y: { display: false }
+        }
+    }
+});
+
+/* EFFICIENCY */
+
+new Chart(document.getElementById("effChart"), {
+    type: "bar",
+    data: {
+        labels: ["1", "2", "3", "4", "5"],
+        datasets: [{
+            data: [35, 50, 60, 70, 95],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { display: false },
+            y: { display: false }
+        }
+    }
+});
+
+/* PRODUCTION */
+
+new Chart(document.getElementById("donutChart"), {
+    type: "doughnut",
+    data: {
+        labels: ["Released Funds(74%)", "Pending Funds(26%)"],
+        datasets: [{
+            data: [74, 26],
+            borderWidth: 0
+        }]
+    },
+    options: {
+        cutout: "75%",
+        plugins: {
+            legend: { display: false }
+        }
+    }
+});
+
+/* EMPLOYEE PERFORMANCE */
+
+new Chart(document.getElementById("employeeChart"), {
+    type: "line",
+    data: {
+        labels: ["Jan", "Feb", "Mar", "Apr", "May", "Jun"],
+        datasets: [{
+            data: [120, 160, 140, 210, 180, 240],
+            fill: true,
+            tension: .4
+        }]
+    },
+    options: {
+        plugins: {
+            legend: { display: false }
+        }
+    }
+});
+
+/* GROWTH */
+
+new Chart(document.getElementById("growthChart"), {
+    type: "bar",
+    data: {
+        labels: ["1", "2", "3", "4", "5"],
+        datasets: [{
+            data: [15, 25, 40, 70, 90],
+            borderRadius: 8
+        }]
+    },
+    options: {
+        plugins: { legend: { display: false } },
+        scales: {
+            x: { display: false },
+            y: { display: false }
+        }
+    }
+});
+
+const supportBtn =
+document.getElementById("supportBtn");
+
+const supportPanel =
+document.getElementById("supportPanel");
+
+const supportOverlay =
+document.getElementById("supportOverlay");
+
+const closeSupport =
+document.getElementById("closeSupport");
+
+supportBtn.addEventListener("click", function(e){
+
+    e.preventDefault();
+
+    supportPanel.classList.add("active");
+    supportOverlay.classList.add("active");
+
+});
+
+closeSupport.addEventListener("click", function(){
+
+    supportPanel.classList.remove("active");
+    supportOverlay.classList.remove("active");
+
+});
+
+supportOverlay.addEventListener("click", function(){
+
+    supportPanel.classList.remove("active");
+    supportOverlay.classList.remove("active");
+
+});
+
+/* FAQ ACCORDION */
+
+document.querySelectorAll(".faq-question").forEach(question => {
+
+    question.addEventListener("click", () => {
+
+        const item = question.parentElement;
+
+        item.classList.toggle("active");
+
+        const icon = question.querySelector("span");
+
+        icon.textContent =
+            item.classList.contains("active")
+            ? "−"
+            : "+";
+
+    });
+
+});
+
+
+/* FAQ SEARCH */
+
+const searchInput = document.getElementById("faqSearch");
+const faqItems = document.querySelectorAll(".faq-item");
+const noResults = document.getElementById("noResults");
+
+searchInput.addEventListener("input", () => {
+    
+    const searchTerm =
+        searchInput.value.trim().toLowerCase();
+    
+    let found = false;
+    
+    faqItems.forEach(item => {
+        
+        const question =
+            item.querySelector(".faq-question")
+            .textContent
+            .toLowerCase();
+        
+        const answer =
+            item.querySelector(".faq-answer")
+            .textContent
+            .toLowerCase();
+        
+        if (
+            question.includes(searchTerm) ||
+            answer.includes(searchTerm)
+        ) {
+            item.style.display = "block";
+            found = true;
+        }
+        else {
+            item.style.display = "none";
+        }
+        
+    });
+    
+    noResults.style.display =
+        found ? "none" : "block";
+    
+});
+
+
+/* CATEGORY FILTER */
+
+const filters =
+document.querySelectorAll(".faq-filter");
+
+filters.forEach(button => {
+
+    button.addEventListener("click", () => {
+
+        filters.forEach(btn =>
+            btn.classList.remove("active")
+        );
+
+        button.classList.add("active");
+
+        const category =
+        button.dataset.category;
+
+        faqItems.forEach(item => {
+
+            if(
+                category === "all" ||
+                item.dataset.category === category
+            ){
+                item.style.display = "block";
+            }
+            else{
+                item.style.display = "none";
+            }
+
+        });
+
+    });
+
+});
+
+
+/* CONTACT SUPPORT */
+
+document
+.getElementById("contactSupport")
+.addEventListener("click", () => {
+
+    window.location.href =
+    "https://contact-support-fqv0.onrender.com";
+
+});
+
+
+
+const tierSelect = document.getElementById("tier");
+
+const coinSelect = document.getElementById("stablecoin");
+
+document.getElementById("joinBtn").addEventListener("click", () => {
+    
+    const tier = document.getElementById("tier").value;
+    const coin = document.getElementById("stablecoin").value;
+    
+    if (!tier || !coin) {
+        alert("Please select both membership tier and stablecoin.");
+        return;
+    }
+    
+    let amount = 0;
+    
+    switch (tier) {
+        case "Patron":
+            amount = 1650;
+            break;
+            
+        case "Visionary":
+            amount = 5000;
+            break;
+            
+        case "Luminary":
+            amount = 10000;
+            break;
+    }
+    
+    localStorage.setItem("pendingJoin", JSON.stringify({
+        tier,
+        coin,
+        amount,
+        selectedAt: new Date().toISOString()
+    }));
+    
+    window.location.href = "login.html";
+    
+});
+
+const proofData = [
+    
+    {
+        tier: "Patron",
+        title: "Empowerment Grant",
+        status: "Grant Delivered",
+        amount: "$10,600",
+        meta: "Grant Authorized"
+    },
+    
+    {
+        tier: "Patron",
+        title: "Executive Communication Access",
+        status: "Portal Activated",
+        amount: "Activated",
+        meta: "Access Enabled"
+    },
+    
+    {
+        tier: "Patron",
+        title: "Tesla Merchandise Credit",
+        status: "Credit Issued",
+        amount: "$1,500",
+        meta: "Reward Released"
+    },
+    
+    {
+        tier: "Patron",
+        title: "Quarterly Insights Digest",
+        status: "Delivered",
+        amount: "Available",
+        meta: "Member Access"
+    },
+    
+    {
+        tier: "Patron",
+        title: "Virtual Salon Invitation",
+        status: "Invitation Issued",
+        amount: "Confirmed",
+        meta: "Access Granted"
+    },
+    
+    {
+        tier: "Patron",
+        title: "Round Table Dinner Experience",
+        status: "Confirmed",
+        amount: "Scheduled",
+        meta: "Premium Reward"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Personal Impact Grant",
+        status: "Grant Delivered",
+        amount: "$50,000",
+        meta: "Impact Released"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Directed Philanthropy Fund",
+        status: "Approved",
+        amount: "$10,000",
+        meta: "Funds Assigned"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Legacy Grant Stewardship",
+        status: "Verified",
+        amount: "$200,000",
+        meta: "Milestone Complete"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Philanthropic Retreat Access",
+        status: "Invitation Issued",
+        amount: "Confirmed",
+        meta: "Access Granted"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "24/7 Personal Liaison",
+        status: "Activated",
+        amount: "Live",
+        meta: "Support Enabled"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Campus Experience Day",
+        status: "Scheduled",
+        amount: "Reserved",
+        meta: "Experience Ready"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Private Days Experience",
+        status: "Confirmed",
+        amount: "Reserved",
+        meta: "Premium Reward"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Tesla Vehicle Lease",
+        status: "Approved",
+        amount: "1 Year",
+        meta: "Vehicle Reserved"
+    },
+    
+    {
+        tier: "Visionary",
+        title: "Tesla/SpaceX Shares",
+        status: "Allocated",
+        amount: "$10,000",
+        meta: "Asset Granted"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Strategic Impact Grant",
+        status: "Approved",
+        amount: "$100,000",
+        meta: "Grant Released"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Directed Philanthropy Fund",
+        status: "Verified",
+        amount: "$25,000",
+        meta: "4:1 Match Active"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Humanitarian Grant Authority",
+        status: "Council Approved",
+        amount: "$1,000,000",
+        meta: "Authority Granted"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Foundation Advisory Seat",
+        status: "Activated",
+        amount: "Confirmed",
+        meta: "Seat Assigned"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Tesla/SpaceX Equity",
+        status: "Vesting Active",
+        amount: "$500,000",
+        meta: "2-Year Schedule"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Monthly Executive Briefing",
+        status: "Activated",
+        amount: "Monthly",
+        meta: "Access Granted"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Private Agreement with Elon Musk",
+        status: "Confirmed",
+        amount: "Quarterly",
+        meta: "Reserved"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Cybertruck / Luxury Vehicle Lease",
+        status: "Approved",
+        amount: "Reserved",
+        meta: "Vehicle Assigned"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "24/7 Personal Concierge",
+        status: "Active",
+        amount: "Enabled",
+        meta: "Service Activated"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Legacy Portrait Commission",
+        status: "Commissioned",
+        amount: "Confirmed",
+        meta: "Reward Granted"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Global Innovation Summits",
+        status: "Invitation Issued",
+        amount: "Confirmed",
+        meta: "Access Granted"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Tesla Gigafactory & SpaceX Tours",
+        status: "Scheduled",
+        amount: "Private",
+        meta: "Tour Reserved"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Executive Mentorship Sessions",
+        status: "Activated",
+        amount: "Personalized",
+        meta: "Sessions Available"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Mars Excursion aboard Starship",
+        status: "Reserved",
+        amount: "Once-in-a-Lifetime",
+        meta: "Journey Confirmed"
+    },
+    
+    {
+        tier: "Luminary",
+        title: "Elite Advisory Council Membership",
+        status: "Lifetime Active",
+        amount: "Lifetime",
+        meta: "Council Seat Granted"
+    }
+    
+];
+
+const images = [
+    "assets/user1.jpg",
+    "assets/user2.jpg",
+    "assets/user3.jpg",
+    "assets/user4.jpg",
+    "assets/user5.jpg",
+    "assets/user6.jpg",
+    "assets/user7.jpg",
+    "assets/user8.jpg",
+    "assets/user9.jpg",
+    "assets/user10.jpg",
+    "assets/user11.jpg",
+    "assets/user12.jpg",
+    "assets/user13.jpg",
+    "assets/user14.jpg",
+    "assets/user15.jpg",
+    "assets/user16.jpg",
+    "assets/user17.jpg",
+    "assets/user18.jpg",
+    "assets/user19.jpg",
+    "assets/user20.jpg",
+    "assets/user21.jpg",
+    "assets/user22.jpg",
+    "assets/user23.jpg",
+    "assets/user24.jpg",
+    "assets/user25.jpg",
+    "assets/user26.jpg",
+    "assets/user27.jpg",
+    "assets/user28.jpg",
+    "assets/user29.jpg",
+    "assets/user30.jpg",
+    "assets/user31.jpg",
+    "assets/user32.jpg",
+    "assets/user33.jpg",
+    "assets/user34.jpg",
+    "assets/user35.jpg",
+    "assets/user36.jpg",
+    "assets/user37.jpg",
+    "assets/user38.jpg",
+    "assets/user39.jpg",
+    "assets/user40.jpg",
+    "assets/user41.jpg",
+    "assets/user42.jpg",
+    "assets/user43.jpg",
+    "assets/user44.jpg",
+    "assets/user45.jpg",
+    "assets/user46.jpg",
+    "assets/user47.jpg",
+    "assets/user48.jpg",
+    "assets/user49.jpg",
+    "assets/user50.jpg",
+     "assets/user51.jpg",
+     "assets/user52.jpg",
+      "assets/user53.jpg",
+       "assets/user54.jpg",
+        "assets/user55.jpg",
+        "assets/user56.jpg",
+         "assets/user57.jpg",
+          "assets/user58.jpg",
+          "assets/user59.jpg", 
+           "assets/user60.jpg"
+];
+
+// stable shuffle (NOT random chaos)
+function shuffleStable(array, seed = 7) {
+  let arr = [...array];
+  let m = arr.length;
+
+  while (m) {
+    let i = Math.floor((seed * 9301 + 49297) % 233280 / 233280 * m--);
+    [arr[m], arr[i]] = [arr[i], arr[m]];
+    seed++;
+  }
+
+  return arr;
+}
+
+// realistic time generator
+function getTimeString() {
+
+  const options = [
+    "Just now",
+    `${Math.floor(Math.random() * 8) + 2} mins ago`,
+    `${Math.floor(Math.random() * 15) + 10} mins ago`,
+    `${Math.floor(Math.random() * 20) + 25} mins ago`,
+    `${Math.floor(Math.random() * 25) + 45} mins ago`,
+    `${Math.floor(Math.random() * 2) + 1} hour ago`,
+    `${Math.floor(Math.random() * 3) + 2} hours ago`
+  ];
+
+  return options[Math.floor(Math.random() * options.length)];
+
+}
+
+// generate 60 cards (stable mix)
+function generateCards() {
+  const track = document.getElementById("proofTrack");
+  track.innerHTML = "";
+
+  const mixedImages = shuffleStable(images, Date.now() % 100);
+
+  const totalCards = 60;
+
+  for (let i = 0; i < totalCards; i++) {
+
+    const data = proofData[i % proofData.length];
+
+const img = mixedImages[i % mixedImages.length];
+
+const timeString = getTimeString();
+
+const card = document.createElement("div");
+    card.className = "proof-card";
+
+    card.innerHTML = `
+
+<img src="${img}" class="proof-img" alt="Beneficiary">
+
+<div class="badge">VERIFIED</div>
+
+<h3>${data.title}:</h3>
+
+<p class="status">${data.status}</p>
+
+<div class="amount">${data.amount}</div>
+
+<div class="meta">
+
+  <span>${data.tier}</span>
+
+  <span>${timeString}</span>
+
+</div>
+
+`;
+ track.appendChild(card);
+  }
+}
+ 
+// STABLE ROTATION (not chaotic refresh)
+generateCards();
+
+// only reshuffle every 60 seconds (controlled update)
+setInterval(() => {
+  generateCards();
+}, 60000);
+
+
+</script>
+</body>
+</html>

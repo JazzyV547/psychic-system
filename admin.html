@@ -1,0 +1,1919 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+<title>Admin Dashboard | Escrow Foundation</title>
+
+<link rel="stylesheet" href="alert-system.css">
+
+<style>
+  
+  *{
+    margin:0;
+    padding:0;
+    box-sizing:border-box;
+    font-family:Arial, sans-serif;
+}
+
+body{
+    background:#f5f7fb;
+    color:#222;
+}
+
+/* HEADER */
+.admin-header{
+    background:#003a66;
+    color:#fff;
+    padding:20px;
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+}
+
+.admin-header p{
+    font-size:12px;
+    opacity:0.8;
+}
+
+.badge.admin{
+    background:#ff4d4d;
+    padding:6px 12px;
+    border-radius:20px;
+    font-size:12px;
+    font-weight:700;
+}
+
+/* MAIN */
+.admin-container{
+    padding:16px;
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+}
+
+/* STATS */
+.grid-stats {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 10px;
+}
+
+.stat-card{
+    background:#fff;
+    padding:14px;
+    border-radius:12px;
+    box-shadow:0 6px 18px rgba(0,0,0,.05);
+}
+
+.stat-card p{
+    font-size:12px;
+    color:#777;
+}
+
+.stat-card h3{
+    margin-top:6px;
+}
+
+.stat-card.primary{
+    background:#00548C;
+    color:#fff;
+}
+
+.stat-card.danger{
+    border:1px solid #ffdddd;
+}
+
+/* SECTIONS */
+.card-section{
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+}
+
+/* TABLE */
+.table .user-card {
+    padding: 14px 0;
+    border-bottom: 1px solid #eee;
+}
+
+.table .user-info {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap: 10px;
+    margin-bottom: 12px;
+    font-size: 13px;
+    align-items: center;
+}
+
+.table .header{
+    font-weight:700;
+}
+
+.active{
+    color:#3DBB57;
+    font-weight:700;
+}
+
+.pending{
+    color:#ff9800;
+}
+
+.user-actions {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+}
+
+.user-actions button {
+    flex: 1;
+    min-width: 80px;
+    border: none;
+    padding: 10px;
+    border-radius: 8px;
+    color: #fff;
+    font-size: 12px;
+    font-weight: 700;
+    cursor: pointer;
+}
+
+.btn-view {
+    background: #00548C;
+}
+
+.btn-approve {
+    background: #3DBB57;
+}
+
+.btn-freeze {
+    background: #ff9800;
+}
+
+.btn-unfreeze {
+    background: #673ab7;
+}
+
+.btn-delete {
+    background: #ff4d4d;
+}
+
+/* CONTRACT */
+.contract-card{
+    padding:12px;
+    border:1px solid #eee;
+    border-radius:10px;
+    margin-bottom:10px;
+}
+
+.contract-card .top{
+    display:flex;
+    justify-content:space-between;
+}
+
+/* MILESTONE CONTROL */
+.milestone-admin .item{
+    display:flex;
+    justify-content:space-between;
+    align-items:center;
+    padding:10px 0;
+    border-bottom:1px solid #eee;
+}
+
+.milestone-admin button{
+    background:#3DBB57;
+    border:none;
+    color:#fff;
+    padding:8px 12px;
+    border-radius:8px;
+}
+
+.milestone-admin .danger{
+    background:#ff4d4d;
+}
+
+/* DISPUTE */
+.dispute{
+    padding:12px;
+    border:1px solid #eee;
+    border-radius:10px;
+}
+
+.actions{
+    display:flex;
+    gap:8px;
+    margin-top:10px;
+}
+
+.actions button{
+    flex:1;
+    padding:8px;
+    border:none;
+    border-radius:8px;
+    font-weight:700;
+}
+
+.approve{background:#3DBB57;color:#fff;}
+.reject{background:#ff4d4d;color:#fff;}
+.freeze{background:#00548C;color:#fff;}
+
+/* FINANCE */
+.finance-row{
+    display:flex;
+    justify-content:space-between;
+    padding:8px 0;
+    border-bottom:1px solid #eee;
+}
+
+/* RISK */
+.risk-item{
+    padding:10px;
+    background:#fff3d6;
+    margin-bottom:8px;
+    border-radius:8px;
+}
+
+/* QUICK ACTIONS */
+.quick-actions{
+    background:#fff;
+    padding:16px;
+    border-radius:12px;
+}
+
+.quick-actions .grid{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:10px;
+}
+
+.quick-actions button{
+    padding:12px;
+    border:none;
+    border-radius:10px;
+    background:#00548C;
+    color:#fff;
+    font-weight:700;
+}
+
+/* RESPONSIVE */
+@media(min-width:768px){
+
+    .admin-container{
+        max-width:1100px;
+        margin:auto;
+    }
+
+    .grid-stats {
+    grid-template-columns: repeat(4, 1fr);
+}
+
+    .quick-actions .grid{
+        grid-template-columns:repeat(4,1fr);
+    }
+}
+  
+  /* =========================
+   SUPPORT INBOX
+========================= */
+
+.support-inbox{
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.ticket-card{
+
+background:#fff;
+
+border:1px solid #e8edf3;
+
+border-radius:14px;
+
+padding:16px;
+
+box-shadow:
+
+0 4px 12px rgba(0,0,0,.05);
+
+}
+
+.ticket-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:12px;
+
+}
+
+.ticket-top h4{
+
+font-size:15px;
+
+}
+
+.ticket-top p{
+
+font-size:12px;
+
+color:#777;
+
+margin-top:3px;
+
+}
+
+.ticket-status{
+
+background:#fff3d6;
+
+color:#a86e00;
+
+padding:6px 10px;
+
+border-radius:20px;
+
+font-size:11px;
+
+font-weight:700;
+
+}
+
+.ticket-subject{
+
+font-weight:700;
+
+margin-bottom:8px;
+
+}
+
+.ticket-message{
+
+font-size:13px;
+
+line-height:1.6;
+
+color:#666;
+
+margin-bottom:14px;
+
+}
+
+.ticket-buttons {
+    
+    display: flex;
+    
+    gap: 10px;
+    
+    margin-top: 14px;
+    
+}
+
+.reply-btn {
+    
+    flex: 1;
+    
+    height: 44px;
+    
+    border: none;
+    
+    border-radius: 12px;
+    
+    font-weight: 700;
+    
+    font-size: 13px;
+    
+    cursor: pointer;
+    
+    transition: .25s ease;
+    
+    display: flex;
+    
+    justify-content: center;
+    
+    align-items: center;
+    
+}
+
+.reply-btn:hover {
+    
+    transform: translateY(-2px);
+    
+}
+
+.reply-action {
+    
+    background: #3DBB57;
+    
+    color: #fff;
+    
+}
+
+.view-action {
+    
+    background: #00548C;
+    
+    color: #fff;
+    
+}
+  
+  /* =========================
+   REPLY MODAL
+========================= */
+
+.reply-overlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.45);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.3s ease;
+
+z-index:1000;
+
+}
+
+.reply-overlay.show{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+.reply-modal{
+
+width:90%;
+
+max-width:420px;
+
+background:#fff;
+
+padding:24px;
+
+border-radius:18px;
+
+}
+
+.reply-modal textarea{
+
+width:100%;
+
+height:140px;
+
+padding:14px;
+
+margin:18px 0;
+
+border:1px solid #ddd;
+
+border-radius:10px;
+
+resize:none;
+
+outline:none;
+
+}
+
+.reply-actions{
+
+display:flex;
+
+gap:10px;
+
+}
+
+.cancel-btn{
+
+flex:1;
+
+background:#fff;
+
+border:1px solid #ddd;
+
+color:#333;
+
+}
+
+.send-btn{
+
+flex:1;
+
+background:#3DBB57;
+
+color:#fff;
+
+}
+
+.reply-actions button{
+
+padding:12px;
+
+border:none;
+
+border-radius:10px;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+  
+  /* =========================
+CONVERSATION MODAL
+========================= */
+
+.conversation-overlay{
+
+position:fixed;
+
+top:0;
+
+left:0;
+
+width:100%;
+
+height:100%;
+
+background:rgba(0,0,0,.45);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+opacity:0;
+
+pointer-events:none;
+
+transition:.3s ease;
+
+z-index:1100;
+
+}
+
+.conversation-overlay.show{
+
+opacity:1;
+
+pointer-events:auto;
+
+}
+
+.conversation-modal{
+
+width:92%;
+
+max-width:500px;
+
+height:75vh;
+
+background:#fff;
+
+border-radius:18px;
+
+display:flex;
+
+flex-direction:column;
+
+overflow:hidden;
+
+}
+
+.conversation-header{
+
+background:#003a66;
+
+color:#fff;
+
+padding:18px;
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+}
+
+.conversation-header span{
+
+font-size:28px;
+
+cursor:pointer;
+
+}
+
+.conversation-body{
+
+flex:1;
+
+overflow-y:auto;
+
+padding:18px;
+
+display:flex;
+
+flex-direction:column;
+
+gap:14px;
+
+}
+
+.message-bubble{
+
+max-width:80%;
+
+padding:12px 14px;
+
+border-radius:16px;
+
+font-size:13px;
+
+line-height:1.5;
+
+}
+
+.user-message{
+
+background:#eef3f8;
+
+align-self:flex-start;
+
+}
+
+.admin-message{
+
+background:#3DBB57;
+
+color:#fff;
+
+align-self:flex-end;
+
+}
+
+.message-time{
+
+font-size:10px;
+
+margin-top:6px;
+
+opacity:.75;
+
+}
+
+.conversation-footer {
+    border-top: 1px solid #eee;
+    padding: 15px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    background: #fff;
+}
+
+.conversation-footer textarea {
+    width: 100%;
+    height: 80px;
+    resize: none;
+    border: 1px solid #ddd;
+    border-radius: 10px;
+    padding: 12px;
+    outline: none;
+    font-size: 14px;
+}
+
+.conversation-footer button {
+    height: 45px;
+    border: none;
+    border-radius: 10px;
+    background: #00548C;
+    color: #fff;
+    font-weight: bold;
+    cursor: pointer;
+}
+
+.conversation-actions{
+    display:flex;
+    gap:10px;
+}
+
+.send-chat-btn{
+    flex:1;
+    height:45px;
+    background:#00548C;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+
+.delete-chat-btn{
+    flex:1;
+    height:45px;
+    background:#ff4d4d;
+    color:#fff;
+    border:none;
+    border-radius:10px;
+    font-weight:bold;
+    cursor:pointer;
+}
+  
+</style>
+</head>
+
+<body>
+
+<!-- HEADER -->
+<header class="admin-header">
+
+    <div>
+        <h2>Admin Control Panel</h2>
+        <p>Escrow Foundation System Overview</p>
+    </div>
+
+    <div class="badge admin">ADMIN</div>
+
+</header>
+
+<!-- MAIN -->
+<main class="admin-container">
+
+    <!-- OVERVIEW STATS -->
+   <section class="grid-stats">
+    
+    <div class="stat-card primary">
+        <p>Total Users</p>
+        <h3 id="totalUsers">0</h3>
+    </div>
+    
+    <div class="stat-card">
+        <p>Approved Users</p>
+        <h3 id="approvedUsers">0</h3>
+    </div>
+    
+    <div class="stat-card">
+        <p>Pending Users</p>
+        <h3 id="pendingUsers">0</h3>
+    </div>
+    
+    <div class="stat-card danger">
+        <p>Frozen Users</p>
+        <h3 id="frozenUsers">0</h3>
+    </div>
+    
+    <div class="stat-card">
+        <p>Support Tickets</p>
+        <h3 id="totalTickets">0</h3>
+    </div>
+    
+    <div class="stat-card">
+        <p>Escrow Commitments</p>
+        <h3 id="totalEscrow">$0</h3>
+    </div>
+    
+    <div class="stat-card">
+        <p>Released Funds</p>
+        <h3 id="releasedFunds">$0</h3>
+    </div>
+    
+</section>
+
+    <!-- USER MANAGEMENT -->
+   <section class="card-section">
+    
+    <h3>User Management</h3>
+    
+    <div class="table">
+        
+        <div class="user-info header">
+            
+            <span>User</span>
+            
+            <span>Tier</span>
+            
+            <span>Balance</span>
+            
+            <span>Status</span>
+            
+        </div>
+        
+        <div id="usersTable"></div>
+        
+    </div>
+    
+</section>
+
+<!-- SUPPORT INBOX -->
+
+<section class="card-section">
+
+<h3>Support Inbox</h3>
+
+<div class="support-inbox">
+
+</div>
+
+</section>
+
+<div
+
+class="reply-overlay"
+
+id="replyOverlay">
+
+<div
+
+class="reply-modal"
+
+id="replyModal">
+
+<h3>Reply To User</h3>
+
+<textarea
+
+id="adminReply"
+
+placeholder="Type your reply...">
+
+</textarea>
+
+<div class="reply-actions">
+
+<button
+
+class="cancel-btn"
+
+onclick="closeReplyModal()">
+
+Cancel
+
+</button>
+
+<button
+
+class="send-btn"
+
+onclick="sendReply()">
+
+Send Reply
+
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+<div
+class="conversation-overlay"
+id="conversationOverlay">
+
+<div
+class="conversation-modal">
+
+<div class="conversation-header">
+
+<h3 id="conversationTitle">
+
+Ticket Conversation
+
+</h3>
+
+<span
+onclick="closeConversation()">
+
+×
+
+</span>
+
+</div>
+
+<div
+class="conversation-body"
+id="conversationBody">
+
+</div>
+
+<div class="conversation-footer">
+
+<textarea
+id="conversationReply"
+placeholder="Type your reply...">
+</textarea>
+
+<div class="conversation-actions">
+
+<button
+class="send-chat-btn"
+onclick="sendConversationReply()">
+Send Reply
+</button>
+
+<button
+class="delete-chat-btn"
+onclick="deleteConversation()">
+Delete Chat
+</button>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="supabase.js"></script>
+
+<script>
+
+let supportTickets = [];
+
+function receiveTicket(ticket) {
+    
+    supportTickets.unshift(ticket);
+    
+}
+
+</script>
+
+<script>
+
+// ======================================
+// ADMIN AUTH GUARD
+// ======================================
+
+(async function() {
+    
+    // Check login
+    const {
+        data: { user },
+        error
+    } = await supabaseClient.auth.getUser();
+    console.log("AUTH USER:", user);
+    
+    if (error || !user) {
+        window.location.replace("login.html");
+        return;
+    }
+    
+    // Check admin session
+    if (sessionStorage.getItem("isAdmin") !== "true") {
+        alert("Access Denied");
+        window.location.replace("login.html");
+        return;
+    }
+    
+    console.log("Admin verified:", user.email);
+    
+    await loadUsers();
+    await updateOverviewStats();
+    await checkTickets();
+    
+})();
+
+let currentConversation = null;
+
+let activeTicket = null;
+
+    function openReplyModal(ticketId) {
+    
+    activeTicket = ticketId;
+    
+    document
+        
+        .getElementById(
+            
+            "replyOverlay"
+            
+        )
+        
+        .classList.add(
+            
+            "show"
+            
+        );
+    
+}
+
+
+function closeReplyModal(){
+
+document
+
+.getElementById(
+
+"replyOverlay"
+
+)
+
+.classList.remove(
+
+"show"
+
+);
+
+}
+
+
+async function sendReply() {
+    
+    const reply = document.getElementById("adminReply").value.trim();
+    
+    if (!reply) {
+        alert("Type a reply.");
+        return;
+    }
+    
+    await createReply(
+    activeTicket,
+    reply
+);
+    
+    alert("Reply sent.");
+    
+    document.getElementById("adminReply").value = "";
+    
+    closeReplyModal();
+}
+
+async function createReply(ticketId, message) {
+
+    const ticket = supportTickets.find(
+        t => t.id === ticketId
+    );
+
+    if (!ticket) {
+        return;
+    }
+
+    const { error } =
+    await supabaseClient
+        .from("ticket_messages")
+        .insert([
+            {
+                ticket_id: ticketId,
+                sender: "admin",
+                message: message
+            }
+        ]);
+
+    if (error) {
+        console.error(error);
+        alert("Failed to send reply");
+        return;
+    }
+
+    await checkTickets();
+
+if (
+    document
+    .getElementById("conversationOverlay")
+    .classList.contains("show")
+) {
+    
+    openTicketConversation(ticketId);
+    
+}
+
+    notifyUser(
+    ticket.userId,
+    "Admin Reply",
+    message
+);
+
+    addNotification(
+        "Reply Sent",
+        "You replied to " + ticketId
+    );
+}
+    
+    async function notifyUser(userId, title, message) {
+    
+    const { error } = await supabaseClient
+        .from("notifications")
+        .insert({
+            user_id: userId,
+            title: title,
+            message: message,
+            is_read: false
+        });
+    
+    if (error) {
+        console.error(error);
+    }
+}
+
+function logRelease(amount){
+
+systemFinance.released += amount;
+
+systemFinance.locked -= amount;
+
+console.log("Release recorded:", amount);
+
+}
+    
+    async function checkTickets() {
+    
+    const { data: tickets, error } =
+await supabaseClient
+    .from("tickets")
+        .select("*")
+        .order("created_at", {
+            ascending: false
+        });
+    
+    if (error) {
+        
+        console.error(error);
+        
+        return;
+    }
+    
+    supportTickets = [];
+    
+    document.querySelector(
+        ".support-inbox"
+    ).innerHTML = "";
+    
+    for (const ticket of tickets) {
+        
+        const { data: messages } =
+await supabaseClient
+    .from("ticket_messages")
+    .select("*")
+    .eq(
+        "ticket_id",
+        ticket.ticket_id
+    )
+    .order(
+        "created_at",
+        { ascending: true }
+    );
+    
+    const formattedTicket = {
+
+    id: ticket.ticket_id,
+
+    user: ticket.user_name,
+
+    subject: ticket.subject,
+
+    status: ticket.status,
+
+    userId: ticket.user_id,
+
+    messages: (messages || []).map(
+        msg => ({
+            sender: msg.sender,
+            text: msg.message,
+            time: msg.created_at
+        })
+    )
+
+};
+        
+        supportTickets.push(
+            formattedTicket
+        );
+        
+        renderTicket(
+            formattedTicket
+        );
+    }
+}
+
+function renderTicket(ticket) {
+    
+    const inbox = document.querySelector(".support-inbox");
+    
+    const existing = document.querySelector(
+        `[data-ticket="${ticket.id}"]`
+    );
+    
+    const lastMessage =
+        ticket.messages.length ?
+        ticket.messages[ticket.messages.length - 1].text :
+        "No messages yet";
+    
+    if (existing) {
+        
+        existing.querySelector(".ticket-status").textContent =
+            ticket.status;
+        
+        existing.querySelector(".ticket-subject").textContent =
+            ticket.subject;
+        
+        existing.querySelector(".ticket-message").textContent =
+            lastMessage;
+        
+        existing.querySelector("h4").textContent =
+            ticket.id;
+        
+        existing.querySelector("p").textContent =
+            ticket.user;
+        
+        // Move this chat to the top
+        inbox.prepend(existing);
+        
+        return;
+    }
+    
+    const card = document.createElement("div");
+    
+    card.className = "ticket-card";
+    
+    card.dataset.ticket = ticket.id;
+    
+    card.innerHTML = `
+        <div class="ticket-top">
+
+            <div>
+
+                <h4>${ticket.id}</h4>
+
+                <p>${ticket.user}</p>
+
+            </div>
+
+            <div class="ticket-status">
+
+                ${ticket.status}
+
+            </div>
+
+        </div>
+
+        <div class="ticket-subject">
+
+            ${ticket.subject}
+
+        </div>
+
+        <div class="ticket-message">
+
+            ${lastMessage}
+
+        </div>
+
+        <div class="ticket-buttons">
+
+            <button
+                class="reply-btn view-action"
+                onclick="openTicketConversation('${ticket.id}')">
+
+                Open Chat
+
+            </button>
+
+        </div>
+    `;
+    
+    inbox.prepend(card);
+    
+}
+(async () => {
+    await checkTickets();
+})();
+  
+  function openTicketConversation(ticketId) {
+      
+    currentConversation = ticketId;
+    
+    const ticket = supportTickets.find(
+        
+        t => t.id === ticketId
+        
+    );
+    
+    if (!ticket) {
+        
+        return;
+        
+    }
+    
+    document
+        
+        .getElementById(
+            
+            "conversationTitle"
+            
+        )
+        
+        .innerText = ticket.subject;
+    
+    const body = document.getElementById(
+        
+        "conversationBody"
+        
+    );
+    
+    body.innerHTML = "";
+    
+    ticket.messages.forEach(message => {
+        
+        body.innerHTML += `
+
+<div class="message-bubble
+
+${message.sender === "admin"
+
+? "admin-message"
+
+: "user-message"}">
+
+<div>
+
+${message.text}
+
+</div>
+
+<div class="message-time">
+
+${new Date(message.time).toLocaleString()}
+
+</div>
+
+</div>
+
+`;
+        
+    });
+    
+    document
+        
+        .getElementById(
+            
+            "conversationOverlay"
+            
+        )
+        
+        .classList.add(
+            
+            "show"
+            
+        );
+    
+}
+
+async function sendConversationReply(){
+
+    const box =
+    document.getElementById("conversationReply");
+
+    const message =
+    box.value.trim();
+
+    if(!message){
+        return;
+    }
+
+    await createReply(
+        currentConversation,
+        message
+    );
+
+    box.value = "";
+
+    await openTicketConversation(
+        currentConversation
+    );
+
+}
+
+async function deleteConversation(){
+
+    if(!currentConversation){
+        return;
+    }
+
+    if(!confirm("Delete this conversation permanently?")){
+        return;
+    }
+
+    // Delete all messages first
+    const { error: messageError } = await supabaseClient
+        .from("ticket_messages")
+        .delete()
+        .eq("ticket_id", currentConversation);
+
+    if(messageError){
+        alert(messageError.message);
+        return;
+    }
+
+    // Delete the ticket
+    const { error: ticketError } = await supabaseClient
+        .from("tickets")
+        .delete()
+        .eq("ticket_id", currentConversation);
+
+    if(ticketError){
+        alert(ticketError.message);
+        return;
+    }
+
+    closeConversation();
+
+    await checkTickets();
+
+    await updateOverviewStats();
+
+    alert("Conversation deleted.");
+
+}
+
+function closeConversation(){
+
+document
+
+.getElementById(
+
+"conversationOverlay"
+
+)
+
+.classList.remove(
+
+"show"
+
+);
+
+}
+ 
+ async function loadUsers() {
+    
+    const { data: users, error } = await supabaseClient
+        .from("users")
+        .select("*")
+        .order("created_at", { ascending: false });
+    
+    console.log(users);
+console.log("Number of users:", users?.length);
+    
+    if (error) {
+        console.error(error);
+        alert(error.message);
+        return;
+    }
+    
+    const table = document.getElementById("usersTable");
+    
+    table.innerHTML = "";
+    
+    if (!users || users.length === 0) {
+        
+        table.innerHTML = `
+<div class="row">
+<span>No Users</span>
+<span>-</span>
+<span>-</span>
+<span>-</span>
+</div>
+`;
+        
+        return;
+        
+    }
+    
+    users.forEach(user => {
+        
+        table.innerHTML += `
+
+<div class="user-card">
+
+<div class="user-info">
+
+<span>${user.name || "Unknown"}</span>
+
+<span>${user.tier || "-"}</span>
+
+<span>$${Number(user.balance || 0).toLocaleString()}</span>
+
+<span class="${
+user.account_status === "Active"
+? "active"
+: "pending"
+}">
+${user.account_status}
+</span>
+
+</div>
+
+<div class="user-actions">
+
+<button
+class="btn-view"
+onclick="viewUser('${user.id}')">
+View
+</button>
+
+<button
+class="btn-view"
+onclick="viewProof('${user.id}')">
+Proof
+</button>
+
+<button
+class="btn-approve"
+onclick="approveFunding('${user.id}')">
+Approve
+</button>
+
+<button
+class="btn-freeze"
+onclick="freezeUser('${user.id}')">
+Freeze
+</button>
+
+<button
+class="btn-unfreeze"
+onclick="unfreezeUser('${user.id}')">
+Unfreeze
+</button>
+
+<button
+class="btn-delete"
+onclick="deleteUser('${user.id}')">
+Delete
+</button>
+
+</div>
+
+</div>
+
+`;
+        
+    });
+    
+}
+
+async function updateOverviewStats() {
+    
+    const { data: users, error } = await supabaseClient
+        .from("users")
+        .select("*");
+    
+    if (error) {
+        console.error(error);
+        return;
+    }
+    
+    document.getElementById("totalUsers").textContent =
+        users.length;
+    
+    document.getElementById("approvedUsers").textContent =
+        users.filter(
+            u => u.account_status === "Active"
+        ).length;
+    
+    document.getElementById("pendingUsers").textContent =
+        users.filter(
+            u => u.account_status === "Pending Funding"
+        ).length;
+    
+    document.getElementById("frozenUsers").textContent =
+        users.filter(
+            u => u.account_status === "Frozen"
+        ).length;
+    
+    const totalEscrow =
+        users.reduce(
+            (sum, u) => sum + Number(u.balance || 0),
+            0
+        );
+    
+    const releasedFunds =
+        users
+        .filter(u => u.account_status === "Active")
+        .reduce(
+            (sum, u) => sum + Number(u.balance || 0),
+            0
+        );
+    
+    document.getElementById("totalEscrow").textContent =
+        "$" + totalEscrow.toLocaleString();
+    
+    document.getElementById("releasedFunds").textContent =
+        "$" + releasedFunds.toLocaleString();
+    
+    document.getElementById("totalTickets").textContent =
+        supportTickets.length;
+    
+}
+
+async function viewUser(userId) {
+    
+    const { data: user, error } = await supabaseClient
+        .from("users")
+        .select("*")
+        .eq("id", userId)
+        .maybeSingle();
+
+if (!user) {
+    alert("User record not found.");
+    return;
+}
+    
+    if (error) {
+        alert(error.message);
+        return;
+    }
+    
+    let profile =
+        
+        "FULL USER PROFILE\n\n" +
+        
+        "Name: " + (user.name || "-") +
+        
+        "\nTier: " + (user.tier || "-") +
+        
+        "\nBalance: $" + (user.balance || 0) +
+        
+        "\nContract Number: " + (user.contract_number || "-") +
+        
+        "\nAccount Status: " + (user.account_status || "-") +
+        
+        "\nFunding Status: " + (user.funding_status || "-") +
+        
+        "\nCoin: " + (user.coin || "-") +
+        
+        "\nAmount: $" + (user.amount || 0);
+    
+    if (user.proof_url) {
+        
+        profile += "\n\nPayment Proof:\n" + user.proof_url;
+        
+    }
+    
+    alert(profile);
+    
+}
+
+   
+async function approveFunding(userId) {
+    
+    const { data: user, error: getError } =
+    await supabaseClient
+        .from("users")
+        .select("*")
+        .eq("id", userId)
+        .maybeSingle();
+    
+    if (getError) {
+        alert(getError.message);
+        return;
+    }
+    
+    if (!user) {
+        alert("User record not found.");
+        return;
+    }
+    
+    const { error: updateError } =
+    await supabaseClient
+        .from("users")
+        .update({
+            approved: true,
+            funding_status: "approved",
+            account_status: "Active",
+            balance: Number(user.amount || 0)
+        })
+        .eq("id", userId);
+    
+    if (updateError) {
+        alert(updateError.message);
+        return;
+    }
+    
+    await notifyUser(userId, "Funding Approved", "Congratulations! Your escrow funding has been approved. Your dashboard has now been activated.");
+    
+    alert("Funding approved successfully.");
+    await loadUsers();
+    await updateOverviewStats();
+}
+  
+async function freezeUser(userId) {
+    
+    const { error } = await supabaseClient
+        .from("users")
+        .update({
+            
+            account_status: "Frozen"
+            
+        })
+        .eq("id", userId);
+    
+    if (error) {
+        
+        alert(error.message);
+        
+        return;
+        
+    }
+    
+    await notifyUser(
+    userId,
+    "Account Frozen",
+    "Your account has been frozen. Please contact support if you believe this is a mistake."
+);
+    
+    alert("Account Frozen");
+    
+    await loadUsers();
+    
+    await updateOverviewStats();
+    
+}
+
+async function unfreezeUser(userId) {
+    
+    const { error } = await supabaseClient
+        
+        
+       .from("users")
+        .update({
+            
+            account_status: "Active"
+            
+        })
+        .eq("id", userId);
+    
+    if (error) {
+        
+        alert(error.message);
+        
+        return;
+        
+    }
+    
+    await notifyUser(
+    userId,
+    "Account Reactivated",
+    "Your account has been reactivated and is now active."
+);
+    
+    alert("Account Unfrozen");
+    
+    await loadUsers();
+    
+    await updateOverviewStats();
+    
+}
+   
+  async function deleteUser(userId) {
+    
+    if (!confirm("Delete this user?")) {
+        
+        return;
+        
+    }
+    
+    const { error } = await supabaseClient
+        .from("users")
+        .delete()
+        .eq("id", userId);
+    
+    if (error) {
+        
+        alert(error.message);
+        
+        return;
+        
+    }
+    
+    alert("User Deleted");
+    
+    await loadUsers();
+    
+    await updateOverviewStats();
+    
+}
+  
+ async function viewProof(userId) {
+    
+    const { data: user, error } = await supabaseClient
+        .from("users")
+        .select("name,proof_url")
+        .eq("id", userId)
+      .maybeSingle();
+
+if (!user) {
+    alert("User record not found.");
+    return;
+}
+    
+    if (error) {
+        
+        alert(error.message);
+        
+        return;
+        
+    }
+    
+    if (!user.proof_url) {
+        
+        alert("No payment proof uploaded.");
+        
+        return;
+        
+    }
+    
+    window.open(user.proof_url, "_blank");
+    
+}
+ 
+ supabaseClient
+    .channel("users-changes")
+    .on(
+        "postgres_changes",
+        {
+            event: "*",
+            schema: "public",
+            table: "users"
+        },
+        async () => {
+            await loadUsers();
+            await updateOverviewStats();
+        }
+    )
+    .subscribe();
+  
+  supabaseClient
+.channel("ticket-messages")
+
+.on(
+    "postgres_changes",
+    {
+        event: "*",
+        schema: "public",
+        table: "ticket_messages"
+    },
+    async () => {
+
+        await checkTickets();
+
+        updateOverviewStats();
+
+    }
+)
+
+.subscribe();
+
+supabaseClient
+.channel("tickets")
+
+.on(
+    "postgres_changes",
+    {
+        event: "*",
+        schema: "public",
+        table: "tickets"
+    },
+    async () => {
+
+        updateOverviewStats();
+
+    }
+)
+
+.subscribe();
+   
+</script>
+
+<script src="alert-system.js"></script>
+
+</body>
+</html>
