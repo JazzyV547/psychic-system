@@ -1324,8 +1324,6 @@ HERO
     
     <a href="login.html">Login</a>
     
-    <a href="dashboard.html">Dashboard</a>
-    
     <a href="#" id="supportBtn">Support</a>
     
 </nav>
@@ -1431,7 +1429,7 @@ TRUST STATS
         
         <div class="stat-box">
             <h5>Escrow Holdings</h5>
-            <p>$11.2M</p>
+            <p>$5.2B</p>
         </div>
         
         <div class="stat-box">
@@ -1441,7 +1439,7 @@ TRUST STATS
         
         <div class="stat-box">
             <h5>Released Funds</h5>
-            <p>$4.3M</p>
+            <p>$2.3B</p>
         </div>
         
     </div>
@@ -1471,7 +1469,7 @@ TRUST STATS
     <!-- GROWTH -->
     <div class="card growth-card">
         <h4>Refundable Balance</h4>
-        <span class="badge">$6.3M</span>
+        <span class="badge">$163M</span>
         <canvas id="growthChart"></canvas>
     </div>
     
@@ -1497,7 +1495,7 @@ TRUST STATS
         
         <div class="activity-item">
             <span>✓ Grant Released</span>
-            <small>$2,500 • 2 mins ago</small>
+            <small>$75,000 • 2 mins ago</small>
         </div>
         
         <div class="activity-item">
@@ -1518,12 +1516,12 @@ TRUST STATS
         
         <div class="summary-item">
             <span>Released</span>
-            <b>$4.3M</b>
+            <b>$2.3B</b>
         </div>
         
         <div class="summary-item">
             <span>Pending</span>
-            <b>$6.9M</b>
+            <b>$11.9M</b>
         </div>
         
         <div class="summary-item">
@@ -1554,7 +1552,7 @@ PROTECTION
         </h3>
 
         <p>
-            Funds stay secured until milestones are completed.
+         Funds remain secured until the benefit is received or the milestones are completed.
         </p>
 
     </div>
@@ -1820,8 +1818,8 @@ MEMBERSHIP TIERS
             </div>
 
             <div class="faq-answer">
-                Your commitment remains locked until approved milestones
-                are completed and confirmed.
+                Your commitment remains locked until approved benefits and milestones
+              are confirmed.
             </div>
 
         </div>
@@ -1834,7 +1832,7 @@ MEMBERSHIP TIERS
             </div>
 
             <div class="faq-answer">
-                Yes. Undelivered milestones remain refundable according
+                Yes. Undelivered benefits and milestones remain refundable according
                 to platform rules.
             </div>
 
@@ -1984,7 +1982,7 @@ FOOTER
     </div>
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="supabase.js"></script>
 <script src="alert-system.js"></script>
 <script> 
@@ -2291,247 +2289,69 @@ document.getElementById("joinBtn").addEventListener("click", () => {
 });
 
 const proofData = [
+    // Mixed Patron
+    { tier: "Patron", title: "Direct Elon Musk Private Phone Number", status: "Access Granted", amount: "Active", meta: "Direct Line" },
+    { tier: "Patron", title: "Empowerment Grant", status: "Grant Delivered", amount: "$10,600", meta: "Grant Authorized" },
+    { tier: "Patron", title: "Round Table Dinner Date with Elon Musk", status: "Confirmed", amount: "Scheduled", meta: "Premium Experience" },
+    { tier: "Patron", title: "Direct Elon Musk Private Phone Number", status: "Access Granted", amount: "Active", meta: "Direct Line" },
+    { tier: "Patron", title: "Tesla Merchandise Credit", status: "Credit Issued", amount: "$1,500", meta: "Reward Released" },
+    { tier: "Patron", title: "Round Table Dinner Date with Elon Musk", status: "Confirmed", amount: "Scheduled", meta: "Premium Experience" },
+    { tier: "Patron", title: "Direct Elon Musk Private Phone Number", status: "Access Granted", amount: "Active", meta: "Direct Line" },
+    { tier: "Patron", title: "Executive Communication Access", status: "Portal Activated", amount: "Activated", meta: "Access Enabled" },
+    { tier: "Patron", title: "Round Table Dinner Date with Elon Musk", status: "Confirmed", amount: "Scheduled", meta: "Premium Experience" },
+    { tier: "Patron", title: "Direct Elon Musk Private Phone Number", status: "Access Granted", amount: "Active", meta: "Direct Line" },
+    { tier: "Patron", title: "Quarterly Insights Digest", status: "Delivered", amount: "Available", meta: "Member Access" },
+    { tier: "Patron", title: "Round Table Dinner Date with Elon Musk", status: "Confirmed", amount: "Scheduled", meta: "Premium Experience" },
+    { tier: "Patron", title: "Direct Elon Musk Private Phone Number", status: "Access Granted", amount: "Active", meta: "Direct Line" },
+    { tier: "Patron", title: "Virtual Salon Invitation", status: "Invitation Issued", amount: "Confirmed", meta: "Access Granted" },
+    { tier: "Patron", title: "Round Table Dinner Date with Elon Musk", status: "Confirmed", amount: "Scheduled", meta: "Premium Experience" },
+    { tier: "Patron", title: "Direct Elon Musk Private Phone Number", status: "Access Granted", amount: "Active", meta: "Direct Line" },
+    { tier: "Patron", title: "Direct Elon Musk Private Phone Number", status: "Access Granted", amount: "Active", meta: "Direct Line" },
     
-    {
-        tier: "Patron",
-        title: "Empowerment Grant",
-        status: "Grant Delivered",
-        amount: "$10,600",
-        meta: "Grant Authorized"
-    },
+    // Mixed Visionary
+    { tier: "Visionary", title: "Private Days with Elon Musk", status: "Confirmed", amount: "Reserved", meta: "Premium Reward" },
+    { tier: "Visionary", title: "Personal Impact Grant", status: "Grant Delivered", amount: "$50,000", meta: "Impact Released" },
+    { tier: "Visionary", title: "Tesla Vehicle Usage + Restricted Stock", status: "Approved", amount: "1 Year + $10,000", meta: "Vehicle + Equity" },
+    { tier: "Visionary", title: "Private Days with Elon Musk", status: "Confirmed", amount: "Reserved", meta: "Premium Reward" },
+    { tier: "Visionary", title: "Legacy Grant + Philanthropic Retreat", status: "Verified", amount: "$75,000", meta: "Grant + Retreat" },
+    { tier: "Visionary", title: "Private Days with Elon Musk", status: "Confirmed", amount: "Reserved", meta: "Premium Reward" },
+    { tier: "Visionary", title: "Directed Philanthropy Fund", status: "Approved", amount: "$10,000", meta: "Funds Assigned" },
+    { tier: "Visionary", title: "Tesla Vehicle Usage + Restricted Stock", status: "Approved", amount: "1 Year + $10,000", meta: "Vehicle + Equity" },
+    { tier: "Visionary", title: "Private Days with Elon Musk", status: "Confirmed", amount: "Reserved", meta: "Premium Reward" },
+    { tier: "Visionary", title: "Legacy Grant + Philanthropic Retreat", status: "Verified", amount: "$75,000", meta: "Grant + Retreat" },
+    { tier: "Visionary", title: "24/7 Personal Liaison", status: "Activated", amount: "Live", meta: "Support Enabled" },
+    { tier: "Visionary", title: "Private Days with Elon Musk", status: "Confirmed", amount: "Reserved", meta: "Premium Reward" },
+    { tier: "Visionary", title: "Tesla Vehicle Usage + Restricted Stock", status: "Approved", amount: "1 Year + $10,000", meta: "Vehicle + Equity" },
+    { tier: "Visionary", title: "Legacy Grant + Philanthropic Retreat", status: "Verified", amount: "$75,000", meta: "Grant + Retreat" },
+    { tier: "Visionary", title: "Private Days with Elon Musk", status: "Confirmed", amount: "Reserved", meta: "Premium Reward" },
+    { tier: "Visionary", title: "Campus Experience Day", status: "Scheduled", amount: "Reserved", meta: "Experience Ready" },
+    { tier: "Visionary", title: "Tesla Vehicle Usage + Restricted Stock", status: "Approved", amount: "1 Year + $10,000", meta: "Vehicle + Equity" },
+    { tier: "Visionary", title: "Legacy Grant + Philanthropic Retreat", status: "Verified", amount: "$75,000", meta: "Grant + Retreat" },
+    { tier: "Visionary", title: "Legacy Grant + Philanthropic Retreat", status: "Verified", amount: "$75,000", meta: "Grant + Retreat" },
     
-    {
-        tier: "Patron",
-        title: "Executive Communication Access",
-        status: "Portal Activated",
-        amount: "Activated",
-        meta: "Access Enabled"
-    },
-    
-    {
-        tier: "Patron",
-        title: "Tesla Merchandise Credit",
-        status: "Credit Issued",
-        amount: "$1,500",
-        meta: "Reward Released"
-    },
-    
-    {
-        tier: "Patron",
-        title: "Quarterly Insights Digest",
-        status: "Delivered",
-        amount: "Available",
-        meta: "Member Access"
-    },
-    
-    {
-        tier: "Patron",
-        title: "Virtual Salon Invitation",
-        status: "Invitation Issued",
-        amount: "Confirmed",
-        meta: "Access Granted"
-    },
-    
-    {
-        tier: "Patron",
-        title: "Round Table Dinner Experience",
-        status: "Confirmed",
-        amount: "Scheduled",
-        meta: "Premium Reward"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Personal Impact Grant",
-        status: "Grant Delivered",
-        amount: "$50,000",
-        meta: "Impact Released"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Directed Philanthropy Fund",
-        status: "Approved",
-        amount: "$10,000",
-        meta: "Funds Assigned"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Legacy Grant Stewardship",
-        status: "Verified",
-        amount: "$200,000",
-        meta: "Milestone Complete"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Philanthropic Retreat Access",
-        status: "Invitation Issued",
-        amount: "Confirmed",
-        meta: "Access Granted"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "24/7 Personal Liaison",
-        status: "Activated",
-        amount: "Live",
-        meta: "Support Enabled"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Campus Experience Day",
-        status: "Scheduled",
-        amount: "Reserved",
-        meta: "Experience Ready"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Private Days Experience",
-        status: "Confirmed",
-        amount: "Reserved",
-        meta: "Premium Reward"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Tesla Vehicle Lease",
-        status: "Approved",
-        amount: "1 Year",
-        meta: "Vehicle Reserved"
-    },
-    
-    {
-        tier: "Visionary",
-        title: "Tesla/SpaceX Shares",
-        status: "Allocated",
-        amount: "$10,000",
-        meta: "Asset Granted"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Strategic Impact Grant",
-        status: "Approved",
-        amount: "$100,000",
-        meta: "Grant Released"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Directed Philanthropy Fund",
-        status: "Verified",
-        amount: "$25,000",
-        meta: "4:1 Match Active"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Humanitarian Grant Authority",
-        status: "Council Approved",
-        amount: "$1,000,000",
-        meta: "Authority Granted"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Foundation Advisory Seat",
-        status: "Activated",
-        amount: "Confirmed",
-        meta: "Seat Assigned"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Tesla/SpaceX Equity",
-        status: "Vesting Active",
-        amount: "$500,000",
-        meta: "2-Year Schedule"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Monthly Executive Briefing",
-        status: "Activated",
-        amount: "Monthly",
-        meta: "Access Granted"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Private Agreement with Elon Musk",
-        status: "Confirmed",
-        amount: "Quarterly",
-        meta: "Reserved"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Cybertruck / Luxury Vehicle Lease",
-        status: "Approved",
-        amount: "Reserved",
-        meta: "Vehicle Assigned"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "24/7 Personal Concierge",
-        status: "Active",
-        amount: "Enabled",
-        meta: "Service Activated"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Legacy Portrait Commission",
-        status: "Commissioned",
-        amount: "Confirmed",
-        meta: "Reward Granted"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Global Innovation Summits",
-        status: "Invitation Issued",
-        amount: "Confirmed",
-        meta: "Access Granted"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Tesla Gigafactory & SpaceX Tours",
-        status: "Scheduled",
-        amount: "Private",
-        meta: "Tour Reserved"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Executive Mentorship Sessions",
-        status: "Activated",
-        amount: "Personalized",
-        meta: "Sessions Available"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Mars Excursion aboard Starship",
-        status: "Reserved",
-        amount: "Once-in-a-Lifetime",
-        meta: "Journey Confirmed"
-    },
-    
-    {
-        tier: "Luminary",
-        title: "Elite Advisory Council Membership",
-        status: "Lifetime Active",
-        amount: "Lifetime",
-        meta: "Council Seat Granted"
-    }
-    
+    // Mixed Luminary
+    { tier: "Luminary", title: "Tesla Cybertruck for 1 Year", status: "Approved", amount: "1 Year Lease", meta: "Vehicle Assigned" },
+    { tier: "Luminary", title: "Strategic Impact Grant + Philanthropy Fund", status: "Approved", amount: "$100,000 + $25,000", meta: "Grant Package" },
+    { tier: "Luminary", title: "Vested Tesla/SpaceX Equity", status: "Vesting Active", amount: "$500,000", meta: "2-Year Schedule" },
+    { tier: "Luminary", title: "Humanitarian Grant Authority + Advisory Seat", status: "Council Approved", amount: "$1,000,000", meta: "Authority + Seat" },
+    { tier: "Luminary", title: "Tesla Cybertruck for 1 Year", status: "Approved", amount: "1 Year Lease", meta: "Vehicle Assigned" },
+    { tier: "Luminary", title: "Strategic Impact Grant + Philanthropy Fund", status: "Approved", amount: "$100,000 + $25,000", meta: "Grant Package" },
+    { tier: "Luminary", title: "Vested Tesla/SpaceX Equity", status: "Vesting Active", amount: "$500,000", meta: "2-Year Schedule" },
+    { tier: "Luminary", title: "Humanitarian Grant Authority + Advisory Seat", status: "Council Approved", amount: "$1,000,000", meta: "Authority + Seat" },
+    { tier: "Luminary", title: "Strategic Impact Grant + Philanthropy Fund", status: "Approved", amount: "$100,000 + $25,000", meta: "Grant Package" },
+    { tier: "Luminary", title: "Vested Tesla/SpaceX Equity", status: "Vesting Active", amount: "$500,000", meta: "2-Year Schedule" },
+    { tier: "Luminary", title: "Humanitarian Grant Authority + Advisory Seat", status: "Council Approved", amount: "$1,000,000", meta: "Authority + Seat" },
+    { tier: "Luminary", title: "Tesla Cybertruck for 1 Year", status: "Approved", amount: "1 Year Lease", meta: "Vehicle Assigned" },
+    { tier: "Luminary", title: "Strategic Impact Grant + Philanthropy Fund", status: "Approved", amount: "$100,000 + $25,000", meta: "Grant Package" },
+    { tier: "Luminary", title: "Vested Tesla/SpaceX Equity", status: "Vesting Active", amount: "$500,000", meta: "2-Year Schedule" },
+    { tier: "Luminary", title: "Humanitarian Grant Authority + Advisory Seat", status: "Council Approved", amount: "$1,000,000", meta: "Authority + Seat" },
+    { tier: "Luminary", title: "Strategic Impact Grant + Philanthropy Fund", status: "Approved", amount: "$100,000 + $25,000", meta: "Grant Package" },
+    { tier: "Luminary", title: "Vested Tesla/SpaceX Equity", status: "Vesting Active", amount: "$500,000", meta: "2-Year Schedule" },
+    { tier: "Luminary", title: "Humanitarian Grant Authority + Advisory Seat", status: "Council Approved", amount: "$1,000,000", meta: "Authority + Seat" },
+    { tier: "Luminary", title: "Mars Excursion aboard Starship", status: "Reserved", amount: "Once-in-a-lifetime", meta: "Journey Confirmed" },
+    { tier: "Luminary", title: "Elite Advisory Council Membership", status: "Lifetime Active", amount: "Lifetime", meta: "Council Seat Granted" },
+    { tier: "Luminary", title: "24/7 Personal Concierge", status: "Active", amount: "Enabled", meta: "Service Activated" },
+    { tier: "Luminary", title: "Legacy Portrait Commission", status: "Commissioned", amount: "Confirmed", meta: "Reward Granted" }
 ];
 
 const images = [
