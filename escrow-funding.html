@@ -472,15 +472,64 @@ Complete Funding
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="supabase.js"></script>
 
 <script src="alert-system.js"></script>
 
 <script>
 
-const copyBtn = document.getElementById("copyBtn");
+async function ensureUserProfile(user) {
+  console.log("Ensuring profile for:", user.email);
 
+  const { data: existing, error: checkError } = await supabaseClient
+    .from("users")
+    .select("id")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (checkError) {
+    console.error("Error checking profile:", checkError);
+  }
+
+  if (existing) {
+    console.log("Profile already exists");
+    return existing;
+  }
+
+  console.log("Creating new profile...");
+
+  const pendingJoin = JSON.parse(localStorage.getItem("pendingJoin") || "null");
+
+  const { data: newProfile, error: insertError } = await supabaseClient
+    .from("users")
+    .insert({
+      id: user.id,
+      email: user.email,
+      name: user.email.split("@")[0],
+      tier: pendingJoin ? pendingJoin.tier : null,
+      coin: pendingJoin ? pendingJoin.coin : null,
+      amount: pendingJoin ? pendingJoin.amount : 0,
+      balance: 0,
+      contract_number: null,
+      funding_status: "not_started",
+      account_status: "Pending Funding",
+      approved: false,
+      current_milestone: 0
+    })
+    .select()
+    .single();
+
+  if (insertError) {
+    console.error("Profile insert failed:", insertError);
+    throw insertError;
+  }
+
+  console.log("Profile created successfully");
+  return newProfile;
+}
+
+const copyBtn = document.getElementById("copyBtn");
 copyBtn.addEventListener("click", () => {
   const address = document.getElementById("walletAddress");
   try {
@@ -502,189 +551,144 @@ const walletAddresses = {
   BTC: "bc1qdmdth3gtyduzgxmpkxls3enchjnpm3w6h3gx0m",
   ETH: "0x9446fcc5e58c53bb3ffB0f722E6078582Cc9aB38",
   "USDT (ton)": "TRNNxUv2QYezdA63AsjKDNfXYjNmoxrmFH",
-  USDT: "TRNNxUv2QYezdA63AsjKDNfXYjNmoxrmFH",
   SOL: "CBcE3FUhKUauxxL5PAEGiwwCECTh4V3SEzQaankU3KfR"
 };
 
-// Timeout helper – stops endless freezing
-function withTimeout(promise, ms = 10000) {
-  const timeout = new Promise((_, reject) =>
-    setTimeout(() => reject(new Error("Request timed out. Please refresh the page.")), ms)
-  );
-  return Promise.race([promise, timeout]);
-}
-
-// =========================
-// SAFE PAGE LOAD
-// =========================
 async function loadUserData() {
   try {
-    // 1. Get current user (with timeout)
-    const { data: { user }, error: userError } = await withTimeout(
-      supabaseClient.auth.getUser()
-    );
+    // Wait for supabaseClient
+    let waited = 0;
+    while (!window.supabaseClient && waited < 5000) {
+      await new Promise(r => setTimeout(r, 200));
+      waited += 200;
+    }
+
+    if (!window.supabaseClient) {
+      alert("Supabase failed to load. Please refresh the page.");
+      return;
+    }
+
+    // Get current user
+    const { data: { user }, error: userError } = await supabaseClient.auth.getUser();
+
+    console.log("Current user:", user);
+    console.log("User error:", userError);
 
     if (userError || !user) {
-      console.log("No user found → redirecting to login");
+      console.log("No authenticated user, redirecting to login");
       window.location.href = "login.html";
       return;
     }
 
-    // 2. Get profile (with timeout)
-    const { data: profile, error: profileError } = await withTimeout(
-      supabaseClient
-        .from("users")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle()
-    );
+    // Create profile if it doesn't exist
+    await ensureUserProfile(user);
 
-    if (profileError) {
-      console.error(profileError);
-      alert("Failed to load your profile. Please try again.");
+    // Load profile
+    const { data: profile, error: profileError } = await supabaseClient
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
+
+    console.log("Loaded profile:", profile);
+    console.log("Profile error:", profileError);
+
+    if (profileError || !profile) {
+      alert("Could not load your profile. Please contact support.");
       return;
     }
 
-    if (!profile) {
-      alert("No profile found for this account. Please contact support.");
-      return;
-    }
-
-    // 3. Fill the page
+    // Fill the page
     document.getElementById("summaryTier").textContent = profile.tier || "-";
     document.getElementById("summaryCoin").textContent = profile.coin || "-";
     document.getElementById("summaryAmount").textContent =
       "$" + Number(profile.amount || 0).toLocaleString();
 
-    // Safe wallet lookup
-    const coinKey = profile.coin || "";
     document.getElementById("walletAddress").value =
-      walletAddresses[coinKey] || walletAddresses["USDT"] || "";
+      walletAddresses[profile.coin] || "";
 
   } catch (err) {
     console.error("Load error:", err);
-    alert(err.message || "Connection is slow. Please refresh the page.");
+    alert("Error loading account: " + (err.message || "Unknown error"));
   }
 }
 
-// Run when page opens
+// Run when page loads
 loadUserData();
 
-// =========================
-// COMPLETE FUNDING (FIXED)
-// =========================
+// Complete Funding button
 document.getElementById("completeFunding").addEventListener("click", async () => {
-  const proofInput = document.getElementById("proofUpload");
-  const completeBtn = document.getElementById("completeFunding");
+  const proof = document.getElementById("proofUpload");
 
-  if (!proofInput.files || proofInput.files.length === 0) {
+  if (proof.files.length === 0) {
     alert("Please upload proof of payment");
     return;
   }
 
-  const file = proofInput.files[0];
-  const fileExt = (file.name.split(".").pop() || "png").toLowerCase();
-
-  completeBtn.disabled = true;
-  completeBtn.textContent = "Submitting...";
+  const file = proof.files[0];
+  const fileExt = file.name.split(".").pop();
 
   try {
-    // 1. Get logged-in user
-    const { data: authData, error: userError } = await withTimeout(
-      supabaseClient.auth.getUser()
-    );
+    const { data: { user } } = await supabaseClient.auth.getUser();
 
-    const user = authData?.user;
-
-    if (userError || !user || !user.id) {
+    if (!user) {
       alert("You must be logged in.");
       window.location.href = "login.html";
       return;
     }
 
-    // 2. Build a clean, valid filename
-    const safeId = String(user.id).replace(/[^a-zA-Z0-9-]/g, "");
-    const fileName = safeId + "-" + Date.now() + "." + fileExt;
+    const fileName = user.id + "-" + Date.now() + "." + fileExt;
 
-    console.log("Uploading file as:", fileName);
-
-    // 3. Upload to storage
-    const { error: uploadError } = await withTimeout(
-      supabaseClient.storage
-        .from("payment-proofs")
-        .upload(fileName, file, {
-          cacheControl: "3600",
-          upsert: false
-        })
-    );
+    const { error: uploadError } = await supabaseClient.storage
+      .from("payment-proofs")
+      .upload(fileName, file);
 
     if (uploadError) {
-      console.error(uploadError);
       alert(uploadError.message);
       return;
     }
 
-    // 4. Get public URL
-    const { data: urlData } = supabaseClient.storage
+    const { data: { publicUrl } } = supabaseClient.storage
       .from("payment-proofs")
       .getPublicUrl(fileName);
 
-    const publicUrl = urlData?.publicUrl || "";
+    const { data: profile } = await supabaseClient
+      .from("users")
+      .select("*")
+      .eq("id", user.id)
+      .maybeSingle();
 
-    // 5. Get profile
-    const { data: profile, error: profileError } = await withTimeout(
-      supabaseClient
-        .from("users")
-        .select("*")
-        .eq("id", user.id)
-        .maybeSingle()
-    );
-
-    if (profileError || !profile) {
-      alert("Could not load profile.");
-      return;
-    }
-
-    // 6. Create contract number
     const contractNumber =
-      profile.contract_number ||
+      (profile && profile.contract_number) ||
       ("ESC-" + Math.floor(10000 + Math.random() * 90000));
 
-    // 7. Update user record
-    const { error: updateError } = await withTimeout(
-      supabaseClient
-        .from("users")
-        .update({
-          balance: profile.amount || 0,
-          contract_number: contractNumber,
-          proof_url: publicUrl,
-          funding_status: "pending",
-          account_status: "Pending Funding",
-          approved: false,
-          current_milestone: 0
-        })
-        .eq("id", user.id)
-    );
+    const { error } = await supabaseClient
+      .from("users")
+      .update({
+        balance: (profile && profile.amount) || 0,
+        contract_number: contractNumber,
+        proof_url: publicUrl,
+        funding_status: "pending",
+        account_status: "Pending Funding",
+        approved: false,
+        current_milestone: 0
+      })
+      .eq("id", user.id);
 
-    if (updateError) {
-      console.error(updateError);
-      alert(updateError.message);
+    if (error) {
+      alert(error.message);
       return;
     }
 
-    alert(
-      "Your payment proof has been submitted successfully. Please wait for the administrator to review and approve your funding."
-    );
+    alert("Your payment proof has been submitted successfully. Please wait for the administrator to review and approve your funding.");
 
-    proofInput.disabled = true;
-    completeBtn.disabled = true;
-    completeBtn.textContent = "Awaiting Account Approval";
+    document.getElementById("proofUpload").disabled = true;
+    document.getElementById("completeFunding").disabled = true;
+    document.getElementById("completeFunding").textContent = "Awaiting Account Approval";
 
   } catch (err) {
     console.error(err);
-    alert(err.message || "Something went wrong. Please try again.");
-    completeBtn.disabled = false;
-    completeBtn.textContent = "Complete Funding";
+    alert("Something went wrong. Please try again.");
   }
 });
 
