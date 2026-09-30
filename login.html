@@ -323,176 +323,210 @@ Register An Account
 
 </div>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2.45.4/dist/umd/supabase.min.js"></script>
 <script src="supabase.js"></script>
 
 <script src="alert-system.js"></script>
 
 <script>
-
-let captchaDone = false;
-
-const captcha = document.getElementById("captcha");
-const captchaText = document.getElementById("captchaText");
-
-// CAPTCHA
-captcha.addEventListener("click", () => {
-    if (captchaDone) return;
-    captchaText.innerText = "Verifying";
-    captcha.classList.add("loading");
-
-    setTimeout(() => {
-        captcha.classList.remove("loading");
-        captcha.classList.add("success");
-        captcha.innerHTML = "✓";
-        captchaDone = true;
-        captchaText.style.display = "none";
-    }, 2500);
-});
-
-// FIXED LOGIN
-document.getElementById("loginBtn").addEventListener("click", async () => {
-
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
-
-    if (!email || !password) {
-        alert("Fill all fields");
-        return;
+    let captchaDone = false;
+    
+    const captcha = document.getElementById("captcha");
+    const captchaText = document.getElementById("captchaText");
+    const loginBtn = document.getElementById("loginBtn");
+    
+    // CAPTCHA
+    captcha.addEventListener("click", () => {
+        if (captchaDone) return;
+        captchaText.innerText = "Verifying";
+        captcha.classList.add("loading");
+        
+        setTimeout(() => {
+            captcha.classList.remove("loading");
+            captcha.classList.add("success");
+            captcha.innerHTML = "✓";
+            captchaDone = true;
+            captchaText.style.display = "none";
+        }, 2500);
+    });
+    
+    // Timeout helper
+    function withTimeout(promise, ms = 12000) {
+        const timeout = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error("Request timed out. Please check your internet and try again.")), ms)
+        );
+        return Promise.race([promise, timeout]);
     }
-
-    if (!captchaDone) {
-        alert("Complete captcha");
-        return;
-    }
-
-    // Email format validation
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(email)) {
-        alert("Please enter a valid email address.");
-        return;
-    }
-
-    try {
-        // First try to login with Supabase Auth
-        const { data, error } = await supabaseClient.auth.signInWithPassword({
-            email,
-            password
-        });
-
-        if (error) {
-            if (error.message.includes("Email not confirmed")) {
-                alert("Please check your email and click the confirmation link before logging in.");
-            } else if (error.message.includes("Invalid login credentials")) {
-                alert("Invalid email or password. Please try again.");
-            } else {
-                alert(error.message);
-            }
+    
+    // LOGIN
+    loginBtn.addEventListener("click", async () => {
+        const email = document.getElementById("email").value.trim();
+        const password = document.getElementById("password").value.trim();
+        
+        if (!email || !password) {
+            alert("Please fill all fields");
             return;
         }
-
-        // If login successful, ensure user exists in custom 'users' table
-        let { data: userProfile, error: profileError } = await supabaseClient
-            .from("users")
-            .select("*")
-            .eq("id", data.user.id)
-            .maybeSingle();
-
-        if (!userProfile) {
-            // Auto-create profile if missing
-            const pendingJoin = JSON.parse(localStorage.getItem("pendingJoin"));
-
-            const { error: insertError } = await supabaseClient
-                .from("users")
-                .insert({
-                    id: data.user.id,
+        
+        if (!captchaDone) {
+            alert("Please complete the captcha");
+            return;
+        }
+        
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!emailRegex.test(email)) {
+            alert("Please enter a valid email address.");
+            return;
+        }
+        
+        // Wait for Supabase client (max 4 seconds)
+        let waited = 0;
+        while (!window.supabaseClient && waited < 4000) {
+            await new Promise(r => setTimeout(r, 200));
+            waited += 200;
+        }
+        
+        if (!window.supabaseClient) {
+            alert("Supabase is still loading. Please wait a moment and try again.");
+            return;
+        }
+        
+        loginBtn.disabled = true;
+        loginBtn.textContent = "Logging in...";
+        
+        try {
+            // 1. Login
+            const { data, error } = await withTimeout(
+                supabaseClient.auth.signInWithPassword({
                     email: email,
-                    name: email.split("@")[0],
-                    tier: pendingJoin ? pendingJoin.tier : null,
-                    coin: pendingJoin ? pendingJoin.coin : null,
-                    amount: pendingJoin ? pendingJoin.amount : 0,
-                    balance: 0,
-                    contract_number: null,
-                    funding_status: "not_started",
-                    account_status: "Pending Funding",
-                    approved: false,
-                    current_milestone: 0,
-                });
-
-            if (insertError) {
-                console.error(insertError);
+                    password: password
+                })
+            );
+            
+            if (error) {
+                if (error.message.toLowerCase().includes("invalid login credentials")) {
+                    alert("Invalid email or password.");
+                } else {
+                    alert(error.message);
+                }
+                return;
             }
-
-            // Re-fetch profile
-            const { data: newProfile } = await supabaseClient
+            
+            if (!data || !data.user) {
+                alert("Login failed. Please try again.");
+                return;
+            }
+            
+            const userId = data.user.id;
+            
+            // 2. Get or create profile
+            let { data: userProfile } = await withTimeout(
+                supabaseClient
                 .from("users")
                 .select("*")
-                .eq("id", data.user.id)
-                .single();
-
-            userProfile = newProfile;
+                .eq("id", userId)
+                .maybeSingle()
+            );
+            
+            if (!userProfile) {
+                const pendingJoin = JSON.parse(localStorage.getItem("pendingJoin") || "null");
+                
+                await withTimeout(
+                    supabaseClient.from("users").insert({
+                        id: userId,
+                        email: email,
+                        name: email.split("@")[0],
+                        tier: pendingJoin ? pendingJoin.tier : null,
+                        coin: pendingJoin ? pendingJoin.coin : null,
+                        amount: pendingJoin ? pendingJoin.amount : 0,
+                        balance: 0,
+                        contract_number: null,
+                        funding_status: "not_started",
+                        account_status: "Pending Funding",
+                        approved: false,
+                        current_milestone: 0
+                    })
+                );
+                
+                const { data: newProfile } = await withTimeout(
+                    supabaseClient
+                    .from("users")
+                    .select("*")
+                    .eq("id", userId)
+                    .maybeSingle()
+                );
+                
+                userProfile = newProfile;
+            }
+            
+            if (!userProfile) {
+                alert("Could not load your profile. Please try again.");
+                return;
+            }
+            
+            // 3. Apply pendingJoin if exists
+            const pendingJoin = JSON.parse(localStorage.getItem("pendingJoin") || "null");
+            if (pendingJoin) {
+                await withTimeout(
+                    supabaseClient
+                    .from("users")
+                    .update({
+                        tier: pendingJoin.tier,
+                        coin: pendingJoin.coin,
+                        amount: pendingJoin.amount
+                    })
+                    .eq("id", userId)
+                );
+                
+                userProfile.tier = pendingJoin.tier;
+                userProfile.coin = pendingJoin.coin;
+                userProfile.amount = pendingJoin.amount;
+                localStorage.removeItem("pendingJoin");
+            }
+            
+            localStorage.setItem("user", JSON.stringify(userProfile));
+            
+            // 4. Admin check
+            if (userProfile.email && userProfile.email.toLowerCase() === "admin@escrow.com") {
+                sessionStorage.setItem("isAdmin", "true");
+                window.location.href = "admin.html";
+                return;
+            }
+            
+            sessionStorage.removeItem("isAdmin");
+            
+            // 5. Routing
+            switch (userProfile.funding_status) {
+                case "not_started":
+                    window.location.href = "escrow-funding.html";
+                    break;
+                case "pending":
+                    alert("Your payment has been received and is currently under review.");
+                    break;
+                case "approved":
+                    window.location.href = "dashboard.html";
+                    break;
+                case "rejected":
+                    alert("Your payment could not be verified. Please submit a new payment.");
+                    window.location.href = "escrow-funding.html";
+                    break;
+                default:
+                    window.location.href = "escrow-funding.html";
+            }
+            
+        } catch (err) {
+            console.error(err);
+            
+            if (err.message && err.message.includes("Failed to fetch")) {
+                alert("Network error. Please check your internet connection and try again.");
+            } else {
+                alert(err.message || "An unexpected error occurred. Please try again.");
+            }
+        } finally {
+            loginBtn.disabled = false;
+            loginBtn.textContent = "Secure Login";
         }
-
-        if (profileError && !userProfile) {
-            alert("Failed to load user profile.");
-            return;
-        }
-
-        // Pending join logic
-        const pendingJoin = JSON.parse(localStorage.getItem("pendingJoin"));
-        if (pendingJoin) {
-            await supabaseClient
-                .from("users")
-                .update({
-                    tier: pendingJoin.tier,
-                    coin: pendingJoin.coin,
-                    amount: pendingJoin.amount
-                })
-                .eq("id", data.user.id);
-
-            userProfile.tier = pendingJoin.tier;
-            userProfile.coin = pendingJoin.coin;
-            userProfile.amount = pendingJoin.amount;
-            localStorage.removeItem("pendingJoin");
-        }
-
-        localStorage.setItem("user", JSON.stringify(userProfile));
-
-        // Admin check
-        const ADMIN_EMAIL = "admin@escrow.com";
-        if (userProfile.email.toLowerCase() === ADMIN_EMAIL.toLowerCase()) {
-            sessionStorage.setItem("isAdmin", "true");
-            window.location.href = "admin.html";
-            return;
-        }
-
-        sessionStorage.removeItem("isAdmin");
-
-        // Routing
-        switch (userProfile.funding_status) {
-            case "not_started":
-                window.location.href = "escrow-funding.html";
-                break;
-            case "pending":
-                alert("Your payment has been received and is currently under review.");
-                break;
-            case "approved":
-                window.location.href = "dashboard.html";
-                break;
-            case "rejected":
-                alert("Your payment could not be verified. Please submit a new payment.");
-                window.location.href = "escrow-funding.html";
-                break;
-            default:
-                window.location.href = "escrow-funding.html";
-        }
-
-    } catch (err) {
-        console.error(err);
-        alert("An unexpected error occurred.");
-    }
-});
-
+    });
 </script>
 
 </body>
